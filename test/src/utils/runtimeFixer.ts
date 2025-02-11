@@ -123,12 +123,16 @@ const fitText = (params: {
 export const fitAndTranslate = async (params: {
   targetLanguage: string;
   sourceLanguage: string;
-  translateFn: (params: {
+  translateFn?: (params: {
     text: string;
     sourceLanguage: string;
     targetLanguage: string;
   }) => Promise<string>;
 }) => {
+  if (!params.translateFn) {
+    params.translateFn = defaultTranslateFn;
+  }
+
   await waitForDOMLoad();
 
   const elements = getAllElementsWithDirectTextContent();
@@ -136,6 +140,9 @@ export const fitAndTranslate = async (params: {
   freezeContainerSize({ elements });
 
   const translateElementFn = async (element: Element): Promise<void> => {
+    if (!params.translateFn) {
+      throw new Error('Impossible path');
+    }
     if (
       element instanceof HTMLInputElement ||
       element instanceof HTMLTextAreaElement
@@ -166,4 +173,16 @@ export const fitAndTranslate = async (params: {
   await Promise.allSettled(tasks);
 
   fitText({ elements, onlyResizeDown: true });
+};
+
+const defaultTranslateFn = async (params: {
+  text: string;
+  sourceLanguage: string;
+  targetLanguage: string;
+}): Promise<string> => {
+  const res = await fetch(
+    `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${params.sourceLanguage}&tl=${params.targetLanguage}&dt=t&q=${encodeURIComponent(params.text)}`,
+  );
+  const data = await res.json();
+  return data[0][0][0];
 };

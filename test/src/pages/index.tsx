@@ -2,10 +2,9 @@ import { trpc } from '../utils/trpc';
 import type { NextPageWithLayout } from './_app';
 import type { inferProcedureInput } from '@trpc/server';
 import Link from 'next/link';
-import { Fragment, useEffect, useState } from 'react';
+import { Fragment, useState } from 'react';
 import type { AppRouter } from '~/server/routers/_app';
-import { fitAndTranslate } from '~/utils/runtimeFixer';
-import { translateFn } from '~/utils/translation';
+import { fitAndTranslate } from 'runfix-container';
 
 const IndexPage: NextPageWithLayout = () => {
   const [sourceLang, setSourceLang] = useState('en');
@@ -49,7 +48,6 @@ const IndexPage: NextPageWithLayout = () => {
     await fitAndTranslate({
       targetLanguage: targetLang,
       sourceLanguage: sourceLang,
-      translateFn: translateFn,
     });
     setSourceLang(targetLang);
   };
