@@ -4,9 +4,8 @@ import type { inferProcedureInput } from '@trpc/server';
 import Link from 'next/link';
 import { Fragment, useEffect, useState } from 'react';
 import type { AppRouter } from '~/server/routers/_app';
-import { fitText, freezeContainerSize } from '~/utils/runtimeFixer';
-import textFit from 'textfit';
-import { getAllElementsWithDirectTextContent } from '~/utils/runtimeFixer';
+import { fitAndTranslate } from '~/utils/runtimeFixer';
+import { translateFn } from '~/utils/translation';
 
 const IndexPage: NextPageWithLayout = () => {
   const [sourceLang, setSourceLang] = useState('en');
@@ -46,89 +45,20 @@ const IndexPage: NextPageWithLayout = () => {
   //   }
   // }, [postsQuery.data, utils]);
 
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-  }, []);
-
-  const freezeContainerSizeHandler = async () => {
-    await freezeContainerSize();
-  };
-
-  const translateElement = async (element: Element): Promise<void> => {
-    try {
-      let textToTranslate = '';
-      if (
-        element instanceof HTMLInputElement ||
-        element instanceof HTMLTextAreaElement
-      ) {
-        // For input/textarea, prioritize placeholder if it exists
-        textToTranslate = element.placeholder || element.value || '';
-      } else {
-        textToTranslate = element.textContent || '';
-      }
-
-      if (!textToTranslate.trim()) return; // Skip if no text to translate
-
-      const res = await fetch(
-        `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${sourceLang}&tl=${targetLang}&dt=t&q=${encodeURIComponent(textToTranslate)}`,
-      );
-      const data = await res.json();
-      const translatedText = data[0][0][0];
-
-      if (
-        element instanceof HTMLInputElement ||
-        element instanceof HTMLTextAreaElement
-      ) {
-        if (element.placeholder) {
-          element.placeholder = translatedText;
-        } else if (element.value) {
-          element.value = translatedText;
-        }
-      } else {
-        element.textContent = translatedText;
-      }
-
-      setSourceLang(targetLang);
-    } catch (error) {
-      console.error('Translation error:', error);
-      return; // fallback to original text
-    }
-  };
-
-  const modifyTextHandler = async () => {
-    const elements = getAllElementsWithDirectTextContent();
-
-    const tasks = [];
-    for (const element of elements) {
-      // Check for either text content or placeholder
-      const hasContent =
-        element instanceof HTMLInputElement ||
-        element instanceof HTMLTextAreaElement
-          ? element.placeholder || element.value || element.textContent
-          : element.textContent;
-
-      if (!hasContent) continue;
-      tasks.push(translateElement(element));
-    }
-
-    await Promise.allSettled(tasks);
-  };
-
-  const fitTextHandler = async () => {
-    const elements = getAllElementsWithDirectTextContent();
-    fitText({ elements: elements, onlyResizeDown: true });
+  const translateTextHandler = async () => {
+    await fitAndTranslate({
+      targetLanguage: targetLang,
+      sourceLanguage: sourceLang,
+      translateFn: translateFn,
+    });
+    setSourceLang(targetLang);
   };
   return (
     <div className="flex flex-col bg-gray-800 py-8 gap-2">
       <h1 className="text-4xl font-bold">
         Welcome to your tRPC with Prisma starter!
       </h1>
-      <button
-        onClick={freezeContainerSizeHandler}
-        className="bg-gray-900 p-2 rounded-md font-semibold disabled:bg-gray-700 disabled:text-gray-400"
-      >
-        Freeze Container Size
-      </button>
+
       <div className="flex flex-col gap-2">
         <div className="flex flex-col gap-2">
           <div>
@@ -178,18 +108,12 @@ const IndexPage: NextPageWithLayout = () => {
           </div>
         </div>
         <button
-          onClick={modifyTextHandler}
+          onClick={translateTextHandler}
           className="bg-gray-900 p-2 rounded-md font-semibold disabled:bg-gray-700 disabled:text-gray-400"
         >
           Translate Text
         </button>
       </div>
-      <button
-        onClick={fitTextHandler}
-        className="bg-gray-900 p-2 rounded-md font-semibold disabled:bg-gray-700 disabled:text-gray-400"
-      >
-        Fit Text
-      </button>
       <p className="text-gray-400">
         If you get stuck, check{' '}
         <Link

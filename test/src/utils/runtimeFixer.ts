@@ -10,7 +10,7 @@ const waitForDOMLoad = async (): Promise<void> => {
   });
 };
 
-export const getAllElementsWithDirectTextContent = (): Element[] => {
+const getAllElementsWithDirectTextContent = (): Element[] => {
   if (typeof document === 'undefined')
     throw new Error('Can only run in browser');
 
@@ -50,21 +50,15 @@ export const getAllElementsWithDirectTextContent = (): Element[] => {
   return elements;
 };
 
-export const freezeContainerSize = async () => {
-  await waitForDOMLoad();
-
-  const maybeElements = getAllElementsWithDirectTextContent();
-
-  if (!maybeElements) return;
-
-  maybeElements.forEach((element) => {
+const freezeContainerSize = (params: { elements: Element[] }) => {
+  params.elements.forEach((element) => {
     const { width, height } = element.getBoundingClientRect();
     // element.setAttribute('style', `width: 100px; height: 100px;`);
     element.setAttribute('style', `width: ${width}px; height: ${height}px;`);
   });
 };
 
-export const fitText = (params: {
+const fitText = (params: {
   elements: Element[];
   onlyResizeDown?: boolean;
   precision?: number;
@@ -124,4 +118,52 @@ export const fitText = (params: {
     const optimalSize = low;
     element.style.fontSize = `${optimalSize}px`;
   });
+};
+
+export const fitAndTranslate = async (params: {
+  targetLanguage: string;
+  sourceLanguage: string;
+  translateFn: (params: {
+    text: string;
+    sourceLanguage: string;
+    targetLanguage: string;
+  }) => Promise<string>;
+}) => {
+  await waitForDOMLoad();
+
+  const elements = getAllElementsWithDirectTextContent();
+
+  freezeContainerSize({ elements });
+
+  const translateElementFn = async (element: Element): Promise<void> => {
+    if (
+      element instanceof HTMLInputElement ||
+      element instanceof HTMLTextAreaElement
+    ) {
+      const translation = await params.translateFn({
+        text: element.placeholder,
+        sourceLanguage: params.sourceLanguage,
+        targetLanguage: params.targetLanguage,
+      });
+      element.setAttribute('placeholder', translation);
+      return;
+    }
+
+    if (element.textContent && element.textContent.trim() !== '') {
+      const translation = await params.translateFn({
+        text: element.textContent,
+        sourceLanguage: params.sourceLanguage,
+        targetLanguage: params.targetLanguage,
+      });
+      element.textContent = translation;
+    }
+  };
+
+  const tasks = [];
+  for (const element of elements) {
+    tasks.push(translateElementFn(element));
+  }
+  await Promise.allSettled(tasks);
+
+  fitText({ elements, onlyResizeDown: true });
 };
