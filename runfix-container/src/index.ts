@@ -1,4 +1,4 @@
-import { fitText, detectOverflow } from "./utils/fitText.ts";
+import { fitText, detectOverflow, checkOverflow } from "./utils/fitText.ts";
 import { freezeContainerSize } from "./utils/freezeContainerSize.ts";
 import { getAllElementsToBeFixed } from "./utils/getAllElementsToBeFixed.ts";
 import { getAllElementsToBeTranslated } from "./utils/getAllElementsToBeTranslated.ts";
@@ -8,6 +8,7 @@ import { waitForDOMLoad } from "./utils/waitForDOMLoad.ts";
 
 export { detectOverflow };
 export { fitText };
+export { checkOverflow };
 export const fitAndTranslate = async (params: {
   targetLanguage: string;
   sourceLanguage: string;
@@ -25,6 +26,7 @@ export const fitAndTranslate = async (params: {
 
   const elementsToTranslate = getAllElementsToBeTranslated();
 
+  // Get container elements and freeze their sizes
   const maybeElementsToFix = getAllElementsToBeFixed({
     elements: elementsToTranslate,
   });
@@ -51,8 +53,7 @@ export const fitAndTranslate = async (params: {
 
   // Finally, fit the text
   fitText({
-    elements: elementsToTranslate,
-    containerElements: elementsToFix,
+    elements: elementsToFix,
     onlyResizeDown: true,
     precision: 0.5,
   });

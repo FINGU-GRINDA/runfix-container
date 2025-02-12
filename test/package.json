@@ -39,15 +39,18 @@
     "@trpc/server": "npm:@trpc/server@next",
     "@types/textfit": "^2.4.5",
     "clsx": "^2.0.0",
+    "framer-motion": "^12.4.2",
     "next": "^15.1.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-icons": "^5.4.0",
     "save-dev": "0.0.1-security",
     "superjson": "^1.12.4",
     "zod": "^3.0.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.26.1",
+    "@tailwindcss/typography": "^0.5.16",
     "@types/node": "^22.9.0",
     "@types/react": "^19.0.0",
     "autoprefixer": "^10.4.7",

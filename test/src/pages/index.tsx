@@ -15,12 +15,8 @@ const IndexPage: NextPageWithLayout = () => {
     {},
   );
 
-  const checkOverflow = (
-    buttonId: string,
-    buttonEl: HTMLButtonElement,
-    containerEl: HTMLElement,
-  ) => {
-    const overflowStatus = detectOverflow(buttonEl, containerEl);
+  const checkOverflow = (buttonId: string, buttonEl: HTMLButtonElement) => {
+    const overflowStatus = detectOverflow(buttonEl);
     setOverflowStates((prev) => ({
       ...prev,
       [buttonId]: overflowStatus.hasOverflow,
@@ -34,7 +30,7 @@ const IndexPage: NextPageWithLayout = () => {
       const button = container.querySelector('button');
       const id = container.getAttribute('data-overflow-id');
       if (button && id) {
-        checkOverflow(id, button, container as HTMLElement);
+        checkOverflow(id, button);
       }
     });
   }, [fontSize]);
@@ -95,7 +91,7 @@ const IndexPage: NextPageWithLayout = () => {
       const button = container.querySelector('button');
       const id = container.getAttribute('data-overflow-id');
       if (button && id) {
-        checkOverflow(id, button, container as HTMLElement);
+        checkOverflow(id, button);
       }
     });
   };

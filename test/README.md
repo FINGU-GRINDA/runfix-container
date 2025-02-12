@@ -1,7 +1,14 @@
-# Prisma + tRPC
+# RunFix Container Test App
+
+This is a test application for the RunFix Container library, demonstrating its capabilities and usage examples.
 
 ## Features
 
+- 🎯 Interactive Landing Page with:
+  - ✨ Live translation demo
+  - 📚 Comprehensive documentation
+  - 💻 Code examples
+  - 🎨 Modern, responsive design
 - 🧙‍♂️ E2E typesafety with [tRPC](https://trpc.io)
 - ⚡ Full-stack React with Next.js
 - ⚡ Database with Prisma
@@ -25,6 +32,12 @@ pnpm dx
 
 - Node >= 18.0.0
 - Postgres
+
+## Pages
+
+- `/landing` - Main landing page with interactive demos and documentation
+- `/docs` - Detailed API documentation
+- `/examples` - Usage examples and code snippets
 
 ## Development
 
