@@ -41,18 +41,12 @@ importers:
       react-dom:
         specifier: ^19.0.0
         version: 19.0.0(react@19.0.0)
-      runfix-container:
-        specifier: ^0.0.3
-        version: 0.0.3
       save-dev:
         specifier: 0.0.1-security
         version: 0.0.1-security
       superjson:
         specifier: ^1.12.4
         version: 1.13.3
-      textfit:
-        specifier: ^2.4.0
-        version: 2.4.0
       zod:
         specifier: ^3.0.0
         version: 3.24.1
@@ -2303,9 +2297,6 @@ packages:
   run-parallel@1.2.0:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
 
-  runfix-container@0.0.3:
-    resolution: {integrity: sha512-1Za4faXYrS+R3orHYWmlCGZJUc3GnOORbCtWd5OLWK+tkzkgPuafR+EuxzvrJ/WTHmHuEhT1kG1lp/p86SxN+w==}
-
   rxjs@7.8.1:
     resolution: {integrity: sha512-AA3TVj+0A2iuIoQkWEK/tqFjBq2j+6PO6Y0zJcvzLAFhEFIO3HL0vls9hWLncZbAAbK0mar7oZ4V079I/qPMxg==}
 
@@ -2543,9 +2534,6 @@ packages:
   tapable@2.2.1:
     resolution: {integrity: sha512-GNzQvQTOIP6RyTfE2Qxb8ZVlNmw0n88vp1szwWRimP02mnTsx3Wtn5qRdqY9w2XduFNUgvOwhNnQsjwCp+kqaQ==}
     engines: {node: '>=6'}
-
-  textfit@2.4.0:
-    resolution: {integrity: sha512-/x4aoY5+/tJmu+iwpBH1yw75TFp86M6X15SvaaY/Eep7YySQYtqdOifEtfvVyMwzl7SZ+G4RQw00FD9g5R6i1Q==}
 
   thenify-all@1.6.0:
     resolution: {integrity: sha512-RNxQH/qI8/t3thXJDwcstUO4zeqo64+Uy/+sNVRBx4Xn2OX+OZ9oP+iJnNFqplFra2ZUVeKCSa2oVWi3T4uVmA==}
@@ -4983,8 +4971,6 @@ snapshots:
     dependencies:
       queue-microtask: 1.2.3
 
-  runfix-container@0.0.3: {}
-
   rxjs@7.8.1:
     dependencies:
       tslib: 2.8.1
@@ -5305,8 +5291,6 @@ snapshots:
       - ts-node
 
   tapable@2.2.1: {}
-
-  textfit@2.4.0: {}
 
   thenify-all@1.6.0:
     dependencies:

@@ -6,6 +6,8 @@
       "declaration": true,
       "strict": true,
       "allowImportingTsExtensions": true,
-      "rewriteRelativeImportExtensions": true
-    }
+      "rewriteRelativeImportExtensions": true,
+      "moduleResolution": "nodenext",
+      "module": "NodeNext"
+    },
   }

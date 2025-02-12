@@ -4,18 +4,62 @@ import type { inferProcedureInput } from '@trpc/server';
 import Link from 'next/link';
 import { Fragment, useState } from 'react';
 import type { AppRouter } from '~/server/routers/_app';
-import { fitAndTranslate } from 'runfix-container';
+import { detectOverflow } from 'runfix-container';
+import { useEffect } from 'react';
 
 const IndexPage: NextPageWithLayout = () => {
   const [sourceLang, setSourceLang] = useState('en');
   const [targetLang, setTargetLang] = useState('ja');
+  const [fontSize, setFontSize] = useState(16);
+  const [overflowStates, setOverflowStates] = useState<Record<string, boolean>>(
+    {},
+  );
+
+  const checkOverflow = (
+    buttonId: string,
+    buttonEl: HTMLButtonElement,
+    containerEl: HTMLElement,
+  ) => {
+    const overflowStatus = detectOverflow(buttonEl, containerEl);
+    setOverflowStates((prev) => ({
+      ...prev,
+      [buttonId]: overflowStatus.hasOverflow,
+    }));
+  };
+
+  // Effect to check overflow whenever font size changes
+  useEffect(() => {
+    const containers = document.querySelectorAll('[data-overflow-container]');
+    containers.forEach((container) => {
+      const button = container.querySelector('button');
+      const id = container.getAttribute('data-overflow-id');
+      if (button && id) {
+        checkOverflow(id, button, container as HTMLElement);
+      }
+    });
+  }, [fontSize]);
+
   const languages = [
-    { code: 'en', name: 'English' },
-    { code: 'ja', name: 'Japanese' },
-    { code: 'ko', name: 'Korean' },
-    { code: 'zh', name: 'Chinese' },
-    { code: 'es', name: 'Spanish' },
-    { code: 'fr', name: 'French' },
+    { code: 'en', name: 'English with a very long name that should overflow' },
+    {
+      code: 'ja',
+      name: '日本語は非常に長い名前で、オーバーフローするはずです',
+    },
+    { code: 'ko', name: '한국어는 매우 긴 이름으로 오버플로우해야 합니다' },
+    { code: 'zh', name: '中文有一个很长的名字应该会溢出' },
+    {
+      code: 'es',
+      name: 'Español con un nombre muy largo que debería desbordarse',
+    },
+    { code: 'fr', name: 'Français avec un nom très long qui devrait déborder' },
+  ];
+
+  // Test cases for different button sizes
+  const buttonSizes = [
+    { width: '100px', height: '40px' },
+    { width: '150px', height: '30px' },
+    { width: '80px', height: '50px' },
+    { width: '120px', height: '35px' },
   ];
   const utils = trpc.useUtils();
   const postsQuery = trpc.post.list.useInfiniteQuery(
@@ -44,27 +88,79 @@ const IndexPage: NextPageWithLayout = () => {
   //   }
   // }, [postsQuery.data, utils]);
 
-  const translateTextHandler = async () => {
-    await fitAndTranslate({
-      targetLanguage: targetLang,
-      sourceLanguage: sourceLang,
+  const translateTextHandler = () => {
+    // Re-check all overflows
+    const containers = document.querySelectorAll('[data-overflow-container]');
+    containers.forEach((container) => {
+      const button = container.querySelector('button');
+      const id = container.getAttribute('data-overflow-id');
+      if (button && id) {
+        checkOverflow(id, button, container as HTMLElement);
+      }
     });
-    setSourceLang(targetLang);
   };
   return (
-    <div className="flex flex-col bg-gray-800 py-8 gap-2">
-      <h1 className="text-4xl font-bold">
-        Welcome to your tRPC with Prisma starter!
-      </h1>
+    <div className="flex flex-col bg-gray-800 py-8 gap-4">
+      <div className="flex gap-4 items-center mb-4">
+        <span>Font Size:</span>
+        <input
+          type="range"
+          min="8"
+          max="32"
+          value={fontSize}
+          onChange={(e) => setFontSize(parseInt(e.target.value))}
+          className="w-48"
+        />
+        <span>{fontSize}px</span>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        {buttonSizes.map((size, index) => (
+          <div key={index} className="flex flex-col gap-2">
+            <div
+              data-overflow-container
+              data-overflow-id={`size-${index}`}
+              style={{
+                width: size.width,
+                height: size.height,
+                border: `1px solid ${overflowStates[`size-${index}`] ? 'red' : 'green'}`,
+                padding: '4px',
+                fontSize: `${fontSize}px`,
+              }}
+              className="relative"
+            >
+              <button
+                className="w-full h-full bg-blue-600 rounded px-2 py-1"
+                style={{ fontSize: 'inherit' }}
+              >
+                Test Button {index + 1}
+              </button>
+            </div>
+            <span className="text-sm text-gray-400">
+              Container: {size.width} x {size.height}
+            </span>
+          </div>
+        ))}
+      </div>
 
       <div className="flex flex-col gap-2">
         <div className="flex flex-col gap-2">
-          <div>
-            <span className="text-gray-400 mr-2">From:</span>
-            <div className="flex gap-2 flex-wrap">
-              {languages.map((lang) => (
+          <div className="grid grid-cols-2 gap-4">
+            {languages.map((lang) => (
+              <div
+                key={`source-${lang.code}`}
+                className="relative"
+                data-overflow-container
+                data-overflow-id={`source-${lang.code}`}
+                style={{
+                  width: '200px',
+                  height: '40px',
+                  border: `1px solid ${overflowStates[`source-${lang.code}`] ? 'red' : 'green'}`,
+                  padding: '4px',
+                  fontSize: `${fontSize}px`,
+                }}
+              >
                 <button
-                  key={`source-${lang.code}`}
                   onClick={() => {
                     if (lang.code === targetLang) {
                       const oldSource = sourceLang;
@@ -74,65 +170,154 @@ const IndexPage: NextPageWithLayout = () => {
                       setSourceLang(lang.code);
                     }
                   }}
-                  className={`px-3 py-1 rounded-md font-semibold ${sourceLang === lang.code ? 'bg-blue-600' : 'bg-gray-700'}`}
+                  className={`w-full h-full rounded-md font-semibold ${sourceLang === lang.code ? 'bg-blue-600' : 'bg-gray-700'}`}
+                  style={{ fontSize: 'inherit' }}
                 >
                   {lang.name}
                 </button>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
-          <div>
-            <span className="text-gray-400 mr-2">To:</span>
-            <div className="flex gap-2 flex-wrap">
-              {languages.map((lang) => (
-                <button
-                  key={`target-${lang.code}`}
-                  onClick={() => {
-                    if (lang.code === sourceLang) {
-                      const oldTarget = targetLang;
-                      setTargetLang(sourceLang);
-                      setSourceLang(oldTarget);
-                    } else {
-                      setTargetLang(lang.code);
-                    }
-                  }}
-                  disabled={lang.code === sourceLang}
-                  className={`px-3 py-1 rounded-md font-semibold ${targetLang === lang.code ? 'bg-blue-600' : 'bg-gray-700'} ${lang.code === sourceLang ? 'opacity-50 cursor-not-allowed' : ''}`}
-                >
-                  {lang.name}
-                </button>
-              ))}
+          {/* Test Grid Layout */}
+          <div className="grid grid-cols-3 gap-4 mt-8">
+            <div className="col-span-3 mb-4">
+              <h2 className="text-xl font-semibold mb-2">Grid Layout Test</h2>
+              <div className="grid grid-cols-3 gap-2">
+                {[...Array(9)].map((_, i) => (
+                  <div
+                    key={i}
+                    className="relative"
+                    data-overflow-container
+                    data-overflow-id={`grid-${i}`}
+                    style={{
+                      width: '100%',
+                      height: '60px',
+                      border: `1px solid ${overflowStates[`grid-${i}`] ? 'red' : 'green'}`,
+                      padding: '4px',
+                      fontSize: `${fontSize}px`,
+                    }}
+                  >
+                    <button
+                      className="w-full h-full bg-gray-700 rounded-md font-semibold"
+                      style={{ fontSize: 'inherit' }}
+                    >
+                      {`Very Long Button Text ${i + 1} That Should Overflow`}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Narrow Container Test */}
+            <div className="col-span-3 mb-4">
+              <h2 className="text-xl font-semibold mb-2">
+                Narrow Container Test
+              </h2>
+              <div className="flex gap-4">
+                {[50, 80, 120].map((width) => (
+                  <div
+                    key={width}
+                    className="relative"
+                    data-overflow-container
+                    data-overflow-id={`narrow-${width}`}
+                    style={{
+                      width: `${width}px`,
+                      height: '40px',
+                      border: `1px solid ${overflowStates[`narrow-${width}`] ? 'red' : 'green'}`,
+                      padding: '4px',
+                      fontSize: `${fontSize}px`,
+                    }}
+                  >
+                    <button
+                      className="w-full h-full bg-gray-700 rounded-md font-semibold"
+                      style={{ fontSize: 'inherit' }}
+                    >
+                      Narrow Test
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Target Language Selection */}
+            <div className="col-span-3">
+              <h2 className="text-xl font-semibold mb-2">Target Language</h2>
+              <div className="grid grid-cols-2 gap-4">
+                {languages.map((lang) => (
+                  <div
+                    key={`target-${lang.code}`}
+                    className="relative"
+                    data-overflow-container
+                    data-overflow-id={`lang-${lang.code}`}
+                    style={{
+                      width: '200px',
+                      height: '40px',
+                      border: `1px solid ${overflowStates[`lang-${lang.code}`] ? 'red' : 'green'}`,
+                      padding: '4px',
+                      fontSize: `${fontSize}px`,
+                    }}
+                  >
+                    <button
+                      onClick={() => {
+                        if (lang.code === sourceLang) {
+                          const oldTarget = targetLang;
+                          setTargetLang(sourceLang);
+                          setSourceLang(oldTarget);
+                        } else {
+                          setTargetLang(lang.code);
+                        }
+                      }}
+                      disabled={lang.code === sourceLang}
+                      className={`w-full h-full rounded-md font-semibold
+                        ${targetLang === lang.code ? 'bg-blue-600' : 'bg-gray-700'}
+                        ${lang.code === sourceLang ? 'opacity-50' : ''}`}
+                      style={{ fontSize: 'inherit' }}
+                    >
+                      {lang.name}
+                    </button>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         </div>
-        <button
-          onClick={translateTextHandler}
-          className="bg-gray-900 p-2 rounded-md font-semibold disabled:bg-gray-700 disabled:text-gray-400"
-        >
-          Translate Text
-        </button>
+
+        {/* Action Buttons */}
+        <div className="flex gap-4 mt-8">
+          <div
+            className="relative"
+            data-overflow-container
+            data-overflow-id="translate-button"
+            style={{
+              width: '200px',
+              height: '50px',
+              border: `1px solid ${overflowStates['translate-button'] ? 'red' : 'green'}`,
+              padding: '4px',
+              fontSize: `${fontSize}px`,
+            }}
+          >
+            <button
+              onClick={translateTextHandler}
+              className="w-full h-full bg-blue-600 rounded-md font-semibold"
+              style={{ fontSize: 'inherit' }}
+            >
+              Translate Everything Now
+            </button>
+          </div>
+        </div>
       </div>
       <p className="text-gray-400">
         If you get stuck, check{' '}
-        <Link
-          className="underline"
-          style={{ width: '100px', height: '100px' }}
-          href="https://trpc.io"
-        >
+        <Link className="underline" href="https://trpc.io">
           the docs
         </Link>
         , write a message in our{' '}
-        <Link
-          className="underline"
-          style={{ width: '100px', height: '100px' }}
-          href="https://trpc.io/discord"
-        >
+        <Link className="underline" href="https://trpc.io/discord">
           Discord-channel
         </Link>
         , or write a message in{' '}
         <Link
           className="underline"
-          style={{ width: '100px', height: '100px' }}
           href="https://github.com/trpc/trpc/discussions"
         >
           GitHub Discussions
@@ -142,22 +327,36 @@ const IndexPage: NextPageWithLayout = () => {
 
       <div className="flex flex-col py-8 items-start gap-y-2">
         <div className="flex flex-col"></div>
-        <h2 className="text-3xl font-semibold">
+        <h2 className="text-3xl font-semibold mb-4">
           Latest Posts
           {postsQuery.status === 'pending' && '(loading)'}
         </h2>
 
-        <button
-          className="bg-gray-900 p-2 rounded-md font-semibold disabled:bg-gray-700 disabled:text-gray-400"
-          onClick={() => postsQuery.fetchNextPage()}
-          disabled={!postsQuery.hasNextPage || postsQuery.isFetchingNextPage}
+        <div
+          className="relative"
+          data-overflow-container
+          data-overflow-id="load-more"
+          style={{
+            width: '180px',
+            height: '40px',
+            border: `1px solid ${overflowStates['load-more'] ? 'red' : 'green'}`,
+            padding: '4px',
+            fontSize: `${fontSize}px`,
+          }}
         >
-          {postsQuery.isFetchingNextPage
-            ? 'Loading more...'
-            : postsQuery.hasNextPage
-              ? 'Load More'
-              : 'Nothing more to load'}
-        </button>
+          <button
+            onClick={() => postsQuery.fetchNextPage()}
+            disabled={!postsQuery.hasNextPage || postsQuery.isFetchingNextPage}
+            className="w-full h-full bg-gray-900 rounded-md font-semibold disabled:bg-gray-700 disabled:text-gray-400"
+            style={{ fontSize: 'inherit' }}
+          >
+            {postsQuery.isFetchingNextPage
+              ? 'Loading more...'
+              : postsQuery.hasNextPage
+                ? 'Load More'
+                : 'Nothing more to load'}
+          </button>
+        </div>
 
         {postsQuery.data?.pages.map((page, index) => (
           <Fragment key={page.items[0]?.id || index}>
