@@ -12,7 +12,7 @@ const LandingPage: React.FC = () => {
     try {
       setIsTranslating(true);
       await fitAndTranslate({
-        targetLanguage: 'id', // Spanish as an example
+        targetLanguage: 'ko', // Spanish as an example
         sourceLanguage: 'en',
       });
     } catch (error) {

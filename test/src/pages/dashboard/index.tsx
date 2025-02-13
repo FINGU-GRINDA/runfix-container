@@ -7,7 +7,7 @@ const DashboardPage: React.FC = () => {
   const [isTranslating, setIsTranslating] = useState(false);
   const [activeTab, setActiveTab] = useState('overview');
   const [loading, setLoading] = useState(true);
-  
+
   useEffect(() => {
     // Simulate loading state
     const timer = setTimeout(() => setLoading(false), 1000);
@@ -18,7 +18,7 @@ const DashboardPage: React.FC = () => {
     try {
       setIsTranslating(true);
       await fitAndTranslate({
-        targetLanguage: 'id',
+        targetLanguage: 'ko',
         sourceLanguage: 'en',
       });
     } catch (error) {
@@ -106,7 +106,9 @@ const DashboardPage: React.FC = () => {
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         {/* Page Title */}
         <div className="flex items-center justify-between">
-          <h1 className="text-2xl font-bold text-slate-900">Dashboard Overview</h1>
+          <h1 className="text-2xl font-bold text-slate-900">
+            Dashboard Overview
+          </h1>
           <div className="flex items-center space-x-4">
             <button className="px-4 py-2 text-sm font-medium text-slate-700 hover:text-slate-900 bg-white border border-slate-300 rounded-md shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
               <Icons.FiDownload className="inline-block w-4 h-4 mr-2" />
@@ -121,15 +123,22 @@ const DashboardPage: React.FC = () => {
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           {stats.map((stat, index) => (
-            <div key={index} className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow duration-200">
+            <div
+              key={index}
+              className="bg-white rounded-lg shadow-sm p-6 hover:shadow-md transition-shadow duration-200"
+            >
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
                   <div className="p-3 rounded-lg bg-indigo-100 text-indigo-700">
                     <stat.icon className="h-6 w-6" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-slate-500">{stat.label}</p>
-                    <p className="text-2xl font-bold text-slate-900">{loading ? '-' : stat.value}</p>
+                    <p className="text-sm font-medium text-slate-500">
+                      {stat.label}
+                    </p>
+                    <p className="text-2xl font-bold text-slate-900">
+                      {loading ? '-' : stat.value}
+                    </p>
                   </div>
                 </div>
                 <div className="text-sm font-medium text-green-600">+4.5%</div>
@@ -147,7 +156,10 @@ const DashboardPage: React.FC = () => {
           </div>
           <div className="divide-y divide-slate-200 max-h-[400px] overflow-y-auto scrollbar-thin scrollbar-thumb-slate-200 scrollbar-track-transparent">
             {recentActivity.map((activity, index) => (
-              <div key={index} className="px-6 py-4 hover:bg-slate-50 transition-colors duration-200">
+              <div
+                key={index}
+                className="px-6 py-4 hover:bg-slate-50 transition-colors duration-200"
+              >
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-slate-900">

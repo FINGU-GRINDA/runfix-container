@@ -57,6 +57,6 @@ export const fitAndTranslate = async (params: {
   const uniqueContainersWithOverflowArr = Array.from(
     uniqueContainerWithOverflow
   );
-  console.log({ uniqueContainerWithOverflow, uniqueContainersWithOverflowArr });
+
   textFitter({ overflowContainers: uniqueContainersWithOverflowArr });
 };
