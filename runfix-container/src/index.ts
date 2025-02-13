@@ -1,14 +1,13 @@
-import { fitText, detectOverflow, checkOverflow } from "./utils/fitText.ts";
-import { freezeContainerSize } from "./utils/freezeContainerSize.ts";
-import { getAllElementsToBeFixed } from "./utils/getAllElementsToBeFixed.ts";
 import { getAllElementsToBeTranslated } from "./utils/getAllElementsToBeTranslated.ts";
 import { googleTranslate } from "./utils/googleTranslate.ts";
 import { translateElement } from "./utils/translateElement.ts";
 import { waitForDOMLoad } from "./utils/waitForDOMLoad.ts";
+import { checkContainerOverflow } from "./utils/checkContainerOverflow.ts";
+import { textFitter } from "./utils/textFitter.ts";
+export { checkContainerOverflow } from "./utils/checkContainerOverflow.ts";
+export { textFitter } from "./utils/textFitter.ts";
+export { getAllElementsToBeTranslated } from "./utils/getAllElementsToBeTranslated.ts";
 
-export { detectOverflow };
-export { fitText };
-export { checkOverflow };
 export const fitAndTranslate = async (params: {
   targetLanguage: string;
   sourceLanguage: string;
@@ -26,15 +25,6 @@ export const fitAndTranslate = async (params: {
 
   const elementsToTranslate = getAllElementsToBeTranslated();
 
-  // Get container elements and freeze their sizes
-  const maybeElementsToFix = getAllElementsToBeFixed({
-    elements: elementsToTranslate,
-  });
-
-  const elementsToFix = maybeElementsToFix.filter((x) => x !== null);
-
-  freezeContainerSize({ elements: elementsToFix });
-
   // Then translate the content
   const translationTasks = [];
   for (const element of elementsToTranslate) {
@@ -48,13 +38,25 @@ export const fitAndTranslate = async (params: {
     );
   }
 
-  // Wait for all translations to complete
   await Promise.all(translationTasks);
 
-  // Finally, fit the text
-  fitText({
-    elements: elementsToFix,
-    onlyResizeDown: true,
-    precision: 0.5,
-  });
+  const uniqueContainerWithOverflow = elementsToTranslate.reduce(
+    (acc, element) => {
+      const parent = element.parentElement;
+      if (parent === null) return acc;
+      if (parent.tagName === "BODY") return acc;
+      const overflow = checkContainerOverflow({ container: parent });
+      if (overflow.hasOverflow) {
+        acc.add(parent);
+      }
+      return acc;
+    },
+    new Set<HTMLElement>()
+  );
+
+  const uniqueContainersWithOverflowArr = Array.from(
+    uniqueContainerWithOverflow
+  );
+  console.log({ uniqueContainerWithOverflow, uniqueContainersWithOverflowArr });
+  textFitter({ overflowContainers: uniqueContainersWithOverflowArr });
 };
