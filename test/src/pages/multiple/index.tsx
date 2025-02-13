@@ -27,7 +27,11 @@ const MultiplePage: React.FC = () => {
         container: curr as HTMLElement,
       });
       if (status.hasOverflow) {
-        acc.push(JSON.stringify(status));
+        const textContent = Array.from(curr.children)
+          .map((child) => child.textContent?.trim())
+          .filter(Boolean)
+          .join(' | ');
+        acc.push(JSON.stringify({ ...status, elementText: textContent }));
       }
       return acc;
     }, new Array<string>());
@@ -51,7 +55,7 @@ const MultiplePage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 p-8">
+    <div className="min-h-screen bg-slate-50 p-8 text-black">
       {/* Fixed Action Buttons */}
       <div className="fixed top-4 right-4 z-50 flex items-center gap-2">
         <button
@@ -79,7 +83,7 @@ const MultiplePage: React.FC = () => {
         <div className=" text-black fixed top-20 right-4 z-50 w-96 bg-white p-4 rounded-lg shadow-lg border border-gray-200">
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-sm font-medium text-gray-900">
-              Overflow Status
+              Overflow Status ({overflowStatus.length} elements)
             </h3>
             <button
               onClick={() => setOverflowStatus(null)}
@@ -94,7 +98,29 @@ const MultiplePage: React.FC = () => {
                 key={index}
                 className="mb-2 pb-2 border-b border-gray-100 last:border-0 last:mb-0 last:pb-0"
               >
-                {JSON.stringify(JSON.parse(status), null, 2)}
+                {(() => {
+                  const parsed = JSON.parse(status);
+                  return (
+                    <div>
+                      <div className="font-medium text-gray-700 mb-1">
+                        {parsed.elementText}
+                      </div>
+                      <div className="text-gray-600">
+                        {JSON.stringify(
+                          {
+                            hasOverflow: parsed.hasOverflow,
+                            overflowX: parsed.overflowX,
+                            overflowY: parsed.overflowY,
+                            availableWidth: parsed.availableWidth,
+                            availableHeight: parsed.availableHeight,
+                          },
+                          null,
+                          2,
+                        )}
+                      </div>
+                    </div>
+                  );
+                })()}
               </div>
             ))}
           </pre>
