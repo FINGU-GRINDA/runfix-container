@@ -24,6 +24,7 @@ export const fitAndTranslate = async (params: {
   await waitForDOMLoad();
 
   const elementsToTranslate = getAllElementsToBeTranslated();
+
   const originalUniqueContainerWithOverflow = elementsToTranslate.reduce(
     (acc, element) => {
       const parent = element.parentElement;
@@ -55,6 +56,13 @@ export const fitAndTranslate = async (params: {
 
   const uniqueContainerWithOverflow = elementsToTranslate.reduce(
     (acc, element) => {
+      // we check self, if self overflow, we add it to the accumulator, no need to check parent
+      const selfOverflow = checkContainerOverflow({ container: element });
+      if (selfOverflow.hasOverflow) {
+        acc.add(element);
+        return acc;
+      }
+
       const parent = element.parentElement;
       if (parent === null) return acc;
       if (parent.tagName === "BODY") return acc;
