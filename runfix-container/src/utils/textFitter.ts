@@ -23,19 +23,27 @@ export const textFitter = (params: TextFitterParams) => {
 
     // Get direct children and store their original font sizes
     const children = Array.from(container.children) as HTMLElement[];
+
     // Store references to DOM elements and their original font sizes
-    const elementRefs = children.map((domElement) => ({
-      domElement, // This is a mutable reference to the actual DOM element
-      originalFontSize: parseFloat(
-        window.getComputedStyle(domElement).fontSize
-      ),
-    }));
+    const elementRefs = children
+      .map((domElement) => ({
+        domElement, // This is a mutable reference to the actual DOM element
+        originalFontSize: parseFloat(
+          window.getComputedStyle(domElement).fontSize
+        ),
+      }))
+      .concat({
+        domElement: container,
+        originalFontSize: parseFloat(
+          window.getComputedStyle(container).fontSize
+        ),
+      });
 
     // Binary search for the optimal scale
     while (high - low > precision) {
       const currentScale = (low + high) / 2;
 
-      // Apply font size scaling to direct children
+      // Apply font size scaling to direct children and self
       elementRefs.forEach(({ domElement, originalFontSize }) => {
         domElement.style.fontSize = `${originalFontSize * currentScale}px`;
       });
