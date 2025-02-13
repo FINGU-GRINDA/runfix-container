@@ -4,9 +4,11 @@ import { translateElement } from "./utils/translateElement.ts";
 import { waitForDOMLoad } from "./utils/waitForDOMLoad.ts";
 import { checkContainerOverflow } from "./utils/checkContainerOverflow.ts";
 import { textFitter } from "./utils/textFitter.ts";
+import { getUniqueContainerWithOverflow } from "./utils/getUniqueContainerWithOverflow.ts";
 export { checkContainerOverflow } from "./utils/checkContainerOverflow.ts";
 export { textFitter } from "./utils/textFitter.ts";
 export { getAllElementsToBeTranslated } from "./utils/getAllElementsToBeTranslated.ts";
+export { getUniqueContainerWithOverflow } from "./utils/getUniqueContainerWithOverflow.ts";
 
 export const fitAndTranslate = async (params: {
   targetLanguage: string;
@@ -25,19 +27,10 @@ export const fitAndTranslate = async (params: {
 
   const elementsToTranslate = getAllElementsToBeTranslated();
 
-  const originalUniqueContainerWithOverflow = elementsToTranslate.reduce(
-    (acc, element) => {
-      const parent = element.parentElement;
-      if (parent === null) return acc;
-      if (parent.tagName === "BODY") return acc;
-      const overflow = checkContainerOverflow({ container: parent });
-      if (overflow.hasOverflow) {
-        acc.add(parent);
-      }
-      return acc;
-    },
-    new Set<HTMLElement>()
-  );
+  // narrow down search to elements that we will modify
+  const originalUniqueContainerWithOverflow = getUniqueContainerWithOverflow({
+    elements: elementsToTranslate,
+  });
 
   // Then translate the content
   const translationTasks = [];
@@ -54,33 +47,12 @@ export const fitAndTranslate = async (params: {
 
   await Promise.all(translationTasks);
 
-  const uniqueContainerWithOverflow = elementsToTranslate.reduce(
-    (acc, element) => {
-      // we check self, if self overflow, we add it to the accumulator, no need to check parent
-      const selfOverflow = checkContainerOverflow({ container: element });
-      if (selfOverflow.hasOverflow) {
-        acc.add(element);
-        return acc;
-      }
+  const uniqueContainerWithOverflow = Array.from(
+    getUniqueContainerWithOverflow({
+      elements: elementsToTranslate,
+    })
+  ).filter((container) => !originalUniqueContainerWithOverflow.has(container));
 
-      const parent = element.parentElement;
-      if (parent === null) return acc;
-      if (parent.tagName === "BODY") return acc;
-
-      // we skip the original overflow containers, we only want to fit the new ones
-      if (originalUniqueContainerWithOverflow.has(parent)) return acc;
-      const overflow = checkContainerOverflow({ container: parent });
-      if (overflow.hasOverflow) {
-        acc.add(parent);
-      }
-      return acc;
-    },
-    new Set<HTMLElement>()
-  );
-
-  const uniqueContainersWithOverflowArr = Array.from(
-    uniqueContainerWithOverflow
-  );
-
-  textFitter({ overflowContainers: uniqueContainersWithOverflowArr });
+  console.log({ uniqueContainerWithOverflow });
+  textFitter({ overflowContainers: uniqueContainerWithOverflow });
 };

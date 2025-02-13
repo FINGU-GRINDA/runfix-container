@@ -16,6 +16,13 @@ export const checkContainerOverflow = (params: {
   container: HTMLElement;
 }): OverflowStatus => {
   const { container } = params;
+  const originalContainerStyle = {
+    boxSizing: container.style.boxSizing,
+  };
+
+  // set container properties to be reset after
+  container.style.boxSizing = "border-box";
+
   const computedStyle = window.getComputedStyle(container);
 
   // Get container's box model measurements
@@ -33,9 +40,16 @@ export const checkContainerOverflow = (params: {
     bottom: parseFloat(computedStyle.borderBottomWidth) || 0,
   };
 
+  const size = {
+    width: parseFloat(computedStyle.width) || 0,
+    height: parseFloat(computedStyle.height) || 0,
+  };
+
   // Get container's available space (content box)
-  const availableWidth = container.clientWidth - padding.left - padding.right;
-  const availableHeight = container.clientHeight - padding.top - padding.bottom;
+  const availableWidth =
+    size.width - padding.left - padding.right - borders.left - borders.right;
+  const availableHeight =
+    size.height - padding.top - padding.bottom - borders.top - borders.bottom;
 
   // Get actual content size (scrollWidth/Height includes overflow)
   const totalContentWidth =
@@ -54,6 +68,13 @@ export const checkContainerOverflow = (params: {
     availableWidth,
     availableHeight,
   };
+
+  // Reset container properties
+  container.style.boxSizing = originalContainerStyle.boxSizing;
+
+  if (status.hasOverflow) {
+    console.log({ status, container });
+  }
 
   return status;
 };
