@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import * as Icons from 'react-icons/fi';
 import { OverflowDetector } from '~/components/overflow-detector';
 import { fitAndTranslate } from 'runfix-container';
+
 const MultiplePage: React.FC = () => {
-  const [overflowStatus, setOverflowStatus] = useState<string[] | null>(null);
   const [isTranslating, setIsTranslating] = useState(false);
 
   const handleFitAndTranslate = async () => {
@@ -45,59 +45,6 @@ const MultiplePage: React.FC = () => {
         </div>
       </div>
 
-      {overflowStatus && overflowStatus.length > 0 && (
-        <div className=" text-black fixed top-20 right-4 z-50 w-96 bg-white p-4 rounded-lg shadow-lg border border-gray-200">
-          <div className="flex items-center justify-between mb-2">
-            <h3 className="text-sm font-medium text-gray-900">
-              Overflow Status ({overflowStatus.length} elements)
-            </h3>
-            <button
-              onClick={() => setOverflowStatus(null)}
-              className="text-gray-400 hover:text-gray-500"
-            >
-              <Icons.FiX className="w-4 h-4" />
-            </button>
-          </div>
-          <pre className="text-xs bg-gray-50 p-2 rounded overflow-auto max-h-96">
-            {overflowStatus.map((status, index) => (
-              <div
-                key={index}
-                className="mb-2 pb-2 border-b border-gray-100 last:border-0 last:mb-0 last:pb-0"
-              >
-                {(() => {
-                  const parsed = JSON.parse(status);
-                  return (
-                    <div>
-                      <div className="font-medium text-gray-700 mb-1">
-                        <span className="bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded text-xs mr-2">
-                          {parsed.elementTag}
-                        </span>
-                        {parsed.elementText}
-                      </div>
-                      <div className="text-xs text-gray-500 mb-1">
-                        {parsed.className}
-                      </div>
-                      <div className="text-gray-600">
-                        {JSON.stringify(
-                          {
-                            hasOverflow: parsed.hasOverflow,
-                            overflowX: parsed.overflowX,
-                            overflowY: parsed.overflowY,
-                            availableWidth: parsed.availableWidth,
-                            availableHeight: parsed.availableHeight,
-                          },
-                          null,
-                          2,
-                        )}
-                      </div>
-                    </div>
-                  );
-                })()}
-              </div>
-            ))}
-          </pre>
-        </div>
-      )}
       <div className="max-w-4xl mx-auto space-y-8">
         <h1 className="text-2xl font-bold text-slate-900 mb-8">
           Test Cases for Translation and Text Fitting
