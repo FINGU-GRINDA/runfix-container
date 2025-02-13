@@ -3,16 +3,23 @@ import {
   fitAndTranslate,
   getAllElementsToBeTranslated,
   checkContainerOverflow,
+  textFitter,
 } from 'runfix-container';
 import * as Icons from 'react-icons/fi';
 
+let elemetsToTranslate: HTMLElement[] = [];
+
 const MultiplePage: React.FC = () => {
   const [isTranslating, setIsTranslating] = useState(false);
+
+  const [isFitting, setIsFitting] = useState(false);
   const [overflowStatus, setOverflowStatus] = useState<string[] | null>(null);
 
   const checkOverflow = () => {
-    const elemetsToTranslate = getAllElementsToBeTranslated();
-
+    if (elemetsToTranslate.length === 0) {
+      elemetsToTranslate = getAllElementsToBeTranslated();
+    }
+    console.log({ elemetsToTranslate });
     const containers = elemetsToTranslate.reduce((acc, el) => {
       const container = el.parentElement;
       if (!container) return acc;
@@ -24,14 +31,21 @@ const MultiplePage: React.FC = () => {
     const containerArr = Array.from(containers);
     const overflowContainers = containerArr.reduce((acc, curr) => {
       const status = checkContainerOverflow({
-        container: curr as HTMLElement,
+        container: curr,
       });
       if (status.hasOverflow) {
         const textContent = Array.from(curr.children)
           .map((child) => child.textContent?.trim())
           .filter(Boolean)
           .join(' | ');
-        acc.push(JSON.stringify({ ...status, elementText: textContent }));
+        acc.push(
+          JSON.stringify({
+            ...status,
+            elementText: textContent,
+            elementTag: curr.tagName.toLowerCase(),
+            className: curr.className,
+          }),
+        );
       }
       return acc;
     }, new Array<string>());
@@ -67,8 +81,49 @@ const MultiplePage: React.FC = () => {
           Check Overflow
         </button>
         <button
+          onClick={async () => {
+            try {
+              setIsFitting(true);
+              if (elemetsToTranslate.length === 0) {
+                elemetsToTranslate = getAllElementsToBeTranslated();
+              }
+              console.log({ elemetsToTranslate });
+              const containers = elemetsToTranslate.reduce((acc, el) => {
+                const container = el.parentElement;
+                if (!container) return acc;
+                if (container.tagName === 'BODY') return acc;
+                acc.add(container);
+                return acc;
+              }, new Set<HTMLElement>());
+
+              const containerArr = Array.from(containers);
+              const overflowContainers = containerArr.filter((container) => {
+                const status = checkContainerOverflow({
+                  container: container as HTMLElement,
+                });
+                return status.hasOverflow;
+              });
+              console.log({ overflowContainers });
+              const elements = overflowContainers as HTMLElement[];
+              textFitter({ overflowContainers: elements });
+            } catch (error) {
+              console.error('Error during text fitting:', error);
+            } finally {
+              setIsFitting(false);
+            }
+          }}
+          disabled={isTranslating || isFitting}
+          className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-md shadow-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <Icons.FiMaximize
+            className="animate-spin"
+            style={{ animationPlayState: isFitting ? 'running' : 'paused' }}
+          />
+          {isFitting ? 'Fitting...' : 'Fit Text'}
+        </button>
+        <button
           onClick={handleFitAndTranslate}
-          disabled={isTranslating}
+          disabled={isTranslating || isFitting}
           className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-md shadow-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <Icons.FiGlobe
@@ -103,7 +158,13 @@ const MultiplePage: React.FC = () => {
                   return (
                     <div>
                       <div className="font-medium text-gray-700 mb-1">
+                        <span className="bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded text-xs mr-2">
+                          {parsed.elementTag}
+                        </span>
                         {parsed.elementText}
+                      </div>
+                      <div className="text-xs text-gray-500 mb-1">
+                        {parsed.className}
                       </div>
                       <div className="text-gray-600">
                         {JSON.stringify(

@@ -24,6 +24,19 @@ export const fitAndTranslate = async (params: {
   await waitForDOMLoad();
 
   const elementsToTranslate = getAllElementsToBeTranslated();
+  const originalUniqueContainerWithOverflow = elementsToTranslate.reduce(
+    (acc, element) => {
+      const parent = element.parentElement;
+      if (parent === null) return acc;
+      if (parent.tagName === "BODY") return acc;
+      const overflow = checkContainerOverflow({ container: parent });
+      if (overflow.hasOverflow) {
+        acc.add(parent);
+      }
+      return acc;
+    },
+    new Set<HTMLElement>()
+  );
 
   // Then translate the content
   const translationTasks = [];
@@ -45,6 +58,9 @@ export const fitAndTranslate = async (params: {
       const parent = element.parentElement;
       if (parent === null) return acc;
       if (parent.tagName === "BODY") return acc;
+
+      // we skip the original overflow containers, we only want to fit the new ones
+      if (originalUniqueContainerWithOverflow.has(parent)) return acc;
       const overflow = checkContainerOverflow({ container: parent });
       if (overflow.hasOverflow) {
         acc.add(parent);
