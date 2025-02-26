@@ -5,38 +5,41 @@ import { waitForDOMLoad } from "./utils/waitForDOMLoad.ts";
 import { textFitter } from "./utils/textFitter.ts";
 import { getSortedUniqueContainerWithOverflow } from "./utils/getUniqueContainerWithOverflow.ts";
 import { modifyHTMLLanguage } from "./utils/modifyHTMLLanguage.ts";
+import { DeepPartial, mergeWithDefaults } from "./utils/typeUtils.ts";
 export { checkContainerOverflow } from "./utils/checkContainerOverflow.ts";
 export { textFitter } from "./utils/textFitter.ts";
 export { getAllElementsToBeTranslated } from "./utils/getAllElementsToBeTranslated.ts";
 export { getSortedUniqueContainerWithOverflow } from "./utils/getUniqueContainerWithOverflow.ts";
+export { DeepPartial, mergeWithDefaults } from "./utils/typeUtils.ts";
 
-export const fitAndTranslate = async (params: {
-  targetLanguage: string;
-  sourceLanguage: string;
-  translateFn?: (params: {
-    text: string;
-    sourceLanguage: string;
-    targetLanguage: string;
-  }) => Promise<string>;
-  fitConfig?: {
-    addOverflowBreak?: boolean;
-  };
-}) => {
-  if (!params.translateFn) {
-    params.translateFn = googleTranslate;
-  }
+export const fitAndTranslateParams = {
+  sourceLanguage: "en",
+  targetLanguage: "ko",
+  translateFn: googleTranslate,
+  fitConfig: {
+    addOverflowBreak: true,
+    skipFitClass: "skip-fit",
+  },
+  translateConfig: {
+    skipTranslateClass: "skip-translate",
+  },
+};
 
-  if (!params.fitConfig) {
-    params.fitConfig = {};
-  }
+// Create the params type with all optional properties
+export type FitAndTranslateParams = DeepPartial<typeof fitAndTranslateParams>;
 
-  if (!params.fitConfig?.addOverflowBreak) {
-    params.fitConfig.addOverflowBreak = false;
-  }
-
+export const fitAndTranslate = async (
+  userParams?: FitAndTranslateParams
+) => {
+  // Merge user params with defaults
+  const params = mergeWithDefaults(fitAndTranslateParams, userParams);
+  
+  // Now we can safely use params without null checks since all values have defaults
   await waitForDOMLoad();
 
-  const elementsToTranslate = getAllElementsToBeTranslated();
+  const elementsToTranslate = getAllElementsToBeTranslated({
+    skipClass: params.translateConfig.skipTranslateClass,
+  });
 
   // keep record of original containers with overflow
   const originalUniqueContainerWithOverflow =
@@ -74,8 +77,12 @@ export const fitAndTranslate = async (params: {
       (container: HTMLElement) =>
         !originalUniqueContainerWithOverflowSet.has(container)
     )
+    .filter(
+      (container: HTMLElement) =>
+        !container.classList.contains(params.fitConfig.skipFitClass)
+    )
     .map((container: HTMLElement) => {
-      if (params.fitConfig?.addOverflowBreak) {
+      if (params.fitConfig.addOverflowBreak) {
         container.style.cssText +=
           ";overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;hyphens: auto;white-space: normal;max-width: 100%;";
       }

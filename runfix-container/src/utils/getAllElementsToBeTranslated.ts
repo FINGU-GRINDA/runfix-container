@@ -1,4 +1,6 @@
-export const getAllElementsToBeTranslated = (): HTMLElement[] => {
+export const getAllElementsToBeTranslated = (params: {
+  skipClass: string;
+}): HTMLElement[] => {
   if (typeof document === "undefined")
     throw new Error("Can only run in browser");
 
@@ -8,6 +10,9 @@ export const getAllElementsToBeTranslated = (): HTMLElement[] => {
 
   const allElements = Array.from(bodyElement.querySelectorAll("*")).filter(
     (element) => {
+      // if it has skip class, skip it
+      if (element.classList.contains(params.skipClass)) return false;
+
       // Check for direct text content
       const hasDirectText = Array.from(element.childNodes).some(
         (node) =>

@@ -2,7 +2,7 @@ import { useState } from "react";
 import {
   getAllElementsToBeTranslated,
   checkContainerOverflow,
-  getUniqueContainerWithOverflow,
+  getSortedUniqueContainerWithOverflow,
 } from "runfix-container";
 
 export function OverflowDetector() {
@@ -22,7 +22,7 @@ export function OverflowDetector() {
       let elementsToBeTranslated = getAllElementsToBeTranslated();
 
       const uniqueContainersWithOverflow = Array.from(
-        getUniqueContainerWithOverflow({
+        getSortedUniqueContainerWithOverflow({
           elements: elementsToBeTranslated,
         })
       );
