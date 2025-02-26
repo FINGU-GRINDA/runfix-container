@@ -16,9 +16,15 @@ export const textFitter = (params: TextFitterParams) => {
   } = params;
 
   for (const container of overflowContainers) {
+    // recheck for overflow
+    const overflow = checkContainerOverflow({
+      container,
+    });
+
+    if (!overflow.hasOverflow) continue;
+
     let low = minScale;
     let high = maxScale;
-    let bestScale = minScale;
     let hasOverflow = true;
 
     // Get direct children and store their original font sizes
@@ -39,7 +45,7 @@ export const textFitter = (params: TextFitterParams) => {
         ),
       });
 
-    // Binary search for the optimal scale
+    // Binary search for the optimal scale until it reach the desired precision
     while (high - low > precision) {
       const currentScale = (low + high) / 2;
 
@@ -57,11 +63,12 @@ export const textFitter = (params: TextFitterParams) => {
       } else {
         // If not overflowing, this might be our best scale so far
         // Try a larger scale to see if we can do better
-        bestScale = currentScale;
         low = currentScale;
         hasOverflow = false;
       }
     }
+
+    const bestScale = low + precision / 2;
 
     // Apply the best scale found
     if (bestScale !== 1.0) {

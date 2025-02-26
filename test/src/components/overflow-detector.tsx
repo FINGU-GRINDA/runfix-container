@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import {
   getAllElementsToBeTranslated,
-  getUniqueContainerWithOverflow,
+  getSortedUniqueContainerWithOverflow,
 } from 'runfix-container';
 
 export function OverflowDetector() {
@@ -19,7 +19,7 @@ export function OverflowDetector() {
     } else {
       // Add highlights
       const elementsToBeTranslated = getAllElementsToBeTranslated();
-      const containersWithOverflow = getUniqueContainerWithOverflow({
+      const containersWithOverflow = getSortedUniqueContainerWithOverflow({
         elements: elementsToBeTranslated,
       });
 
@@ -28,7 +28,7 @@ export function OverflowDetector() {
         container.classList.add('overflow-highlight');
       });
 
-      const highlightCount = containersWithOverflow.size;
+      const highlightCount = containersWithOverflow.length;
 
       console.log(`Found ${highlightCount} overflow elements`);
       setIsHighlighting(true);

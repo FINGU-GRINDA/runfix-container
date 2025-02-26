@@ -2,13 +2,13 @@ import { getAllElementsToBeTranslated } from "./utils/getAllElementsToBeTranslat
 import { googleTranslate } from "./utils/googleTranslate.ts";
 import { translateElement } from "./utils/translateElement.ts";
 import { waitForDOMLoad } from "./utils/waitForDOMLoad.ts";
-import { checkContainerOverflow } from "./utils/checkContainerOverflow.ts";
 import { textFitter } from "./utils/textFitter.ts";
-import { getUniqueContainerWithOverflow } from "./utils/getUniqueContainerWithOverflow.ts";
+import { getSortedUniqueContainerWithOverflow } from "./utils/getUniqueContainerWithOverflow.ts";
+import { modifyHTMLLanguage } from "./utils/modifyHTMLLanguage.ts";
 export { checkContainerOverflow } from "./utils/checkContainerOverflow.ts";
 export { textFitter } from "./utils/textFitter.ts";
 export { getAllElementsToBeTranslated } from "./utils/getAllElementsToBeTranslated.ts";
-export { getUniqueContainerWithOverflow } from "./utils/getUniqueContainerWithOverflow.ts";
+export { getSortedUniqueContainerWithOverflow } from "./utils/getUniqueContainerWithOverflow.ts";
 
 export const fitAndTranslate = async (params: {
   targetLanguage: string;
@@ -18,19 +18,31 @@ export const fitAndTranslate = async (params: {
     sourceLanguage: string;
     targetLanguage: string;
   }) => Promise<string>;
+  fitConfig?: {
+    addOverflowBreak?: boolean;
+  };
 }) => {
   if (!params.translateFn) {
     params.translateFn = googleTranslate;
+  }
+
+  if (!params.fitConfig) {
+    params.fitConfig = {};
+  }
+
+  if (!params.fitConfig?.addOverflowBreak) {
+    params.fitConfig.addOverflowBreak = false;
   }
 
   await waitForDOMLoad();
 
   const elementsToTranslate = getAllElementsToBeTranslated();
 
-  // narrow down search to elements that we will modify
-  const originalUniqueContainerWithOverflow = getUniqueContainerWithOverflow({
-    elements: elementsToTranslate,
-  });
+  // keep record of original containers with overflow
+  const originalUniqueContainerWithOverflow =
+    getSortedUniqueContainerWithOverflow({
+      elements: elementsToTranslate,
+    });
 
   // Then translate the content
   const translationTasks = [];
@@ -47,12 +59,28 @@ export const fitAndTranslate = async (params: {
 
   await Promise.all(translationTasks);
 
-  const uniqueContainerWithOverflow = Array.from(
-    getUniqueContainerWithOverflow({
-      elements: elementsToTranslate,
-    })
-  ).filter((container) => !originalUniqueContainerWithOverflow.has(container));
+  modifyHTMLLanguage({ language: params.targetLanguage });
 
-  console.log({ uniqueContainerWithOverflow });
+  // create a set of unique containers with overflow
+  const originalUniqueContainerWithOverflowSet = new Set<HTMLElement>(
+    originalUniqueContainerWithOverflow
+  );
+
+  // narrow down search to elements that we will modify, we won't modify elements that have existing overflow
+  const uniqueContainerWithOverflow = getSortedUniqueContainerWithOverflow({
+    elements: elementsToTranslate,
+  })
+    .filter(
+      (container: HTMLElement) =>
+        !originalUniqueContainerWithOverflowSet.has(container)
+    )
+    .map((container: HTMLElement) => {
+      if (params.fitConfig?.addOverflowBreak) {
+        container.style.cssText +=
+          ";overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;hyphens: auto;white-space: normal;max-width: 100%;";
+      }
+      return container;
+    });
+
   textFitter({ overflowContainers: uniqueContainerWithOverflow });
 };

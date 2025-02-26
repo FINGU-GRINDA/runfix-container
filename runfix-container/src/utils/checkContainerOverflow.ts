@@ -41,10 +41,5 @@ export const checkContainerOverflow = (params: {
   container.style.boxSizing = originalContainerStyle.boxSizing;
   container.style.overflow = originalContainerStyle.overflow;
 
-  if (status.hasOverflow) {
-    console.log(`Has overflow: ${status.hasOverflow}`);
-    console.log({ container, status, overflowX, overflowY });
-  }
-
   return status;
 };

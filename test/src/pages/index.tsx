@@ -4,7 +4,7 @@ import type { inferProcedureInput } from '@trpc/server';
 import Link from 'next/link';
 import { Fragment, useState } from 'react';
 import type { AppRouter } from '~/server/routers/_app';
-import { detectOverflow } from 'runfix-container';
+import { checkContainerOverflow } from 'runfix-container';
 import { useEffect } from 'react';
 
 const IndexPage: NextPageWithLayout = () => {
@@ -16,7 +16,9 @@ const IndexPage: NextPageWithLayout = () => {
   );
 
   const checkOverflow = (buttonId: string, buttonEl: HTMLButtonElement) => {
-    const overflowStatus = detectOverflow(buttonEl);
+    const overflowStatus = checkContainerOverflow({
+      container: buttonEl,
+    });
     setOverflowStates((prev) => ({
       ...prev,
       [buttonId]: overflowStatus.hasOverflow,

@@ -3,6 +3,7 @@ export const getAllElementsToBeTranslated = (): HTMLElement[] => {
     throw new Error("Can only run in browser");
 
   const bodyElement = document.querySelector("body");
+
   if (!bodyElement) throw new Error("Can't find body element");
 
   const allElements = Array.from(bodyElement.querySelectorAll("*")).filter(
@@ -14,6 +15,8 @@ export const getAllElementsToBeTranslated = (): HTMLElement[] => {
           node.textContent &&
           node.textContent.trim().length > 0
       );
+
+      // Check for placeholder attribute
       const hasPlaceholder = element.getAttribute("placeholder") !== null;
 
       if (!hasDirectText && !hasPlaceholder) return false;
