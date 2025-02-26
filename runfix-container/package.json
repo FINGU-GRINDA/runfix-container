@@ -1,6 +1,6 @@
 {
     "name": "runfix-container",
-    "version": "0.4.0",
+    "version": "0.5.0",
     "description": "a npm library to apply fixed width / height to a container at runtime",
     "license": "MIT",
     "type": "module",

@@ -4,7 +4,10 @@ import { Globe } from "lucide-react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { fitAndTranslate } from "runfix-container";
+import {
+  fitAndTranslate,
+  translateAndFitToOriginalSize,
+} from "runfix-container";
 
 interface Language {
   code: string;
@@ -170,7 +173,7 @@ export function LanguageSelector() {
     if (router.isReady) {
       const targetLang = router.query.lang as string;
       if (targetLang) {
-        fitAndTranslate({
+        translateAndFitToOriginalSize({
           targetLanguage: targetLang,
           sourceLanguage: "ko",
           fitConfig: {
