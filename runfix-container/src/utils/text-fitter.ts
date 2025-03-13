@@ -1,4 +1,4 @@
-import { checkContainerOverflow } from "./checkContainerOverflow.ts";
+import { checkContainerOverflow } from "./check-container-overflow.ts";
 
 interface TextFitterParams {
   overflowContainers: HTMLElement[];
@@ -8,12 +8,7 @@ interface TextFitterParams {
 }
 
 export const textFitter = (params: TextFitterParams) => {
-  const {
-    overflowContainers,
-    minScale = 0.1,
-    maxScale = 2.0,
-    precision = 0.01,
-  } = params;
+  const { overflowContainers, minScale = 0.1, maxScale = 2.0, precision = 0.01 } = params;
 
   for (const container of overflowContainers) {
     // recheck for overflow
@@ -34,15 +29,11 @@ export const textFitter = (params: TextFitterParams) => {
     const elementRefs = children
       .map((domElement) => ({
         domElement, // This is a mutable reference to the actual DOM element
-        originalFontSize: parseFloat(
-          window.getComputedStyle(domElement).fontSize
-        ),
+        originalFontSize: parseFloat(window.getComputedStyle(domElement).fontSize),
       }))
       .concat({
         domElement: container,
-        originalFontSize: parseFloat(
-          window.getComputedStyle(container).fontSize
-        ),
+        originalFontSize: parseFloat(window.getComputedStyle(container).fontSize),
       });
 
     // Binary search for the optimal scale until it reach the desired precision

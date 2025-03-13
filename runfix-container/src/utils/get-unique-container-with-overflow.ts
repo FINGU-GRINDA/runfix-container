@@ -1,4 +1,4 @@
-import { checkContainerOverflow } from "./checkContainerOverflow.ts";
+import { checkContainerOverflow } from "./check-container-overflow.ts";
 
 export const getSortedUniqueContainerWithOverflow = (params: {
   elements: HTMLElement[];

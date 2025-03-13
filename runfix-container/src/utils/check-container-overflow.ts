@@ -12,9 +12,7 @@ interface OverflowStatus {
  * @param container - The parent HTML element to check for overflow
  * @returns Object containing overflow status, dimensions and available space
  */
-export const checkContainerOverflow = (params: {
-  container: HTMLElement;
-}): OverflowStatus => {
+export const checkContainerOverflow = (params: { container: HTMLElement }): OverflowStatus => {
   const { container } = params;
   const originalContainerStyle = {
     boxSizing: container.style.boxSizing,

@@ -1,3 +1,5 @@
+import { cacheTranslationInDom, getCachedTranslationInDom } from "./cache-translation-in-dom.ts";
+
 // Simple text-based HTML translation that preserves structure
 export const translateElement = async (params: {
   element: HTMLElement;
@@ -10,10 +12,7 @@ export const translateElement = async (params: {
   }) => Promise<string>;
 }): Promise<void> => {
   // translate placeholder
-  if (
-    params.element instanceof HTMLInputElement ||
-    params.element instanceof HTMLTextAreaElement
-  ) {
+  if (params.element instanceof HTMLInputElement || params.element instanceof HTMLTextAreaElement) {
     const translation = await params.translateFn({
       text: params.element.placeholder,
       sourceLanguage: params.sourceLanguage,
@@ -33,13 +32,41 @@ export const translateElement = async (params: {
         // if there's a placeholder, translate it
         return part;
       }
+
       // If it's text content and not empty, translate it
-      if (part.trim()) {
-        return await params.translateFn({
-          text: part.trim(),
+      const textToTranslate = part.trim();
+      if (textToTranslate.length > 0) {
+        // check if there's cached translation in DOM
+        const cachedTranslation = getCachedTranslationInDom({
+          element: params.element,
+          language: params.targetLanguage,
+        });
+
+        if (cachedTranslation) {
+          return cachedTranslation;
+        }
+
+        // if none, we will store original text in DOM
+
+        cacheTranslationInDom({
+          element: params.element,
+          language: params.targetLanguage,
+          translation: textToTranslate,
+        });
+
+        const translation = await params.translateFn({
+          text: textToTranslate,
           sourceLanguage: params.sourceLanguage,
           targetLanguage: params.targetLanguage,
         });
+
+        cacheTranslationInDom({
+          element: params.element,
+          language: params.targetLanguage,
+          translation,
+        });
+
+        return translation;
       }
       // If it's empty or whitespace, keep it as is
       return part;
