@@ -10,7 +10,7 @@ import { waitForDOMLoad } from "../utils/wait-for-DOM-load.ts";
 
 export const translateAndFitToOriginalSizeParams = {
   apiKey: "",
-  sourceLanguage: document.documentElement.lang,
+  sourceLanguage: "en",
   targetLanguage: "ko",
   fitConfig: {
     addOverflowBreak: true,

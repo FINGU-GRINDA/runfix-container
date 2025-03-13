@@ -9,7 +9,7 @@ import { waitForDOMLoad } from "../utils/wait-for-DOM-load.ts";
 
 export const translateAndFitParams = {
   apiKey: "",
-  sourceLanguage: document.documentElement.lang,
+  sourceLanguage: "en",
   targetLanguage: "ko",
   fitConfig: {
     addOverflowBreak: true,

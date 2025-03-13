@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import {
-  fitAndTranslate,
+  translateAndFit,
   translateAndFitToOriginalSize,
 } from "runfix-container";
 
@@ -173,7 +173,7 @@ export function LanguageSelector() {
     if (router.isReady) {
       const targetLang = router.query.lang as string;
       if (targetLang) {
-        translateAndFitToOriginalSize({
+        translateAndFit({
           targetLanguage: targetLang,
           sourceLanguage: "ko",
           fitConfig: {

@@ -50,7 +50,7 @@ export const translateElement = async (params: {
 
         cacheTranslationInDom({
           element: params.element,
-          language: params.targetLanguage,
+          language: params.sourceLanguage,
           translation: textToTranslate,
         });
 
