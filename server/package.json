@@ -6,7 +6,11 @@
     "dev": "bun run --watch src/index.ts"
   },
   "dependencies": {
+    "@elysiajs/cors": "^1.2.0",
     "@elysiajs/swagger": "^1.2.2",
+    "@elysiajs/trpc": "^1.1.0",
+    "@elysiajs/websocket": "^0.2.8",
+    "@trpc/server": "^10.45.2",
     "elysia": "latest"
   },
   "devDependencies": {

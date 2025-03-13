@@ -4,11 +4,17 @@ import { translateTextWithGoogle } from "../../services/translate-text";
 export const translationRouter = new Elysia({ prefix: "/translations" }).post(
   "",
   async (params) => {
-    return await translateTextWithGoogle({
+    const translatedText = await translateTextWithGoogle({
       sourceLanguage: params.body.sourceLanguage,
       targetLanguage: params.body.targetLanguage,
       text: params.body.text,
     });
+    return {
+      sourceText: params.body.text,
+      sourceLanguage: params.body.sourceLanguage,
+      targetLanguage: params.body.targetLanguage,
+      translatedText,
+    };
   },
   {
     body: t.Object(
@@ -21,7 +27,12 @@ export const translationRouter = new Elysia({ prefix: "/translations" }).post(
         description: "Expected a text, source language and target language",
       }
     ),
-    response: t.String(),
+    response: t.Object({
+      sourceText: t.String(),
+      sourceLanguage: t.String(),
+      targetLanguage: t.String(),
+      translatedText: t.String(),
+    }),
     detail: {
       summary: "Translate text",
       tags: ["translation"],

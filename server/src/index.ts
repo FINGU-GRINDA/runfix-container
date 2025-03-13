@@ -1,6 +1,7 @@
 import { Elysia } from "elysia";
 import { swagger } from "@elysiajs/swagger";
 import { apiRouter } from "./apis";
+import { cors } from "@elysiajs/cors";
 
 const rootApp = new Elysia()
   .use(
@@ -18,6 +19,7 @@ const rootApp = new Elysia()
       },
     })
   )
+  .use(cors())
   .use(apiRouter)
   .listen(8000);
 
