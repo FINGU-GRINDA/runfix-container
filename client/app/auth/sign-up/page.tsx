@@ -1,3 +1,4 @@
+"use client";
 import { authClient } from "@/services/auth-client";
 import { useState } from "react";
 import Link from "next/link";
