@@ -10,8 +10,11 @@
     "@elysiajs/swagger": "^1.2.2",
     "@elysiajs/trpc": "^1.1.0",
     "@elysiajs/websocket": "^0.2.8",
+    "@rasla/logify": "^4.0.0",
     "@trpc/server": "^10.45.2",
-    "elysia": "latest"
+    "better-auth": "^1.2.4",
+    "elysia": "latest",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "bun-types": "latest"

@@ -10,12 +10,26 @@
     "openapi": "npx openapi-typescript http://localhost:8000/docs/json -o ./services/ellysia/types/v1.d.ts"
   },
   "dependencies": {
+    "@shadcn/ui": "^0.0.4",
+    "autoprefixer": "^10.4.21",
+    "better-auth": "^1.2.4",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "cmdk": "^1.0.4",
+    "dotenv": "^16.4.7",
+    "lucide-react": "^0.479.0",
     "next": "15.2.2",
     "nuqs": "^2.4.1",
     "openapi-fetch": "^0.13.4",
     "openapi-react-query": "^0.3.0",
+    "postcss": "^8.5.3",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "react-icons": "^5.5.0",
+    "tailwind-merge": "^3.0.2",
+    "tailwindcss-animate": "^1.0.7",
+    "znv": "^0.4.0",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -26,7 +40,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.2.2",
     "openapi-typescript": "^7.6.1",
-    "tailwindcss": "^4",
+    "tailwindcss": "^4.0.14",
     "typescript": "^5.8.2"
   }
 }

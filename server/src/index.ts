@@ -2,7 +2,8 @@ import { Elysia } from "elysia";
 import { swagger } from "@elysiajs/swagger";
 import { apiRouter } from "./apis";
 import { cors } from "@elysiajs/cors";
-
+import { logger } from "@rasla/logify";
+import { config } from "../config";
 const rootApp = new Elysia()
   .use(
     swagger({
@@ -19,6 +20,7 @@ const rootApp = new Elysia()
       },
     })
   )
+  .use(logger())
   .use(cors())
   .use(apiRouter)
   .listen(8000);
