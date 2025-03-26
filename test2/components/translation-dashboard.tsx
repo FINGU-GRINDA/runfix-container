@@ -117,7 +117,7 @@ export function TranslationDashboard() {
             processed++;
             setProgress(Math.min((processed / totalNodes) * 100, 100));
           }
-        })
+        }),
       );
     }
   };
@@ -164,7 +164,7 @@ export function TranslationDashboard() {
       try {
         // Get the current URL from the iframe
         const currentUrl = new URL(
-          iframe.contentWindow?.location.href || ""
+          iframe.contentWindow?.location.href || "",
         ).searchParams.get("url");
 
         if (currentUrl && currentUrl !== iframeUrl) {
@@ -186,8 +186,8 @@ export function TranslationDashboard() {
       const validated = new URL(websiteUrl);
       setProxyUrl(
         `/api/proxy?url=${encodeURIComponent(
-          validated.href
-        )}&executeScripts=true`
+          validated.href,
+        )}&executeScripts=true`,
       );
     } catch {
       toast.error("Invalid URL format");

@@ -29,7 +29,7 @@ export const FeatureCards = () => {
               />
             </svg>
           </div>
-          <div className="text-base font-bold mb-1.5 leading-tight">
+          <div className="text-base font-bold mb-1.5">
             하나금융그룹
             <br />
             신용대출 조회

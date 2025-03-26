@@ -13,6 +13,6 @@ export const translateTextWithGoogle = async (params: {
     }&tl=${params.targetLanguage}&dt=t&q=${encodeURIComponent(params.text)}`
   );
   const data = await res.json();
-
+  console.log("Translating", params.text, "to", params.targetLanguage, "result:", data[0][0][0]);
   return data[0][0][0];
 };

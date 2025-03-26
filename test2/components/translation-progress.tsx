@@ -1,13 +1,15 @@
-import { motion } from "framer-motion"
+import { motion } from "framer-motion";
 
 interface TranslationProgressProps {
-  progress: number
+  progress: number;
 }
 
 export function TranslationProgress({ progress }: TranslationProgressProps) {
   return (
     <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm">
-      <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Translation Progress</h2>
+      <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
+        Translation Progress
+      </h2>
       <div className="relative pt-1">
         <div className="overflow-hidden h-2 mb-4 text-xs flex rounded bg-blue-200 dark:bg-blue-700">
           <motion.div
@@ -23,6 +25,5 @@ export function TranslationProgress({ progress }: TranslationProgressProps) {
         </div>
       </div>
     </div>
-  )
+  );
 }
-

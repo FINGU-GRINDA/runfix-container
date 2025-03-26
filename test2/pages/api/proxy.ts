@@ -5,7 +5,7 @@ import * as cheerio from "cheerio";
 
 export default async function handler(
   req: NextApiRequest,
-  res: NextApiResponse
+  res: NextApiResponse,
 ) {
   try {
     const { url } = req.query;
@@ -27,12 +27,12 @@ export default async function handler(
       // Copy headers (be mindful of which ones are safe)
       res.setHeader(
         "Content-Type",
-        upstreamResp.headers.get("content-type") || "application/octet-stream"
+        upstreamResp.headers.get("content-type") || "application/octet-stream",
       );
       // If you need content-length or other headers, set them too
       res.setHeader(
         "Cache-Control",
-        upstreamResp.headers.get("cache-control") || "public, max-age=3600"
+        upstreamResp.headers.get("cache-control") || "public, max-age=3600",
       );
 
       // Pipe the body back
@@ -72,7 +72,7 @@ export default async function handler(
 
         const absoluteHref = new URL(originalHref, url).href;
         const proxiedHref = `/api/proxy?url=${encodeURIComponent(
-          absoluteHref
+          absoluteHref,
         )}`;
         $(el).attr("href", proxiedHref);
       });
