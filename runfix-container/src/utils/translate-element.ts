@@ -13,11 +13,43 @@ export const translateElement = async (params: {
 }): Promise<void> => {
   // translate placeholder
   if (params.element instanceof HTMLInputElement || params.element instanceof HTMLTextAreaElement) {
+    const cachedTranslation = getCachedTranslationInDom({
+      element: params.element,
+      language: params.targetLanguage,
+    });
+
+    if (cachedTranslation) {
+      params.element.setAttribute("placeholder", cachedTranslation);
+      return;
+    }
+
+    cacheTranslationInDom({
+      element: params.element,
+      language: params.sourceLanguage,
+      translation: params.element.placeholder,
+    });
+
+    const sourceText = getCachedTranslationInDom({
+      element: params.element,
+      language: params.sourceLanguage,
+    });
+
+    if (!sourceText) {
+      throw new Error("Source text not found");
+    }
+
     const translation = await params.translateFn({
-      text: params.element.placeholder,
+      text: sourceText,
       sourceLanguage: params.sourceLanguage,
       targetLanguage: params.targetLanguage,
     });
+
+    cacheTranslationInDom({
+      element: params.element,
+      language: params.targetLanguage,
+      translation,
+    });
+
     params.element.setAttribute("placeholder", translation);
     return;
   }
@@ -47,19 +79,29 @@ export const translateElement = async (params: {
         }
 
         // if none, we will store original text in DOM
-
         cacheTranslationInDom({
           element: params.element,
           language: params.sourceLanguage,
           translation: textToTranslate,
         });
 
+        // always use source language to get translation
+        const sourceText = getCachedTranslationInDom({
+          element: params.element,
+          language: params.sourceLanguage,
+        });
+
+        if (!sourceText) {
+          throw new Error("Source text not found");
+        }
+
         const translation = await params.translateFn({
-          text: textToTranslate,
+          text: sourceText,
           sourceLanguage: params.sourceLanguage,
           targetLanguage: params.targetLanguage,
         });
 
+        // store translation in DOM
         cacheTranslationInDom({
           element: params.element,
           language: params.targetLanguage,
