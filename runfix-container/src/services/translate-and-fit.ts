@@ -6,10 +6,10 @@ import { translateElement } from "../utils/translate-element.ts";
 import { translateTextWithGoogle } from "../utils/translate-text.ts";
 import { DeepPartial, mergeWithDefaults } from "../types/type-utils.ts";
 import { waitForDOMLoad } from "../utils/wait-for-DOM-load.ts";
+import { getOriginalLanguage } from "../utils/get-original-language.ts";
 
 export const translateAndFitParams = {
   apiKey: "",
-  sourceLanguage: "en",
   targetLanguage: "ko",
   fitConfig: {
     addOverflowBreak: true,
@@ -40,13 +40,16 @@ export const translateAndFit = async (userParams?: TranslateAndFitParams) => {
     elements: elementsToTranslate,
   });
 
+  // derive source language from html
+  const sourceLanguage = getOriginalLanguage();
+
   // Then translate the content
   const translationTasks = [];
   for (const element of elementsToTranslate) {
     translationTasks.push(
       translateElement({
         element: element,
-        sourceLanguage: params.sourceLanguage,
+        sourceLanguage: sourceLanguage,
         targetLanguage: params.targetLanguage,
         translateFn: params.translateConfig.translateFn,
       })
@@ -54,8 +57,6 @@ export const translateAndFit = async (userParams?: TranslateAndFitParams) => {
   }
 
   await Promise.all(translationTasks);
-
-  modifyHTMLLanguage({ language: params.targetLanguage });
 
   // create a set of unique containers with overflow
   const originalUniqueContainerWithOverflowSet = new Set<HTMLElement>(
