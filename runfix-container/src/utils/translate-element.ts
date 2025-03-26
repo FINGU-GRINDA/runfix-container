@@ -14,7 +14,7 @@ export const translateElement = async (params: {
   // translate placeholder
   if (params.element instanceof HTMLInputElement || params.element instanceof HTMLTextAreaElement) {
     const sourceText = params.element.getAttribute("placeholder");
-    console.log("Source text:", sourceText);
+
     if (!sourceText || sourceText.trim().length === 0) {
       return;
     }
@@ -44,15 +44,12 @@ export const translateElement = async (params: {
       // If it's text content and not empty, translate it
       const textToTranslate = part.trim();
       if (textToTranslate.length > 0) {
-        console.log("Translating:", textToTranslate);
         const translation = await params.translateFn({
           text: textToTranslate,
           sourceLanguage: params.sourceLanguage,
           targetLanguage: params.targetLanguage,
         });
-        console.log("source language:", params.sourceLanguage);
-        console.log("target language:", params.targetLanguage);
-        console.log("Translation result:", translation);
+
         return translation;
       }
       // If it's empty or whitespace, keep it as is
