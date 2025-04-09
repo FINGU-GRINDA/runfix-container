@@ -1,4 +1,4 @@
-// Simple text-based HTML translation that preserves structure
+// DOM-based translation that preserves structure, references, and event listeners
 export const translateElement = async (params: {
   element: HTMLElement;
   sourceLanguage: string;
@@ -9,7 +9,8 @@ export const translateElement = async (params: {
     targetLanguage: string;
   }) => Promise<string>;
 }): Promise<void> => {
-  // translate placeholder
+  console.log("Translating element:", params.element.textContent);
+  // Handle input and textarea elements with placeholder attributes
   if (params.element instanceof HTMLInputElement || params.element instanceof HTMLTextAreaElement) {
     const sourceText = params.element.getAttribute("placeholder");
 
@@ -18,7 +19,7 @@ export const translateElement = async (params: {
     }
 
     const translation = await params.translateFn({
-      sourceText: sourceText as string,
+      sourceText: sourceText,
       sourceLanguage: params.sourceLanguage,
       targetLanguage: params.targetLanguage,
     });
@@ -27,33 +28,55 @@ export const translateElement = async (params: {
     return;
   }
 
-  // if doesn't have a placeholder, just translate the text content while maintaining the structure
-  // Split HTML into text and tags
-  // TODO: traverse the html instead of recreating it
-  const parts = params.element.innerHTML.split(/(<[^>]*>)/);
+  // For other elements, traverse the DOM tree and translate text nodes
+  await traverseAndTranslateNodes(params.element, params);
+};
 
-  const translatedParts = await Promise.all(
-    parts.map(async (part) => {
-      // If it's a tag (starts with < and ends with >), keep it as is
-      if (part.startsWith("<") && part.endsWith(">")) {
-        return part;
-      }
+/**
+ * Recursively traverses DOM nodes and translates text content
+ * while preserving the DOM structure, references, and event listeners
+ */
+const traverseAndTranslateNodes = async (
+  node: Node,
+  params: {
+    sourceLanguage: string;
+    targetLanguage: string;
+    translateFn: (params: {
+      sourceText: string;
+      sourceLanguage: string;
+      targetLanguage: string;
+    }) => Promise<string>;
+  }
+): Promise<void> => {
+  // Handle text nodes
+  if (node.nodeType === Node.TEXT_NODE && node.textContent) {
+    const text = node.textContent.trim();
+    if (text.length > 0) {
+      const translation = await params.translateFn({
+        sourceText: text,
+        sourceLanguage: params.sourceLanguage,
+        targetLanguage: params.targetLanguage,
+      });
 
-      // If it's text content and not empty, translate it
-      const textToTranslate = part.trim();
-      if (textToTranslate.length > 0) {
-        const translation = await params.translateFn({
-          sourceText: textToTranslate,
-          sourceLanguage: params.sourceLanguage,
-          targetLanguage: params.targetLanguage,
-        });
+      // Preserve whitespace before and after the text
+      const leadingWhitespace = node.textContent.match(/^\s*/)?.[0] || "";
+      const trailingWhitespace = node.textContent.match(/\s*$/)?.[0] || "";
+      node.textContent = leadingWhitespace + translation + trailingWhitespace;
+    }
+    return;
+  }
 
-        return translation;
-      }
-      // If it's empty or whitespace, keep it as is
-      return part;
-    })
-  );
+  // Skip script and style elements
+  if (
+    node instanceof HTMLElement &&
+    (node.tagName.toLowerCase() === "script" || node.tagName.toLowerCase() === "style")
+  ) {
+    return;
+  }
 
-  params.element.innerHTML = translatedParts.join("");
+  // Recursively process child nodes
+  const childNodes = Array.from(node.childNodes);
+  for (const childNode of childNodes) {
+    await traverseAndTranslateNodes(childNode, params);
+  }
 };

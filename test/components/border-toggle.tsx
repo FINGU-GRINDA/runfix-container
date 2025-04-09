@@ -24,7 +24,7 @@ export function BorderToggle() {
   // This replaces both the local state and URL manipulation logic
   const [borderVisible, setBorderVisible] = useQueryState(
     "showBorder",
-    parseAsBoolean.withDefault(false),
+    parseAsBoolean.withDefault(false)
   );
 
   // Apply border styling whenever the border state changes
@@ -53,7 +53,7 @@ export function BorderToggle() {
       title="Toggle element borders"
     >
       <Square className="w-4 h-4" />
-      <span>테두리: {borderVisible ? "켜짐" : "꺼짐"}</span>
+      <span className="">테두리: {borderVisible ? "켜짐" : "꺼짐"}</span>
     </button>
   );
 }

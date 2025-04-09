@@ -41,6 +41,9 @@ export const translateAndFit = async (userParams?: TranslateAndFitParams) => {
   // Then translate the content
   const translationTasks = [];
   for (const element of elementsToTranslate) {
+    if (element.classList.contains(params.translateConfig.skipTranslateClass)) {
+      continue;
+    }
     translationTasks.push(
       translateElement({
         element: element,

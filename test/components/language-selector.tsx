@@ -3,7 +3,8 @@ import { Globe } from "lucide-react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { parseAsString, useQueryState } from "nuqs";
-import { translateAndFit } from "runfix-container";
+import { getGrindaTranslateFn, translateAndFit } from "runfix-container";
+import { translateFn } from "@/lib/utils";
 
 interface Language {
   code: string;
@@ -61,15 +62,18 @@ export function LanguageSelector() {
       fitConfig: {
         addOverflowBreak: true,
       },
+      // translateConfig: {
+      //   translateFn: getGrindaTranslateFn({apiKey: "", baseUrl: ""}),
+      // },
     });
     document.querySelector("html")?.setAttribute("lang", langParam);
   }, [langParam]);
 
   return (
     <DropdownMenu.Root>
-      <DropdownMenu.Trigger className="skip-translation flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
+      <DropdownMenu.Trigger className="skip-translate flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
         <Globe className="w-4 h-4" />
-        <span className="skip-translation">{currentLanguage.name}</span>
+        <span className="skip-translate">{currentLanguage.name}</span>
       </DropdownMenu.Trigger>
 
       <DropdownMenu.Portal>
@@ -82,7 +86,7 @@ export function LanguageSelector() {
               {languages.map((language) => (
                 <DropdownMenu.Item
                   key={language.code}
-                  className="skip-translation flex items-center px-2 py-2 text-sm outline-none cursor-pointer rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                  className="skip-translate flex items-center px-2 py-2 text-sm outline-none cursor-pointer rounded hover:bg-gray-100 dark:hover:bg-gray-700"
                   onClick={() => handleLanguageChange(language)}
                 >
                   {language.name}
