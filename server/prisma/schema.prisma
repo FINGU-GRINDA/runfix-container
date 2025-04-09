@@ -127,6 +127,7 @@ model Translation {
   @@index([mnText])
   @@index([thText])
   @@index([idText])
+  @@index([userId])
 }
 
 model TranslationLog {

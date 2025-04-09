@@ -17,6 +17,7 @@ const EnvSchema = Type.Object({
   AUTH_TOKEN_EXPIRY_DURATION_MINUTES: Type.Number(),
   ISSUER: Type.String(),
   SERVER_BASE_URL: Type.String(),
+  CACHE_TTL: Type.Number(),
 });
 
 type Env = Static<typeof EnvSchema>;
@@ -25,4 +26,5 @@ export const env = Value.Parse(EnvSchema, {
   ...process.env,
   AUTH_TOKEN_EXPIRY_DURATION_MINUTES: 1200,
   ISSUER: "Translation API",
+  CACHE_TTL: 360000,
 });

@@ -9,7 +9,6 @@ export const translateElement = async (params: {
     targetLanguage: string;
   }) => Promise<string>;
 }): Promise<void> => {
-  console.log("Translating element:", params.element.textContent);
   // Handle input and textarea elements with placeholder attributes
   if (params.element instanceof HTMLInputElement || params.element instanceof HTMLTextAreaElement) {
     const sourceText = params.element.getAttribute("placeholder");

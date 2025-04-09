@@ -5,7 +5,7 @@ import { translateTextWithOpenAI } from "../../utils/openai-translate";
 import { getTranslationFromDB } from "../../services/get-translation-from-db";
 import { prisma } from "../../deps/prisma";
 import { languageToDbCode } from "../../utils/language-code-to-dbcode";
-import { getCache } from "../../services/redis-cache";
+import { getCache, setCache } from "../../services/redis-cache";
 import { translateTextWithGoogle } from "../../utils/google-translate";
 
 export const translationRouter = new Elysia({ prefix: "/translations" })
@@ -18,19 +18,19 @@ export const translationRouter = new Elysia({ prefix: "/translations" })
       }
 
       //   check cache
-      const cachedTranslation = await getCache({
-        key: `${ctx.query.sourceText}-${ctx.query.sourceLanguage}-${ctx.query.targetLanguage}`,
+      const cacheKey = JSON.stringify({
+        route: ctx.path,
+        params: ctx.params,
+        query: ctx.query,
+        userId: ctx.user.id,
       });
 
-      if (cachedTranslation) {
-        return {
-          sourceText: ctx.query.sourceText,
-          sourceLanguage: ctx.query.sourceLanguage,
-          targetLanguage: ctx.query.targetLanguage,
-          context: ctx.query.context,
-          translatedText: cachedTranslation,
-          isCached: true,
-        };
+      const cachedResponse = await getCache({
+        key: cacheKey,
+      });
+
+      if (cachedResponse) {
+        return cachedResponse;
       }
 
       //   check if translation exists in database
@@ -48,7 +48,7 @@ export const translationRouter = new Elysia({ prefix: "/translations" })
           targetLanguage: ctx.query.targetLanguage,
           context: ctx.query.context,
           translatedText: dbTranslatedText,
-          isCached: true,
+          isCached: false,
         };
       }
 
@@ -66,7 +66,7 @@ export const translationRouter = new Elysia({ prefix: "/translations" })
         context: ctx.query.context,
       });
 
-      return {
+      const response = {
         sourceText: ctx.query.sourceText,
         sourceLanguage: ctx.query.sourceLanguage,
         targetLanguage: ctx.query.targetLanguage,
@@ -74,6 +74,8 @@ export const translationRouter = new Elysia({ prefix: "/translations" })
         translatedText: translatedText,
         isCached: false,
       };
+
+      return response;
     },
     {
       query: t.Object({
@@ -100,6 +102,21 @@ export const translationRouter = new Elysia({ prefix: "/translations" })
         if (ctx.response.isCached) {
           return;
         }
+
+        //   store cache
+        const cacheKey = JSON.stringify({
+          route: ctx.path,
+          params: ctx.params,
+          query: ctx.query,
+          userId: ctx.user.id,
+        });
+
+        ctx.response.isCached = true;
+
+        await setCache({
+          key: cacheKey,
+          value: JSON.stringify(ctx.response),
+        });
 
         const translatedText = ctx.response.translatedText;
         //   save translation to database

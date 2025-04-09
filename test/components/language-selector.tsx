@@ -62,9 +62,12 @@ export function LanguageSelector() {
       fitConfig: {
         addOverflowBreak: true,
       },
-      // translateConfig: {
-      //   translateFn: getGrindaTranslateFn({apiKey: "", baseUrl: ""}),
-      // },
+      translateConfig: {
+        translateFn: getGrindaTranslateFn({
+          apiKey: process.env.NEXT_PUBLIC_GRINDA_TRANSLATION_API_KEY!,
+          baseUrl: process.env.NEXT_PUBLIC_GRINDA_TRANSLATION_BASE_URL!,
+        }),
+      },
     });
     document.querySelector("html")?.setAttribute("lang", langParam);
   }, [langParam]);

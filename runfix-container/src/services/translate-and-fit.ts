@@ -26,6 +26,10 @@ export const translateAndFit = async (userParams?: TranslateAndFitParams) => {
   // Merge user params with defaults
   const params = mergeWithDefaults(translateAndFitParams, userParams);
 
+  if (params.sourceLanguage === params.targetLanguage) {
+    return;
+  }
+
   // Now we can safely use params without null checks since all values have defaults
   await waitForDOMLoad();
 
