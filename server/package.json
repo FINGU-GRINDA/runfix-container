@@ -12,9 +12,6 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "bun run --watch src/index.ts",
     "start": "bun run src/index.ts",
-    "pull-solab": "bunx prisma db pull --schema ./solab-prisma/schema.prisma",
-    "generate-solab": "bunx prisma generate --schema ./solab-prisma/schema.prisma",
-    "generate-all": "bunx prisma generate --schema ./prisma/schema.prisma && bunx prisma generate --schema ./solab-prisma/schema.prisma",
     "seed": "bun ./prisma/seed.ts"
   },
   "dependencies": {

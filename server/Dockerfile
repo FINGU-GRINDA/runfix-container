@@ -11,7 +11,7 @@ ENV NODE_ENV=production
 
 FROM build AS production
 WORKDIR /app
-RUN bun run generate-all
+RUN bun run generate
 RUN bunx prisma migrate deploy
 ENV NODE_ENV=production
 CMD ["bun", "run", "start"]
