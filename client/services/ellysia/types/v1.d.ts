@@ -4,7 +4,55 @@
  */
 
 export interface paths {
-    "/api/translations": {
+    "/": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getIndex"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/users": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getApiUsers"];
+        put?: never;
+        post: operations["postApiUsers"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/users/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getApiUsersById"];
+        put?: never;
+        post?: never;
+        delete: operations["deleteApiUsersById"];
+        options?: never;
+        head?: never;
+        patch: operations["patchApiUsersById"];
+        trace?: never;
+    };
+    "/api/auth-accounts/create-with-email": {
         parameters: {
             query?: never;
             header?: never;
@@ -13,7 +61,166 @@ export interface paths {
         };
         get?: never;
         put?: never;
-        /** Translate text */
+        post: operations["postApiAuth-accountsCreate-with-email"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/auth-accounts/create-passkey-options": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["postApiAuth-accountsCreate-passkey-options"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/auth-accounts/create-with-passkey": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["postApiAuth-accountsCreate-with-passkey"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/auth-sessions/create-with-email-sign-in": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["postApiAuth-sessionsCreate-with-email-sign-in"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/auth-sessions/sign-out": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["postApiAuth-sessionsSign-out"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/auth-sessions/create-with-passkey-options": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["postApiAuth-sessionsCreate-with-passkey-options"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/auth-sessions/create-with-passkey": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["postApiAuth-sessionsCreate-with-passkey"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/auth-sessions/who-am-i": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getApiAuth-sessionsWho-am-i"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/api-keys": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getApiApi-keys"];
+        put?: never;
+        post: operations["postApiApi-keys"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/api-keys/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["deleteApiApi-keysById"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/translations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getApiTranslations"];
+        put?: never;
         post: operations["postApiTranslations"];
         delete?: never;
         options?: never;
@@ -24,7 +231,29 @@ export interface paths {
 }
 export type webhooks = Record<string, never>;
 export interface components {
-    schemas: never;
+    schemas: {
+        User: {
+            id: string;
+            createdAt: Record<string, never> | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string)))))))));
+            updatedAt: Record<string, never> | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string)))))))));
+            name: string;
+            authIds: string[];
+        };
+        CreateUser: {
+            name: string;
+        };
+        UpdateUser: {
+            name?: string;
+        };
+        ApiKey: {
+            id: string;
+            createdAt: Record<string, never> | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string)))))));
+            updatedAt: Record<string, never> | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string)))))));
+            key: string;
+            usageCount: string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string))))));
+            userId: string;
+        };
+    };
     responses: never;
     parameters: never;
     requestBodies: never;
@@ -33,7 +262,187 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    postApiTranslations: {
+    getIndex: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                        status: string;
+                        statusCode: number;
+                    };
+                    "multipart/form-data": {
+                        message: string;
+                        status: string;
+                        statusCode: number;
+                    };
+                    "text/plain": {
+                        message: string;
+                        status: string;
+                        statusCode: number;
+                    };
+                };
+            };
+        };
+    };
+    getApiUsers: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        id: string;
+                        createdAt: Record<string, never> | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string)))))))));
+                        updatedAt: Record<string, never> | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string)))))))));
+                        name: string;
+                        authIds: string[];
+                    }[];
+                    "multipart/form-data": {
+                        id: string;
+                        createdAt: Record<string, never> | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string)))))))));
+                        updatedAt: Record<string, never> | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string)))))))));
+                        name: string;
+                        authIds: string[];
+                    }[];
+                    "text/plain": {
+                        id: string;
+                        createdAt: Record<string, never> | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string)))))))));
+                        updatedAt: Record<string, never> | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string)))))))));
+                        name: string;
+                        authIds: string[];
+                    }[];
+                };
+            };
+        };
+    };
+    postApiUsers: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["CreateUser"];
+                "multipart/form-data": components["schemas"]["CreateUser"];
+                "text/plain": components["schemas"]["CreateUser"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["User"];
+                    "multipart/form-data": components["schemas"]["User"];
+                    "text/plain": components["schemas"]["User"];
+                };
+            };
+        };
+    };
+    getApiUsersById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["User"];
+                    "multipart/form-data": components["schemas"]["User"];
+                    "text/plain": components["schemas"]["User"];
+                };
+            };
+        };
+    };
+    deleteApiUsersById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["User"];
+                    "multipart/form-data": components["schemas"]["User"];
+                    "text/plain": components["schemas"]["User"];
+                };
+            };
+        };
+    };
+    patchApiUsersById: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    name?: string;
+                };
+                "multipart/form-data": {
+                    name?: string;
+                };
+                "text/plain": {
+                    name?: string;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["User"];
+                    "multipart/form-data": components["schemas"]["User"];
+                    "text/plain": components["schemas"]["User"];
+                };
+            };
+        };
+    };
+    "postApiAuth-accountsCreate-with-email": {
         parameters: {
             query?: never;
             header?: never;
@@ -43,19 +452,28 @@ export interface operations {
         requestBody: {
             content: {
                 "application/json": {
-                    text: string;
-                    sourceLanguage: string;
-                    targetLanguage: string;
+                    firstName: string;
+                    lastName: string;
+                    /** Format: email */
+                    emailAddress: string;
+                    password: string;
+                    confirmPassword: string;
                 };
                 "multipart/form-data": {
-                    text: string;
-                    sourceLanguage: string;
-                    targetLanguage: string;
+                    firstName: string;
+                    lastName: string;
+                    /** Format: email */
+                    emailAddress: string;
+                    password: string;
+                    confirmPassword: string;
                 };
                 "text/plain": {
-                    text: string;
-                    sourceLanguage: string;
-                    targetLanguage: string;
+                    firstName: string;
+                    lastName: string;
+                    /** Format: email */
+                    emailAddress: string;
+                    password: string;
+                    confirmPassword: string;
                 };
             };
         };
@@ -66,24 +484,577 @@ export interface operations {
                 };
                 content: {
                     "application/json": {
+                        message: string;
+                        userEmail: string;
+                    };
+                    "multipart/form-data": {
+                        message: string;
+                        userEmail: string;
+                    };
+                    "text/plain": {
+                        message: string;
+                        userEmail: string;
+                    };
+                };
+            };
+        };
+    };
+    "postApiAuth-accountsCreate-passkey-options": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    name: string;
+                    displayName: string;
+                };
+                "multipart/form-data": {
+                    name: string;
+                    displayName: string;
+                };
+                "text/plain": {
+                    name: string;
+                    displayName: string;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        attestation?: unknown;
+                        attestationFormats?: unknown;
+                        authenticatorSelection?: unknown;
+                        challenge?: unknown;
+                        excludeCredentials?: unknown;
+                        extensions?: unknown;
+                        hints?: unknown;
+                        pubKeyCredParams: unknown;
+                        rp: unknown;
+                        timeout?: unknown;
+                        user: unknown;
+                    };
+                    "multipart/form-data": {
+                        attestation?: unknown;
+                        attestationFormats?: unknown;
+                        authenticatorSelection?: unknown;
+                        challenge?: unknown;
+                        excludeCredentials?: unknown;
+                        extensions?: unknown;
+                        hints?: unknown;
+                        pubKeyCredParams: unknown;
+                        rp: unknown;
+                        timeout?: unknown;
+                        user: unknown;
+                    };
+                    "text/plain": {
+                        attestation?: unknown;
+                        attestationFormats?: unknown;
+                        authenticatorSelection?: unknown;
+                        challenge?: unknown;
+                        excludeCredentials?: unknown;
+                        extensions?: unknown;
+                        hints?: unknown;
+                        pubKeyCredParams: unknown;
+                        rp: unknown;
+                        timeout?: unknown;
+                        user: unknown;
+                    };
+                };
+            };
+        };
+    };
+    "postApiAuth-accountsCreate-with-passkey": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    id: string;
+                    rawId: string;
+                    response: {
+                        clientDataJSON: string;
+                        attestationObject: string;
+                        transports?: string[];
+                        authenticatorData?: string;
+                        publicKey?: string;
+                        publicKeyAlgorithm?: number;
+                    };
+                    type: string;
+                    clientExtensionResults?: Record<string, never>;
+                };
+                "multipart/form-data": {
+                    id: string;
+                    rawId: string;
+                    response: {
+                        clientDataJSON: string;
+                        attestationObject: string;
+                        transports?: string[];
+                        authenticatorData?: string;
+                        publicKey?: string;
+                        publicKeyAlgorithm?: number;
+                    };
+                    type: string;
+                    clientExtensionResults?: Record<string, never>;
+                };
+                "text/plain": {
+                    id: string;
+                    rawId: string;
+                    response: {
+                        clientDataJSON: string;
+                        attestationObject: string;
+                        transports?: string[];
+                        authenticatorData?: string;
+                        publicKey?: string;
+                        publicKeyAlgorithm?: number;
+                    };
+                    type: string;
+                    clientExtensionResults?: Record<string, never>;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        isVerified: boolean;
+                    };
+                    "multipart/form-data": {
+                        isVerified: boolean;
+                    };
+                    "text/plain": {
+                        isVerified: boolean;
+                    };
+                };
+            };
+        };
+    };
+    "postApiAuth-sessionsCreate-with-email-sign-in": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** Format: email */
+                    emailAddress: string;
+                    password: string;
+                };
+                "multipart/form-data": {
+                    /** Format: email */
+                    emailAddress: string;
+                    password: string;
+                };
+                "text/plain": {
+                    /** Format: email */
+                    emailAddress: string;
+                    password: string;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        message: string;
+                    };
+                    "multipart/form-data": {
+                        message: string;
+                    };
+                    "text/plain": {
+                        message: string;
+                    };
+                };
+            };
+        };
+    };
+    "postApiAuth-sessionsSign-out": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        success: boolean;
+                        expiredSession: unknown;
+                    };
+                    "multipart/form-data": {
+                        success: boolean;
+                        expiredSession: unknown;
+                    };
+                    "text/plain": {
+                        success: boolean;
+                        expiredSession: unknown;
+                    };
+                };
+            };
+        };
+    };
+    "postApiAuth-sessionsCreate-with-passkey-options": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    name: string;
+                    displayName: string;
+                };
+                "multipart/form-data": {
+                    name: string;
+                    displayName: string;
+                };
+                "text/plain": {
+                    name: string;
+                    displayName: string;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        attestation?: unknown;
+                        attestationFormats?: unknown;
+                        authenticatorSelection?: unknown;
+                        challenge?: unknown;
+                        excludeCredentials?: unknown;
+                        extensions?: unknown;
+                        hints?: unknown;
+                        pubKeyCredParams: unknown;
+                        rp: unknown;
+                        timeout?: unknown;
+                        user: unknown;
+                    };
+                    "multipart/form-data": {
+                        attestation?: unknown;
+                        attestationFormats?: unknown;
+                        authenticatorSelection?: unknown;
+                        challenge?: unknown;
+                        excludeCredentials?: unknown;
+                        extensions?: unknown;
+                        hints?: unknown;
+                        pubKeyCredParams: unknown;
+                        rp: unknown;
+                        timeout?: unknown;
+                        user: unknown;
+                    };
+                    "text/plain": {
+                        attestation?: unknown;
+                        attestationFormats?: unknown;
+                        authenticatorSelection?: unknown;
+                        challenge?: unknown;
+                        excludeCredentials?: unknown;
+                        extensions?: unknown;
+                        hints?: unknown;
+                        pubKeyCredParams: unknown;
+                        rp: unknown;
+                        timeout?: unknown;
+                        user: unknown;
+                    };
+                };
+            };
+        };
+    };
+    "postApiAuth-sessionsCreate-with-passkey": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    id: string;
+                    rawId: string;
+                    response: {
+                        clientDataJSON: string;
+                        attestationObject: string;
+                        transports?: string[];
+                        authenticatorData?: string;
+                        publicKey?: string;
+                        publicKeyAlgorithm?: number;
+                    };
+                    type: string;
+                    clientExtensionResults?: Record<string, never>;
+                };
+                "multipart/form-data": {
+                    id: string;
+                    rawId: string;
+                    response: {
+                        clientDataJSON: string;
+                        attestationObject: string;
+                        transports?: string[];
+                        authenticatorData?: string;
+                        publicKey?: string;
+                        publicKeyAlgorithm?: number;
+                    };
+                    type: string;
+                    clientExtensionResults?: Record<string, never>;
+                };
+                "text/plain": {
+                    id: string;
+                    rawId: string;
+                    response: {
+                        clientDataJSON: string;
+                        attestationObject: string;
+                        transports?: string[];
+                        authenticatorData?: string;
+                        publicKey?: string;
+                        publicKeyAlgorithm?: number;
+                    };
+                    type: string;
+                    clientExtensionResults?: Record<string, never>;
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        isVerified: boolean;
+                    };
+                    "multipart/form-data": {
+                        isVerified: boolean;
+                    };
+                    "text/plain": {
+                        isVerified: boolean;
+                    };
+                };
+            };
+        };
+    };
+    "getApiAuth-sessionsWho-am-i": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        id: string;
+                        createdAt: Record<string, never> | string | number;
+                        updatedAt: Record<string, never> | string | number;
+                        firstName: string;
+                        lastName: string;
+                        profilePicture: string | null;
+                    } | null;
+                    "multipart/form-data": {
+                        id: string;
+                        createdAt: Record<string, never> | string | number;
+                        updatedAt: Record<string, never> | string | number;
+                        firstName: string;
+                        lastName: string;
+                        profilePicture: string | null;
+                    } | null;
+                    "text/plain": {
+                        id: string;
+                        createdAt: Record<string, never> | string | number;
+                        updatedAt: Record<string, never> | string | number;
+                        firstName: string;
+                        lastName: string;
+                        profilePicture: string | null;
+                    } | null;
+                };
+            };
+        };
+    };
+    "getApiApi-keys": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        id: string;
+                        createdAt: Record<string, never> | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string)))))));
+                        updatedAt: Record<string, never> | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string)))))));
+                        key: string;
+                        usageCount: string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string))))));
+                        userId: string;
+                    }[];
+                    "multipart/form-data": {
+                        id: string;
+                        createdAt: Record<string, never> | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string)))))));
+                        updatedAt: Record<string, never> | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string)))))));
+                        key: string;
+                        usageCount: string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string))))));
+                        userId: string;
+                    }[];
+                    "text/plain": {
+                        id: string;
+                        createdAt: Record<string, never> | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string)))))));
+                        updatedAt: Record<string, never> | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string)))))));
+                        key: string;
+                        usageCount: string | (number | string | (number | string | (number | string | (number | string | (number | string | (number | string))))));
+                        userId: string;
+                    }[];
+                };
+            };
+        };
+    };
+    "postApiApi-keys": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiKey"];
+                    "multipart/form-data": components["schemas"]["ApiKey"];
+                    "text/plain": components["schemas"]["ApiKey"];
+                };
+            };
+        };
+    };
+    "deleteApiApi-keysById": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ApiKey"];
+                    "multipart/form-data": components["schemas"]["ApiKey"];
+                    "text/plain": components["schemas"]["ApiKey"];
+                };
+            };
+        };
+    };
+    getApiTranslations: {
+        parameters: {
+            query: {
+                sourceText: string;
+                sourceLanguage: string;
+                targetLanguage: string;
+                context?: string;
+            };
+            header: {
+                "api-key": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
                         sourceText: string;
                         sourceLanguage: string;
                         targetLanguage: string;
+                        context?: string;
                         translatedText: string;
+                        isCached: boolean;
                     };
                     "multipart/form-data": {
                         sourceText: string;
                         sourceLanguage: string;
                         targetLanguage: string;
+                        context?: string;
                         translatedText: string;
+                        isCached: boolean;
                     };
                     "text/plain": {
                         sourceText: string;
                         sourceLanguage: string;
                         targetLanguage: string;
+                        context?: string;
                         translatedText: string;
+                        isCached: boolean;
                     };
                 };
+            };
+        };
+    };
+    postApiTranslations: {
+        parameters: {
+            query?: never;
+            header: {
+                "api-key": string;
+            };
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };

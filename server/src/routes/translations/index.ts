@@ -6,6 +6,7 @@ import { getTranslationFromDB } from "../../services/get-translation-from-db";
 import { prisma } from "../../deps/prisma";
 import { languageToDbCode } from "../../utils/language-code-to-dbcode";
 import { getCache } from "../../services/redis-cache";
+import { translateTextWithGoogle } from "../../utils/google-translate";
 
 export const translationRouter = new Elysia({ prefix: "/translations" })
   .use(authenticateApiKeyUser)
@@ -52,7 +53,13 @@ export const translationRouter = new Elysia({ prefix: "/translations" })
       }
 
       //   translate with openai
-      const translatedText = await translateTextWithOpenAI({
+      // const translatedText = await translateTextWithOpenAI({
+      //   sourceText: ctx.query.sourceText,
+      //   sourceLanguage: ctx.query.sourceLanguage,
+      //   targetLanguage: ctx.query.targetLanguage,
+      //   context: ctx.query.context,
+      // });
+      const translatedText = await translateTextWithGoogle({
         sourceText: ctx.query.sourceText,
         sourceLanguage: ctx.query.sourceLanguage,
         targetLanguage: ctx.query.targetLanguage,

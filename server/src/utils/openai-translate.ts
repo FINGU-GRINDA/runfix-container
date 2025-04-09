@@ -16,6 +16,10 @@ export const translateTextWithOpenAI = async (params: {
   targetLanguage: string;
   context?: string;
 }): Promise<string> => {
+  if (params.sourceLanguage === params.targetLanguage) {
+    return params.sourceText;
+  }
+
   const response = await openaiClient.beta.chat.completions.parse({
     model: "gpt-4o-mini",
     messages: [
