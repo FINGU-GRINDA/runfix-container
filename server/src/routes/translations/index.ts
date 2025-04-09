@@ -7,6 +7,8 @@ import { prisma } from "../../deps/prisma";
 import { languageToDbCode } from "../../utils/language-code-to-dbcode";
 import { getCache, setCache } from "../../services/redis-cache";
 import { translateTextWithGoogle } from "../../utils/google-translate";
+import { allLanguageCodes } from "./constants";
+import { redis } from "../../deps/redis";
 
 export const translationRouter = new Elysia({ prefix: "/translations" })
   .use(authenticateApiKeyUser)
@@ -92,7 +94,25 @@ export const translationRouter = new Elysia({ prefix: "/translations" })
         translatedText: t.String(),
         isCached: t.Boolean(),
       }),
-      afterResponse: async (ctx) => {
+      afterResponse: async (ctx: {
+        user: { id: string };
+        path: string;
+        params: Record<string, string>;
+        query: {
+          sourceText: string;
+          sourceLanguage: string;
+          targetLanguage: string;
+          context?: string;
+        };
+        response: {
+          sourceText: string;
+          sourceLanguage: string;
+          targetLanguage: string;
+          context?: string;
+          translatedText: string;
+          isCached: boolean;
+        };
+      }) => {
         if (!ctx.user) {
           throw HttpError.Unauthorized("None or invalid api key");
         }
@@ -163,10 +183,65 @@ export const translationRouter = new Elysia({ prefix: "/translations" })
       },
     }
   )
-  .post("", async (ctx) => {
-    if (!ctx.user) {
-      throw HttpError.Unauthorized("None or invalid api key");
-    }
+  .post(
+    "/translate-all",
+    async (ctx) => {
+      if (!ctx.user) {
+        throw HttpError.Unauthorized("None or invalid api key");
+      }
 
-    throw HttpError.NotImplemented();
-  });
+      // get all translations for the user
+      const translations = await prisma.translation.findMany({
+        where: {
+          userId: ctx.user.id,
+          [languageToDbCode({ languageCode: ctx.body.originalLanguage })]: {
+            not: null,
+          },
+        },
+      });
+
+      // translate all translations
+      const promises = translations.map(async (translation) => {
+        const translatedTexts: Record<string, string> = {};
+
+        for (const languageCode of allLanguageCodes) {
+          const translatedText = await translateTextWithGoogle({
+            sourceText: translation[
+              languageToDbCode({
+                languageCode: ctx.body.originalLanguage,
+              }) as keyof typeof translation
+            ] as string,
+            sourceLanguage: ctx.body.originalLanguage,
+            targetLanguage: languageCode,
+          });
+
+          translatedTexts[languageToDbCode({ languageCode })] = translatedText;
+        }
+
+        // save to db
+        await prisma.translation.update({
+          where: {
+            id: translation.id,
+          },
+          data: translatedTexts,
+        });
+      });
+
+      await Promise.all(promises);
+
+      // invalidate all cache
+      // TODO: make it only for this user
+      await redis.del(`*${ctx.user.id}*`);
+      return {
+        message: "Translations completed",
+      };
+    },
+    {
+      body: t.Object({
+        originalLanguage: t.String(),
+      }),
+      response: t.Object({
+        message: t.String(),
+      }),
+    }
+  );
