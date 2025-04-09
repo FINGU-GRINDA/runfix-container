@@ -9,7 +9,6 @@ import { DeepPartial, mergeWithDefaults } from "../types/type-utils.ts";
 import { waitForDOMLoad } from "../utils/wait-for-DOM-load.ts";
 
 export const translateAndFitToOriginalSizeParams = {
-  apiKey: "",
   sourceLanguage: "en",
   targetLanguage: "ko",
   fitConfig: {

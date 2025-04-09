@@ -5,6 +5,7 @@ import { translateTextWithOpenAI } from "../../utils/openai-translate";
 import { getTranslationFromDB } from "../../services/get-translation-from-db";
 import { prisma } from "../../deps/prisma";
 import { languageToDbCode } from "../../utils/language-code-to-dbcode";
+import { getCache } from "../../services/redis-cache";
 
 export const translationRouter = new Elysia({ prefix: "/translations" })
   .use(authenticateApiKeyUser)
@@ -13,6 +14,22 @@ export const translationRouter = new Elysia({ prefix: "/translations" })
     async (ctx) => {
       if (!ctx.user) {
         throw HttpError.Unauthorized("None or invalid api key");
+      }
+
+      //   check cache
+      const cachedTranslation = await getCache({
+        key: `${ctx.query.sourceText}-${ctx.query.sourceLanguage}-${ctx.query.targetLanguage}`,
+      });
+
+      if (cachedTranslation) {
+        return {
+          sourceText: ctx.query.sourceText,
+          sourceLanguage: ctx.query.sourceLanguage,
+          targetLanguage: ctx.query.targetLanguage,
+          context: ctx.query.context,
+          translatedText: cachedTranslation,
+          isCached: true,
+        };
       }
 
       //   check if translation exists in database
