@@ -51,6 +51,7 @@ export const translateAndFitToOriginalSize = async (
   const originalUniqueContainerWithOverflowSet = new Set<HTMLElement>(
     originalUniqueContainerWithOverflow
   );
+
   // step 3:
   // freeze all container size
   freezeContainerSize({ elements: elementsToTranslate });

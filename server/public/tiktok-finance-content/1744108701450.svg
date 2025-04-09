@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0F2027">
+        <animate attributeName="stop-color" values="#0F2027;#203A43;#0F2027" dur="4s" repeatCount="indefinite" />
+      </stop>
+      <stop offset="100%" stop-color="#203A43">
+        <animate attributeName="stop-color" values="#203A43;#2C5364;#203A43" dur="4s" repeatCount="indefinite" />
+      </stop>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1920" fill="url(#bgGradient)" />
+  
+  <!-- Rising arrow icon -->
+  <g id="arrow" fill="#00FF66">
+    <polygon points="540,800 520,840 540,820 560,840" />
+    <rect x="535" y="840" width="10" height="100" />
+    <animateTransform attributeName="transform" attributeType="XML" type="translate" from="0 0" to="0 -20" dur="3s" repeatCount="indefinite" />
+  </g>
+  
+  <!-- Financial headline Text Elements -->
+  <text x="50%" y="30%" text-anchor="middle" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="80" font-weight="bold">
+    アップル Q1
+    <animate attributeName="opacity" values="0;1;0" dur="3s" repeatCount="indefinite" />
+  </text>
+  <text x="50%" y="40%" text-anchor="middle" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="60" font-weight="bold">
+    好決算 1281B USD
+    <animate attributeName="opacity" values="0;1;0" dur="3s" begin="0.5s" repeatCount="indefinite" />
+  </text>
+  <text x="50%" y="50%" text-anchor="middle" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="50">
+    iPhone +13% &amp; サービス +17%
+    <animate attributeName="opacity" values="0;1;0" dur="3s" begin="1s" repeatCount="indefinite" />
+  </text>
+  <text x="50%" y="60%" text-anchor="middle" fill="#FFFFFF" font-family="Arial, sans-serif" font-size="40">
+    900B 自社株買い &amp; 配当+5%
+    <animate attributeName="opacity" values="0;1;0" dur="3s" begin="1.5s" repeatCount="indefinite" />
+  </text>
+  
+  <!-- Minimal line graph for financial data -->
+  <polyline fill="none" stroke="#00FF66" stroke-width="8" points="200,1600 400,1500 600,1580 800,1400">
+    <animate attributeName="opacity" values="0;1;0" dur="3s" begin="2s" repeatCount="indefinite" />
+  </polyline>
+</svg>

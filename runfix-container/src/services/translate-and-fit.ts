@@ -1,12 +1,10 @@
 import { getAllElementsToBeTranslated } from "../utils/get-all-elements-to-be-translated.ts";
 import { getSortedUniqueContainerWithOverflow } from "../utils/get-unique-container-with-overflow.ts";
-import { modifyHTMLLanguage } from "../utils/modify-html-language.ts";
 import { textFitter } from "../utils/text-fitter.ts";
 import { translateElement } from "../utils/translate-element.ts";
 import { translateTextWithGoogle } from "../utils/translate-text.ts";
 import { DeepPartial, mergeWithDefaults } from "../types/type-utils.ts";
 import { waitForDOMLoad } from "../utils/wait-for-DOM-load.ts";
-import { getOriginalLanguage } from "../utils/get-original-language.ts";
 
 export const translateAndFitParams = {
   apiKey: "",

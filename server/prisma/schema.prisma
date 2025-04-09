@@ -1,3 +1,9 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -7,208 +13,133 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        String   @id
-  createdAt DateTime
-  updatedAt DateTime
+model ApiKey {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  name          String
-  email         String
-  emailVerified Boolean
-  image         String?
-  isAnonymous   Boolean?
+  key        String @unique
+  usageCount BigInt @default(0)
 
   // relations
-  sessions    Session[]
-  accounts    Account[]
-  passkeys    Passkey[]
-  apikeys     Apikey[]
-  members     Member[]
-  invitations Invitation[]
+  userId String
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
 
-  @@unique([email])
-  @@map("user")
+model EmailAuth {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  emailAddress String @unique
+  password     String
+
+  userId String
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model PasskeyAuth {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  publicKey        Bytes
+  webAuthnUserId   String
+  counter          BigInt
+  deviceType       String    @db.VarChar(32)
+  backedUpAt       DateTime?
+  isBackupEligible Boolean?
+  transports       String
+
+  // relations
+  userId String
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+model User {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  firstName      String
+  lastName       String
+  profilePicture String?
+  role           UserRole
+
+  // relations
+  PasskeyAuths   PasskeyAuth[]
+  EmailAuths     EmailAuth[]
+  Sessions       Session[]
+  ApiKeys        ApiKey[]
+  Translations   Translation[]
+  TranslationLog TranslationLog[]
 }
 
 model Session {
-  id        String   @id
-  createdAt DateTime
-  updatedAt DateTime
-
-  expiresAt            DateTime
-  token                String
-  ipAddress            String?
-  userAgent            String?
-  activeOrganizationId String?
-
-  // relations
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-
-  @@unique([token])
-  @@map("session")
-}
-
-model Account {
-  id        String   @id
-  createdAt DateTime
-  updatedAt DateTime
-
-  accountId             String
-  providerId            String
-  accessToken           String?
-  refreshToken          String?
-  idToken               String?
-  accessTokenExpiresAt  DateTime?
-  refreshTokenExpiresAt DateTime?
-  scope                 String?
-  password              String?
-
-  // relations
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-
-  @@map("account")
-}
-
-model Verification {
-  id        String    @id
-  createdAt DateTime?
-  updatedAt DateTime?
-
-  identifier String
-  value      String
-  expiresAt  DateTime
-
-  @@map("verification")
-}
-
-model Passkey {
-  id        String    @id
-  createdAt DateTime?
-
-  name         String?
-  publicKey    String
-  credentialID String
-  counter      Int
-  deviceType   String
-  backedUp     Boolean
-  transports   String?
-
-  // relations
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String
-
-  @@map("passkey")
-}
-
-model Apikey {
-  id        String   @id
-  createdAt DateTime
-  updatedAt DateTime
-
-  name                String?
-  start               String?
-  prefix              String?
-  key                 String
-  refillInterval      Int?
-  refillAmount        Int?
-  lastRefillAt        DateTime?
-  enabled             Boolean?
-  rateLimitEnabled    Boolean?
-  rateLimitTimeWindow Int?
-  rateLimitMax        Int?
-  requestCount        Int?
-  remaining           Int?
-  lastRequest         DateTime?
-  expiresAt           DateTime?
-  permissions         String?
-  metadata            String?
-
-  // relations
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@map("apikey")
-}
-
-model Organization {
-  id        String   @id
-  createdAt DateTime
-
-  name     String
-  slug     String?
-  logo     String?
-  metadata String?
-
-  // relations
-  members      Member[]
-  invitations  Invitation[]
-  translations Translation[]
-
-  @@unique([slug])
-  @@map("organization")
-}
-
-model Member {
-  id        String   @id
-  createdAt DateTime
-
-  role String
-
-  // relations
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  organizationId String
-  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId         String
-
-  @@map("member")
-}
-
-model Invitation {
-  id String @id
-
-  email     String
-  role      String?
-  status    String
-  expiresAt DateTime
-  inviterId String
-
-  // relations
-  user           User         @relation(fields: [inviterId], references: [id], onDelete: Cascade)
-  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
-  organizationId String
-
-  @@map("invitation")
-}
-
-model Language {
-  id        String   @id @default(uuid())
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  ISOCode String @unique
-  name    String
+  userAgent     String?
+  headers       Json
+  ipAddress     String?
+  accessToken   String
+  invalidatedAt DateTime?
 
-  // relations
-  sourceTranslation Translation[] @relation("SourceLanguage")
-  targetTranslation Translation[] @relation("TargetLanguage")
+  userId String
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Translation {
-  id        String   @id @default(uuid())
+  id        String   @id @default(cuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  sourceText     String
-  translatedText String
-  hitCount       BigInt @default(0)
+  enText String? // English (USA)
+  koText String? // Korean
+  jaText String? // Japanese
+  zhText String? // Chinese
+  uzText String? // Uzbek (Uzbekistan)
+  viText String? // Vietnamese
+  ruText String? // Russian
+  kkText String? // Kazakh (Kazakhstan)
+  mnText String? // Mongolian (Mongolia)
+  thText String? // Thai
+  idText String? // Indonesian
 
   // relations
-  sourceLanguage          Language     @relation("SourceLanguage", fields: [sourceLanguageCode], references: [ISOCode], onDelete: NoAction)
-  sourceLanguageCode      String
-  targetLanguage          Language     @relation("TargetLanguage", fields: [targetLanguageCode], references: [ISOCode], onDelete: NoAction)
-  targetLanguageCode      String
-  belongsToOrganization   Organization @relation(fields: [belongsToOrganizationId], references: [id], onDelete: Cascade)
-  belongsToOrganizationId String
+  User   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String?
+
+  @@index([enText])
+  @@index([koText])
+  @@index([jaText])
+  @@index([zhText])
+  @@index([uzText])
+  @@index([viText])
+  @@index([ruText])
+  @@index([kkText])
+  @@index([mnText])
+  @@index([thText])
+  @@index([idText])
+}
+
+model TranslationLog {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  sourceLanguage String
+  targetLanguage String
+  sourceText     String
+  targetText     String
+
+  // relations
+  User   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId String?
 }

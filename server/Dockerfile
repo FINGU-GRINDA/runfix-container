@@ -1,33 +1,18 @@
-FROM oven/bun AS build
+FROM oven/bun:slim AS base
+RUN apt-get update && apt-get install -y curl wget
 
+FROM base AS build
 WORKDIR /app
-
 # Cache packages installation
-COPY package.json package.json
-COPY bun.lock bun.lock
-
+COPY . .
 RUN bun install
-
-COPY ./src ./src
-
 ENV NODE_ENV=production
 
-RUN bun build \
-    --compile \
-    --minify-whitespace \
-    --minify-syntax \
-    --target bun \
-    --outfile server \
-    ./src/index.ts
 
-FROM gcr.io/distroless/base
-
+FROM build AS production
 WORKDIR /app
-
-COPY --from=build /app/server server
-
+RUN bun run generate-all
+RUN bunx prisma migrate deploy
 ENV NODE_ENV=production
-
-CMD ["./server"]
-
+CMD ["bun", "run", "start"]
 EXPOSE 8000
