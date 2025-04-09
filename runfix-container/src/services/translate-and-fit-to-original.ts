@@ -9,7 +9,6 @@ import { DeepPartial, mergeWithDefaults } from "../types/type-utils.ts";
 import { waitForDOMLoad } from "../utils/wait-for-DOM-load.ts";
 
 export const translateAndFitToOriginalSizeParams = {
-  apiKey: "",
   sourceLanguage: "en",
   targetLanguage: "ko",
   fitConfig: {
@@ -51,6 +50,7 @@ export const translateAndFitToOriginalSize = async (
   const originalUniqueContainerWithOverflowSet = new Set<HTMLElement>(
     originalUniqueContainerWithOverflow
   );
+
   // step 3:
   // freeze all container size
   freezeContainerSize({ elements: elementsToTranslate });

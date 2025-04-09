@@ -1,18 +1,18 @@
 export const translateTextWithGoogle = async (params: {
-  text: string;
+  sourceText: string;
   sourceLanguage: string;
   targetLanguage: string;
 }): Promise<string> => {
   if (params.sourceLanguage === params.targetLanguage) {
-    return params.text;
+    return params.sourceText;
   }
 
   const res = await fetch(
     `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${
       params.sourceLanguage
-    }&tl=${params.targetLanguage}&dt=t&q=${encodeURIComponent(params.text)}`
+    }&tl=${params.targetLanguage}&dt=t&q=${encodeURIComponent(params.sourceText)}`
   );
   const data = await res.json();
-  console.log("Translating", params.text, "to", params.targetLanguage, "result:", data[0][0][0]);
+
   return data[0][0][0];
 };

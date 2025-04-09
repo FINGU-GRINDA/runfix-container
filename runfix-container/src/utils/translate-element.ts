@@ -1,12 +1,10 @@
-import { cacheTranslationInDom, getCachedTranslationInDom } from "./cache-translation-in-dom.ts";
-
 // Simple text-based HTML translation that preserves structure
 export const translateElement = async (params: {
   element: HTMLElement;
   sourceLanguage: string;
   targetLanguage: string;
   translateFn: (params: {
-    text: string;
+    sourceText: string;
     sourceLanguage: string;
     targetLanguage: string;
   }) => Promise<string>;
@@ -20,7 +18,7 @@ export const translateElement = async (params: {
     }
 
     const translation = await params.translateFn({
-      text: sourceText as string,
+      sourceText: sourceText as string,
       sourceLanguage: params.sourceLanguage,
       targetLanguage: params.targetLanguage,
     });
@@ -45,7 +43,7 @@ export const translateElement = async (params: {
       const textToTranslate = part.trim();
       if (textToTranslate.length > 0) {
         const translation = await params.translateFn({
-          text: textToTranslate,
+          sourceText: textToTranslate,
           sourceLanguage: params.sourceLanguage,
           targetLanguage: params.targetLanguage,
         });

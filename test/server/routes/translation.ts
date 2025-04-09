@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { TRPCError } from "@trpc/server";
 import { createRouter, publicProcedure } from "../trpc";
-import OpenAI from "openai";
+import OpenAI from "openai/index.mjs";
 import axios from "axios";
 import * as cheerio from "cheerio";
 import { Element, Document } from "domhandler";
