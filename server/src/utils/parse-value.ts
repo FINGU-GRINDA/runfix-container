@@ -1,5 +1,5 @@
 import { Kind } from "@sinclair/typebox";
-import { Value } from "@sinclair/typebox/build/cjs/value";
+import { Value } from "@sinclair/typebox/value";
 import { TSchema } from "elysia";
 
 export function parseValue<T extends TSchema>(schema: T, value: unknown) {
