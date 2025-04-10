@@ -12,7 +12,10 @@ import {
 import { rpID, rpName, origin } from "./constants";
 import { prisma } from "../../deps/prisma";
 import { HttpError } from "elysia-http-error";
-import { authenticateUser } from "../../plugins/authentication";
+import {
+  authenticateUser,
+  sessionUserSchema,
+} from "../../plugins/authentication";
 import jwt from "@elysiajs/jwt";
 import { env } from "../../../config";
 import { UserRole } from "@prisma/client";
@@ -36,7 +39,15 @@ export const authSessionRouter = new Elysia({
           emailAddress: ctx.body.emailAddress,
         },
         include: {
-          User: true,
+          User: {
+            include: {
+              OrganizationMembers: {
+                include: {
+                  Organization: true,
+                },
+              },
+            },
+          },
         },
       });
 
@@ -318,28 +329,12 @@ export const authSessionRouter = new Elysia({
           if (!ctx.user) {
             return null;
           }
-
-          // Transform ctx.user to match the expected response schema
-          return {
-            id: ctx.user.id,
-            createdAt: ctx.user.createdAt,
-            updatedAt: ctx.user.updatedAt,
-            firstName: ctx.user.firstName,
-            lastName: ctx.user.lastName,
-            profilePicture: ctx.user.profilePicture,
-          };
+          return ctx.user;
         },
         {
-          response: t.Nullable(
-            t.Object({
-              id: t.String(),
-              createdAt: t.Date(),
-              updatedAt: t.Date(),
-              firstName: t.String(),
-              lastName: t.String(),
-              profilePicture: t.Nullable(t.String()),
-            })
-          ),
+          // Use t.Any() to allow the exact SessionUser type to be returned
+          // This avoids type mismatches between Prisma-generated types and TypeBox schemas
+          response: t.Nullable(sessionUserSchema),
         }
       )
   );

@@ -1,8 +1,13 @@
-import Elysia, { t } from "elysia";
+import Elysia, { Static, t } from "elysia";
 import jwt from "@elysiajs/jwt";
-import { User } from "@prisma/client";
 import { HttpError } from "elysia-http-error";
 import { prisma } from "../deps/prisma";
+import { User } from "../../prisma/prismabox/User";
+import { Project } from "@prisma/client";
+
+export const sessionUserSchema = User;
+
+export type SessionUser = Static<typeof sessionUserSchema>;
 
 export const tokenSessionPlugin = new Elysia()
   .guard({
@@ -39,7 +44,7 @@ export const authenticateUser = new Elysia({
       throw HttpError.Unauthorized("Invalid token");
     }
 
-    const user = JSON.parse(decodedToken.sub) as User;
+    const user = JSON.parse(decodedToken.sub) as SessionUser;
 
     return {
       user: user,
@@ -55,8 +60,8 @@ export const apiKeyPlugin = new Elysia()
   })
   .as("plugin");
 
-export const authenticateApiKeyUser = new Elysia({
-  name: "authenticateApiKeyUser",
+export const authenticateApiKeyProject = new Elysia({
+  name: "authenticateApiKeyProject",
 })
   .use(apiKeyPlugin)
   .use(
@@ -82,10 +87,10 @@ export const authenticateApiKeyUser = new Elysia({
       throw HttpError.Unauthorized("Invalid API key");
     }
 
-    const apiKey = JSON.parse(decodedToken.sub) as User;
+    const project = JSON.parse(decodedToken.sub) as Project;
 
     return {
-      user: apiKey,
+      project: project,
     };
   })
   .onAfterResponse(async (ctx) => {

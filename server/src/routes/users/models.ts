@@ -1,21 +1,19 @@
-import { t } from "elysia";
+import { Static, t } from "elysia";
+import { User } from "../../../prisma/prismabox/User";
 
-export const userSchema = t.Object({
-  id: t.String(),
-  createdAt: t.Date(),
-  updatedAt: t.Date(),
+export const BaseUser = t.Pick(User, [
+  "id",
+  "createdAt",
+  "updatedAt",
+  "firstName",
+  "lastName",
+  "profilePicture",
+  "role",
+]);
+export type BaseUser = Static<typeof BaseUser>;
 
-  //   data
-  name: t.String(),
+export const CreateUser = t.Pick(User, ["firstName", "lastName"]);
+export type CreateUser = Static<typeof CreateUser>;
 
-  //   relations
-  authIds: t.Array(t.String()),
-});
-
-export const createUserSchema = t.Object({
-  name: t.String(),
-});
-
-export const updateUserSchema = t.Object({
-  name: t.Optional(t.String()),
-});
+export const UpdateUser = t.Pick(User, ["firstName", "lastName"]);
+export type UpdateUser = Static<typeof UpdateUser>;
