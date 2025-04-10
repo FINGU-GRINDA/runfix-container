@@ -14,11 +14,12 @@ import { prisma } from "../../deps/prisma";
 import { HttpError } from "elysia-http-error";
 import {
   authenticateUser,
-  sessionUserSchema,
+  SessionUserSchema,
 } from "../../plugins/authentication";
 import jwt from "@elysiajs/jwt";
 import { env } from "../../../config";
 import { UserRole } from "@prisma/client";
+import { parseValue } from "../../utils/parse-value";
 
 export const authSessionRouter = new Elysia({
   prefix: "/auth-sessions",
@@ -34,47 +35,41 @@ export const authSessionRouter = new Elysia({
     "/create-with-email-sign-in",
     async (ctx) => {
       // authenticate user
-      const dbEmailAuth = await prisma.emailAuth.findUnique({
+      const dbUser = await prisma.user.findFirst({
         where: {
-          emailAddress: ctx.body.emailAddress,
-        },
-        include: {
-          User: {
-            include: {
-              OrganizationMembers: {
-                include: {
-                  Organization: true,
-                },
-              },
+          EmailAuths: {
+            some: {
+              emailAddress: ctx.body.emailAddress,
             },
           },
         },
+        include: {
+          EmailAuths: true,
+        },
       });
 
-      if (!dbEmailAuth) {
-        throw HttpError.Unauthorized("Invalid credentials");
+      if (!dbUser) {
+        throw HttpError.Unauthorized("User not found");
       }
 
       const isPasswordVerified = await Bun.password.verify(
         ctx.body.password,
-        dbEmailAuth.password as string
+        dbUser.EmailAuths[0].password as string
       );
 
-      if (!dbEmailAuth.User) {
-        throw HttpError.Unauthorized("Missing user");
-      }
-
       if (!isPasswordVerified) {
-        throw HttpError.Unauthorized("Invalid credentials");
+        throw HttpError.Unauthorized("Invalid password");
       }
 
       const expireAt =
         new Date().getTime() +
         env.AUTH_TOKEN_EXPIRY_DURATION_MINUTES * 60 * 1000;
 
+      const sessionUser = parseValue(SessionUserSchema, dbUser);
+
       // create new access token
       const newToken = await ctx.jwt.sign({
-        sub: JSON.stringify(dbEmailAuth.User),
+        sub: JSON.stringify(sessionUser),
         exp: expireAt,
       });
 
@@ -87,7 +82,7 @@ export const authSessionRouter = new Elysia({
         data: {
           accessToken: newToken,
           userAgent: userAgent!,
-          userId: dbEmailAuth.User.id,
+          userId: dbUser.id,
           headers: headers,
           ipAddress: ipAddress!,
         },
@@ -329,12 +324,10 @@ export const authSessionRouter = new Elysia({
           if (!ctx.user) {
             return null;
           }
-          return ctx.user;
+          return parseValue(SessionUserSchema, ctx.user);
         },
         {
-          // Use t.Any() to allow the exact SessionUser type to be returned
-          // This avoids type mismatches between Prisma-generated types and TypeBox schemas
-          response: t.Nullable(sessionUserSchema),
+          response: t.Nullable(SessionUserSchema),
         }
       )
   );

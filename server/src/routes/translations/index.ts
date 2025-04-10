@@ -210,7 +210,7 @@ export const translationRouter = new Elysia({
           // get all translations for the project
           const translations = await prisma.translation.findMany({
             where: {
-              projectId: ctx.query.projectId,
+              projectId: ctx.body.projectId,
               [languageToDbCode({ languageCode: ctx.body.originalLanguage })]: {
                 not: null,
               },
@@ -269,6 +269,7 @@ export const translationRouter = new Elysia({
         {
           body: t.Object({
             originalLanguage: t.String(),
+            projectId: t.String(),
           }),
           response: t.Object({
             message: t.String(),

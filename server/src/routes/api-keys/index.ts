@@ -62,7 +62,7 @@ export const apiKeyRouter = new Elysia({
     }
   )
   .post(
-    "/create-api-key",
+    "",
     async (ctx) => {
       if (!ctx.user) {
         throw HttpError.Unauthorized("Unauthorized");
