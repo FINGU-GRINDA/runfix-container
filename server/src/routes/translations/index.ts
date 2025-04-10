@@ -95,7 +95,6 @@ export const translationRouter = new Elysia({
         isCached: t.Boolean(),
       }),
       afterResponse: async (ctx) => {
-        console.log(ctx.response);
         if (!ctx.user) {
           throw HttpError.Unauthorized("None or invalid api key");
         }
@@ -122,6 +121,7 @@ export const translationRouter = new Elysia({
         });
 
         const translatedText = ctx.response.translatedText;
+
         //   save translation to database
         await prisma.$transaction(async (tx) => {
           // find existing translation
