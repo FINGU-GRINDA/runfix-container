@@ -13,6 +13,7 @@ import { allLanguageCodes } from "./constants";
 import { redis } from "../../deps/redis";
 import { BaseTranslationSchema, UpdateTranslationSchema } from "./models";
 import { parseValue } from "../../utils/parse-value";
+import { isValidLanguageCode } from "../../utils/validate-language-code";
 
 export const translationRouter = new Elysia({
   prefix: "/translations",
@@ -207,6 +208,14 @@ export const translationRouter = new Elysia({
             throw HttpError.Unauthorized("None or invalid api key");
           }
 
+          // validate code
+
+          if (!isValidLanguageCode({ code: ctx.body.originalLanguage })) {
+            throw HttpError.BadRequest(
+              `Invalid language code, should be any of ${allLanguageCodes.join(", ")}`
+            );
+          }
+
           // get all translations for the project
           const translations = await prisma.translation.findMany({
             where: {
@@ -270,7 +279,7 @@ export const translationRouter = new Elysia({
           body: t.Object({
             originalLanguage: t.String(),
             projectId: t.String(),
-            targetLanguage: t.Array(t.String(), {
+            targetLanguage: t.Array(t.String({ maxLength: 2, minLength: 2 }), {
               default: [
                 "en",
                 "ko",
