@@ -1,4 +1,4 @@
-import { Elysia, t } from "elysia";
+import { Elysia } from "elysia";
 import { userRouter } from "./users";
 import { authAccountRouter } from "./auth-accounts";
 import { apiKeyRouter } from "./api-keys";

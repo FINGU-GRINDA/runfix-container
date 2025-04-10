@@ -1,7 +1,6 @@
 import Elysia, { t } from "elysia";
 import { authenticateApiKeyUser } from "../../plugins/authentication";
 import { HttpError } from "elysia-http-error";
-import { translateTextWithOpenAI } from "../../utils/openai-translate";
 import { getTranslationFromDB } from "../../services/get-translation-from-db";
 import { prisma } from "../../deps/prisma";
 import { languageToDbCode } from "../../utils/language-code-to-dbcode";
@@ -9,11 +8,19 @@ import { getCache, setCache } from "../../services/redis-cache";
 import { translateTextWithGoogle } from "../../utils/google-translate";
 import { allLanguageCodes } from "./constants";
 import { redis } from "../../deps/redis";
+import { translationSchema, updateTranslationSchema } from "./models";
 
-export const translationRouter = new Elysia({ prefix: "/translations" })
+export const translationRouter = new Elysia({
+  prefix: "/translations",
+  tags: ["translations"],
+})
   .use(authenticateApiKeyUser)
-  .get(
-    "",
+  .model({
+    Translation: translationSchema,
+    UpdateTranslation: updateTranslationSchema,
+  })
+  .post(
+    "/ai-translate",
     async (ctx) => {
       if (!ctx.user) {
         throw HttpError.Unauthorized("None or invalid api key");
@@ -23,7 +30,7 @@ export const translationRouter = new Elysia({ prefix: "/translations" })
       const cacheKey = JSON.stringify({
         route: ctx.path,
         params: ctx.params,
-        query: ctx.query,
+        body: ctx.body,
         userId: ctx.user.id,
       });
 
@@ -37,42 +44,35 @@ export const translationRouter = new Elysia({ prefix: "/translations" })
 
       //   check if translation exists in database
       const dbTranslatedText = await getTranslationFromDB({
-        sourceText: ctx.query.sourceText,
-        sourceLanguage: ctx.query.sourceLanguage,
-        targetLanguage: ctx.query.targetLanguage,
+        sourceText: ctx.body.sourceText,
+        sourceLanguage: ctx.body.sourceLanguage,
+        targetLanguage: ctx.body.targetLanguage,
         userId: ctx.user.id,
       });
 
       if (dbTranslatedText) {
         return {
-          sourceText: ctx.query.sourceText,
-          sourceLanguage: ctx.query.sourceLanguage,
-          targetLanguage: ctx.query.targetLanguage,
-          context: ctx.query.context,
+          sourceText: ctx.body.sourceText,
+          sourceLanguage: ctx.body.sourceLanguage,
+          targetLanguage: ctx.body.targetLanguage,
+          context: ctx.body.context,
           translatedText: dbTranslatedText,
           isCached: false,
         };
       }
 
-      //   translate with openai
-      // const translatedText = await translateTextWithOpenAI({
-      //   sourceText: ctx.query.sourceText,
-      //   sourceLanguage: ctx.query.sourceLanguage,
-      //   targetLanguage: ctx.query.targetLanguage,
-      //   context: ctx.query.context,
-      // });
       const translatedText = await translateTextWithGoogle({
-        sourceText: ctx.query.sourceText,
-        sourceLanguage: ctx.query.sourceLanguage,
-        targetLanguage: ctx.query.targetLanguage,
-        context: ctx.query.context,
+        sourceText: ctx.body.sourceText,
+        sourceLanguage: ctx.body.sourceLanguage,
+        targetLanguage: ctx.body.targetLanguage,
+        context: ctx.body.context,
       });
 
       const response = {
-        sourceText: ctx.query.sourceText,
-        sourceLanguage: ctx.query.sourceLanguage,
-        targetLanguage: ctx.query.targetLanguage,
-        context: ctx.query.context,
+        sourceText: ctx.body.sourceText,
+        sourceLanguage: ctx.body.sourceLanguage,
+        targetLanguage: ctx.body.targetLanguage,
+        context: ctx.body.context,
         translatedText: translatedText,
         isCached: false,
       };
@@ -80,7 +80,7 @@ export const translationRouter = new Elysia({ prefix: "/translations" })
       return response;
     },
     {
-      query: t.Object({
+      body: t.Object({
         sourceText: t.String(),
         sourceLanguage: t.String(),
         targetLanguage: t.String(),
@@ -94,25 +94,8 @@ export const translationRouter = new Elysia({ prefix: "/translations" })
         translatedText: t.String(),
         isCached: t.Boolean(),
       }),
-      afterResponse: async (ctx: {
-        user: { id: string };
-        path: string;
-        params: Record<string, string>;
-        query: {
-          sourceText: string;
-          sourceLanguage: string;
-          targetLanguage: string;
-          context?: string;
-        };
-        response: {
-          sourceText: string;
-          sourceLanguage: string;
-          targetLanguage: string;
-          context?: string;
-          translatedText: string;
-          isCached: boolean;
-        };
-      }) => {
+      afterResponse: async (ctx) => {
+        console.log(ctx.response);
         if (!ctx.user) {
           throw HttpError.Unauthorized("None or invalid api key");
         }
@@ -127,7 +110,7 @@ export const translationRouter = new Elysia({ prefix: "/translations" })
         const cacheKey = JSON.stringify({
           route: ctx.path,
           params: ctx.params,
-          query: ctx.query,
+          body: ctx.body,
           userId: ctx.user.id,
         });
 
@@ -145,8 +128,8 @@ export const translationRouter = new Elysia({ prefix: "/translations" })
           const existingTranslation = await prisma.translation.findFirst({
             where: {
               userId: ctx.user.id,
-              [languageToDbCode({ languageCode: ctx.query.sourceLanguage })]:
-                ctx.query.sourceText,
+              [languageToDbCode({ languageCode: ctx.body.sourceLanguage })]:
+                ctx.body.sourceText,
             },
           });
 
@@ -156,12 +139,12 @@ export const translationRouter = new Elysia({ prefix: "/translations" })
               where: {
                 userId: ctx.user.id,
                 [languageToDbCode({
-                  languageCode: ctx.query.sourceLanguage,
-                })]: ctx.query.sourceText,
+                  languageCode: ctx.body.sourceLanguage,
+                })]: ctx.body.sourceText,
               },
               data: {
                 [languageToDbCode({
-                  languageCode: ctx.query.targetLanguage,
+                  languageCode: ctx.body.targetLanguage,
                 })]: translatedText,
               },
             });
@@ -171,16 +154,46 @@ export const translationRouter = new Elysia({ prefix: "/translations" })
               data: {
                 userId: ctx.user.id,
                 [languageToDbCode({
-                  languageCode: ctx.query.sourceLanguage,
-                })]: ctx.query.sourceText,
+                  languageCode: ctx.body.sourceLanguage,
+                })]: ctx.body.sourceText,
                 [languageToDbCode({
-                  languageCode: ctx.query.targetLanguage,
+                  languageCode: ctx.body.targetLanguage,
                 })]: translatedText,
               },
             });
           }
         });
       },
+    }
+  )
+  .get(
+    "",
+    async (ctx) => {
+      if (!ctx.user) {
+        throw HttpError.Unauthorized("None or invalid api key");
+      }
+
+      if (ctx.query.userId !== ctx.user.id) {
+        throw HttpError.Forbidden(
+          "You are not allowed to access this resource"
+        );
+      }
+
+      const translations = await prisma.translation.findMany({
+        where: {
+          userId: ctx.query.userId ?? ctx.user.id,
+        },
+      });
+
+      return translations;
+    },
+    {
+      query: t.Optional(
+        t.Object({
+          userId: t.Optional(t.String()),
+        })
+      ),
+      response: t.Array(translationSchema),
     }
   )
   .post(
@@ -243,5 +256,59 @@ export const translationRouter = new Elysia({ prefix: "/translations" })
       response: t.Object({
         message: t.String(),
       }),
+    }
+  )
+  .patch(
+    "/:id",
+    async (ctx) => {
+      if (!ctx.user) {
+        throw HttpError.Unauthorized("None or invalid api key");
+      }
+
+      const translation = await prisma.translation.update({
+        where: {
+          id: ctx.params.id,
+        },
+        data: {},
+      });
+
+      if (!translation) {
+        throw HttpError.NotFound("Translation not found");
+      }
+
+      return translation;
+    },
+    {
+      params: t.Object({
+        id: t.String(),
+      }),
+      body: "UpdateTranslation",
+      response: "Translation",
+    }
+  )
+  .delete(
+    "/:id",
+    async (ctx) => {
+      if (!ctx.user) {
+        throw HttpError.Unauthorized("None or invalid api key");
+      }
+
+      const translation = await prisma.translation.delete({
+        where: {
+          id: ctx.params.id,
+        },
+      });
+
+      if (!translation) {
+        throw HttpError.NotFound("Translation not found");
+      }
+
+      return translation;
+    },
+    {
+      params: t.Object({
+        id: t.String(),
+      }),
+      response: "Translation",
     }
   );

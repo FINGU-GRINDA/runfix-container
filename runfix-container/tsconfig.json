@@ -7,7 +7,8 @@
       "strict": true,
       "allowImportingTsExtensions": true,
       "rewriteRelativeImportExtensions": true,
-      "moduleResolution": "nodenext",
-      "module": "NodeNext"
+      "module": "ESNext", // or "NodeNext"
+      "moduleResolution": "Bundler" // or "NodeNext",
     },
+    "noUncheckedIndexedAccess": true
   }
