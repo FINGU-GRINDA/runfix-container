@@ -4,7 +4,7 @@ import { prisma } from "../../deps/prisma";
 import { HttpError } from "elysia-http-error";
 import jwt from "@elysiajs/jwt";
 import { env } from "../../../config";
-import { ApiKey, ApiKeyPlain } from "../../../prisma/prismabox/ApiKey";
+import { ApiKeyPlain } from "../../../prisma/prismabox/ApiKey";
 import { OrganizationMemberRole } from "@prisma/client";
 import { parseValue } from "../../utils/parse-value";
 
