@@ -228,9 +228,9 @@ export const translationRouter = new Elysia({
 
           // translate all translations
           const promises = translations.map(async (translation) => {
-            const translatedTexts: Record<string, string> = {};
+            const translatedTexts: Record<string, string | undefined> = {};
 
-            for (const languageCode of allLanguageCodes) {
+            for (const languageCode of ctx.body.targetLanguage) {
               const translatedText = await translateTextWithGoogle({
                 sourceText: translation[
                   languageToDbCode({
@@ -270,6 +270,21 @@ export const translationRouter = new Elysia({
           body: t.Object({
             originalLanguage: t.String(),
             projectId: t.String(),
+            targetLanguage: t.Array(t.String(), {
+              default: [
+                "en",
+                "ko",
+                "ja",
+                "zh",
+                "uz",
+                "vi",
+                "ru",
+                "kk",
+                "mn",
+                "th",
+                "id",
+              ],
+            }),
           }),
           response: t.Object({
             message: t.String(),
