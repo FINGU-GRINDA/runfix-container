@@ -1,100 +1,53 @@
-# RUNFIX-CONTAINER
+# RunFix Container
 
-A lightweight browser package that translates your UI content while maintaining the original layout. Uses Google Translate under the hood.
+A comprehensive solution for remote translation management and integration.
 
-## Features
+## Overview
 
-- 🌐 One-line translation of all UI text
-- 🎨 Preserves layout during translation
-- 📱 Works with any HTML content
-- ⚡ Zero configuration needed
-- 🔧 Highly customizable with optional parameters
-- 🚫 Skip translation for specific elements
-- 🧩 Smart text fitting to prevent overflow
+RunFix Container provides a complete ecosystem for managing translations across web applications. The system consists of multiple components working together to deliver seamless translation capabilities.
 
-## Installation
+## Repository Components
 
-```bash
-npm install runfix-container
-```
+### 1. Server: RunFix Remote Translation Server
 
-## Basic Usage
+A robust REST API server for translation management.
 
-```javascript
-import { fitAndTranslate } from "runfix-container";
+- **Purpose**: Centralized translation management, analytics, engines, and distribution
+- **Documentation**: [Server README](./server/README.md)
+- **API Documentation**: [Swagger UI](https://hana-i18n.198.23.164.177.sslip.io/docs)
 
-// Translate all UI content from English to Spanish
-await fitAndTranslate({
-  sourceLanguage: "en",
-  targetLanguage: "es",
-});
-```
+### 2. Client: RunFix Container npm Package
 
-## Advanced Usage
+A browser-compatible package for integrating remote translation capabilities.
 
-```javascript
-import { fitAndTranslate } from "runfix-container";
+- **Purpose**: Client-side integration for translation services
+- **Documentation**: [Client README](./client/README.md)
+- **Installation**: `npm install @runfix/container` or add script tag to html `<script src="https://cdn.jsdelivr.net/npm/@runfix/container"></script>`
 
-// Use all available configuration options
-await fitAndTranslate({
-  // Language settings
-  sourceLanguage: "en",
-  targetLanguage: "ja",
+### 3. Dashboard UI
 
-  // Custom translation function (optional)
-  translateFn: async ({ text, sourceLanguage, targetLanguage }) => {
-    // Your custom translation logic here
-    return translatedText;
-  },
+Administrative interface for the remote translation server _(In Progress)_ / ROADMAP.
 
-  // Text fitting configuration
-  fitConfig: {
-    // Apply word-break and overflow handling
-    addOverflowBreak: true,
+- **Purpose**: Visual management and GUI for remote translation server
+- **Documentation**: [Dashboard README](./client/README.md)
+- **Demo**: [Dashboard Demo](https://hana-client-i18n.198.23.164.177.sslip.io/organizations/acme-corp)
 
-    // CSS class to skip text fitting
-    skipFitClass: "skip-fit",
-  },
+### 4. NextJS Test Application
 
-  // Translation configuration
-  translateConfig: {
-    // CSS class to skip translation
-    skipTranslateClass: "skip-translate",
-  },
-});
-```
+A demonstration application showcasing the integration of RunFix Container.
 
-## Skipping Elements
+- **Purpose**: Example implementation using NextJS (Page Router)
+- **Documentation**: [Test App README](./test/README.md)
+- **Live Demo**: [Test Application](https://hana-translation.198.23.164.177.sslip.io/user)
 
-Add CSS classes to elements you want to exclude:
+## Getting Started
 
-```html
-<!-- This element will not be translated -->
-<div class="skip-translate">Keep this text in original language</div>
-
-<!-- This element will be translated but not resized -->
-<div class="skip-fit">Translate but don't resize this text</div>
-```
-
-## How it works
-
-1. Automatically detects all text content in your UI
-2. Preserves container sizes to prevent layout shifts
-3. Translates text using Google Translate (or your custom translation function)
-4. Adjusts text size if needed to maintain layout
-5. Applies smart word-breaking for long words to prevent overflow
-
-## Language Codes
-
-Use standard language codes like:
-
-- 'en' for English
-- 'es' for Spanish
-- 'fr' for French
-- 'de' for German
-- 'ja' for Japanese
-- etc.
+Refer to each component's README for specific setup and usage instructions.
 
 ## License
 
 MIT
+
+## Contact
+
+vikyw@grinda.ai

@@ -9,6 +9,8 @@ A high-performance remote translation server built with Elysia.js and Bun, desig
 - **Elysia.js & Bun**: Ultra-fast server implementation for high-throughput translation requests
 - **API Documentation**: Comprehensive API documentation using Scalar
 - **Multi-user Support**: User management with role-based access control
+- **Multi-organization Support**: Organization management with role-based access control
+- **Multi-project Support**: Project management with role-based access control
 - **API Key Management**: Secure API key generation and validation for authenticated access
 - **Redis Caching**: Distributed caching for improved performance and scalability
 - **PostgreSQL Database**: Relational database for consistent translation storage and retrieval
