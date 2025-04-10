@@ -1,9 +1,9 @@
 import { Static, t } from "elysia";
-import { Translation } from "../../../prisma/prismabox/Translation";
+import { TranslationPlain } from "../../../prisma/prismabox/Translation";
 
 import { allLanguageCodes } from "./constants";
 
-export const BaseTranslation = t.Pick(Translation, [
+export const BaseTranslationSchema = t.Pick(TranslationPlain, [
   "id",
   "createdAt",
   "updatedAt",
@@ -11,16 +11,10 @@ export const BaseTranslation = t.Pick(Translation, [
   ...allLanguageCodes.map((code) => `${code}Text`),
 ]);
 
-export type BaseTranslation = Static<typeof BaseTranslation>;
+export type BaseTranslation = Static<typeof BaseTranslationSchema>;
 
-export const UpdateTranslation = t.Pick(Translation, [
-  ...allLanguageCodes.map((code) => `${code}Text`),
-]);
+export const UpdateTranslationSchema = t.Optional(
+  t.Pick(TranslationPlain, [...allLanguageCodes.map((code) => `${code}Text`)])
+);
 
-export type UpdateTranslation = Static<typeof UpdateTranslation>;
-
-export const UpdateTranslationSchema = t.Pick(Translation, [
-  ...allLanguageCodes.map((code) => `${code}Text`),
-]);
-
-export type UpdateTranslationSchema = Static<typeof UpdateTranslationSchema>;
+export type UpdateTranslation = Static<typeof UpdateTranslationSchema>;

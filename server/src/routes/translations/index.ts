@@ -11,8 +11,8 @@ import { getCache, setCache } from "../../services/redis-cache";
 import { translateTextWithGoogle } from "../../utils/google-translate";
 import { allLanguageCodes } from "./constants";
 import { redis } from "../../deps/redis";
-import { BaseTranslation, UpdateTranslation } from "./models";
-import { Value } from "@sinclair/typebox/value";
+import { BaseTranslationSchema, UpdateTranslationSchema } from "./models";
+import { parseValue } from "../../utils/parse-value";
 
 export const translationRouter = new Elysia({
   prefix: "/translations",
@@ -94,7 +94,7 @@ export const translationRouter = new Elysia({
           translatedText: t.String(),
           isCached: t.Boolean(),
         }),
-        afterResponse: async (ctx) => {
+        afterResponse: async (ctx: any) => {
           if (!ctx.project) {
             throw HttpError.Unauthorized("None or invalid api key");
           }
@@ -191,15 +191,13 @@ export const translationRouter = new Elysia({
             },
           });
 
-          return translations.map((translation) => {
-            return Value.Parse(BaseTranslation, translation);
-          });
+          return translations;
         },
         {
           query: t.Object({
             projectId: t.String(),
           }),
-          response: t.Array(BaseTranslation),
+          response: t.Array(BaseTranslationSchema),
         }
       )
       .post(
@@ -253,12 +251,9 @@ export const translationRouter = new Elysia({
                 id: translation.id,
               },
               data: translatedTexts,
-              include: {
-                Project: true,
-              },
             });
 
-            return updatedTranslation;
+            return parseValue(BaseTranslationSchema, updatedTranslation);
           });
 
           const updatedTranslations = await Promise.all(promises);
@@ -277,8 +272,9 @@ export const translationRouter = new Elysia({
           }),
           response: t.Object({
             message: t.String(),
-            updatedTranslations: t.Array(BaseTranslation),
+            updatedTranslations: t.Array(BaseTranslationSchema),
           }),
+          detail: "Translate all translations and invalidate cache",
         }
       )
       .patch(
@@ -292,21 +288,21 @@ export const translationRouter = new Elysia({
             where: {
               id: ctx.params.id,
             },
-            data: {},
+            data: { ...ctx.body },
           });
 
           if (!translation) {
             throw HttpError.NotFound("Translation not found");
           }
 
-          return Value.Parse(BaseTranslation, translation);
+          return parseValue(BaseTranslationSchema, translation);
         },
         {
           params: t.Object({
             id: t.String(),
           }),
-          body: UpdateTranslation,
-          response: BaseTranslation,
+          body: UpdateTranslationSchema,
+          response: BaseTranslationSchema,
         }
       )
       .delete(
@@ -326,13 +322,13 @@ export const translationRouter = new Elysia({
             throw HttpError.NotFound("Translation not found");
           }
 
-          return Value.Parse(BaseTranslation, translation);
+          return translation;
         },
         {
           params: t.Object({
             id: t.String(),
           }),
-          response: BaseTranslation,
+          response: BaseTranslationSchema,
         }
       )
   );

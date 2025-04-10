@@ -1,7 +1,7 @@
 import { Static, t } from "elysia";
-import { Project } from "../../../prisma/prismabox/Project";
+import { Project, ProjectPlain } from "../../../prisma/prismabox/Project";
 
-export const BaseProject = t.Pick(Project, [
+export const BaseProject = t.Pick(ProjectPlain, [
   "id",
   "createdAt",
   "updatedAt",
@@ -11,7 +11,7 @@ export const BaseProject = t.Pick(Project, [
 ]);
 export type BaseProject = Static<typeof BaseProject>;
 
-export const CreateProject = t.Pick(Project, [
+export const CreateProject = t.Pick(ProjectPlain, [
   "name",
   "description",
   "organizationId",
@@ -19,6 +19,6 @@ export const CreateProject = t.Pick(Project, [
 export type CreateProject = Static<typeof CreateProject>;
 
 export const UpdateProject = t.Partial(
-  t.Pick(Project, ["name", "description"])
+  t.Pick(ProjectPlain, ["name", "description"])
 );
 export type UpdateProject = Static<typeof UpdateProject>;

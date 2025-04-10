@@ -7,7 +7,6 @@ import {
   UpdateOrganization,
 } from "./models";
 import { prisma } from "../../deps/prisma";
-import { Value } from "@sinclair/typebox/value";
 import { OrganizationMemberRole } from "@prisma/client";
 
 export const organizationRouter = new Elysia({
@@ -110,7 +109,7 @@ export const organizationRouter = new Elysia({
         data: ctx.body,
       });
 
-      return Value.Parse(BaseOrganization, dbOrganization);
+      return dbOrganization;
     },
     {
       response: BaseOrganization,
@@ -136,7 +135,7 @@ export const organizationRouter = new Elysia({
         },
       });
 
-      return Value.Parse(BaseOrganization, dbOrganization);
+      return dbOrganization;
     },
     {
       response: BaseOrganization,
