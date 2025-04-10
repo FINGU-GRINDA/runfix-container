@@ -100,7 +100,6 @@ export const translationRouter = new Elysia({
         }
 
         // TODO: save translation to log for analytics
-
         if (ctx.response.isCached) {
           return;
         }
