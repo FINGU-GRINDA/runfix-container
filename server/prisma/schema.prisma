@@ -160,34 +160,380 @@ model Translation {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  enText String? // English (USA)
-  koText String? // Korean
-  jaText String? // Japanese
-  zhText String? // Chinese
-  uzText String? // Uzbek (Uzbekistan)
-  viText String? // Vietnamese
-  ruText String? // Russian
-  kkText String? // Kazakh (Kazakhstan)
-  mnText String? // Mongolian (Mongolia)
-  thText String? // Thai
+  aaText String? // Afar
+  abText String? // Abkhazian
+  aeText String? // Avestan
+  afText String? // Afrikaans
+  akText String? // Akan
+  amText String? // Amharic
+  anText String? // Aragonese
+  arText String? // Arabic
+  asText String? // Assamese
+  avText String? // Avaric
+  ayText String? // Aymara
+  azText String? // Azerbaijani
+  baText String? // Bashkir
+  beText String? // Belarusian
+  bgText String? // Bulgarian
+  bhText String? // Bihari languages
+  biText String? // Bislama
+  bmText String? // Bambara
+  bnText String? // Bengali
+  boText String? // Tibetan
+  brText String? // Breton
+  bsText String? // Bosnian
+  caText String? // Catalan
+  ceText String? // Chechen
+  chText String? // Chamorro
+  coText String? // Corsican
+  crText String? // Cree
+  csText String? // Czech
+  cuText String? // Church Slavic
+  cvText String? // Chuvash
+  cyText String? // Welsh
+  daText String? // Danish
+  deText String? // German
+  dvText String? // Divehi
+  dzText String? // Dzongkha
+  eeText String? // Ewe
+  elText String? // Greek
+  enText String? // English
+  eoText String? // Esperanto
+  esText String? // Spanish
+  etText String? // Estonian
+  euText String? // Basque
+  faText String? // Persian
+  ffText String? // Fulah
+  fiText String? // Finnish
+  fjText String? // Fijian
+  foText String? // Faroese
+  frText String? // French
+  fyText String? // Western Frisian
+  gaText String? // Irish
+  gdText String? // Gaelic
+  glText String? // Galician
+  gnText String? // Guarani
+  guText String? // Gujarati
+  gvText String? // Manx
+  haText String? // Hausa
+  heText String? // Hebrew
+  hiText String? // Hindi
+  hoText String? // Hiri Motu
+  hrText String? // Croatian
+  htText String? // Haitian
+  huText String? // Hungarian
+  hyText String? // Armenian
+  hzText String? // Herero
+  iaText String? // Interlingua
   idText String? // Indonesian
+  ieText String? // Interlingue
+  igText String? // Igbo
+  iiText String? // Sichuan Yi
+  ikText String? // Inupiaq
+  ioText String? // Ido
+  isText String? // Icelandic
+  itText String? // Italian
+  iuText String? // Inuktitut
+  jaText String? // Japanese
+  jvText String? // Javanese
+  kaText String? // Georgian
+  kgText String? // Kongo
+  kiText String? // Kikuyu
+  kjText String? // Kuanyama
+  kkText String? // Kazakh
+  klText String? // Kalaallisut
+  kmText String? // Central Khmer
+  knText String? // Kannada
+  koText String? // Korean
+  krText String? // Kanuri
+  ksText String? // Kashmiri
+  kuText String? // Kurdish
+  kvText String? // Komi
+  kwText String? // Cornish
+  kyText String? // Kirghiz
+  laText String? // Latin
+  lbText String? // Luxembourgish
+  lgText String? // Ganda
+  liText String? // Limburgan
+  lnText String? // Lingala
+  loText String? // Lao
+  ltText String? // Lithuanian
+  luText String? // Luba-Katanga
+  lvText String? // Latvian
+  mgText String? // Malagasy
+  mhText String? // Marshallese
+  miText String? // Maori
+  mkText String? // Macedonian
+  mlText String? // Malayalam
+  mnText String? // Mongolian
+  mrText String? // Marathi
+  msText String? // Malay
+  mtText String? // Maltese
+  myText String? // Burmese
+  naText String? // Nauru
+  nbText String? // Norwegian Bokmål
+  ndText String? // North Ndebele
+  neText String? // Nepali
+  ngText String? // Ndonga
+  nlText String? // Dutch
+  nnText String? // Norwegian Nynorsk
+  noText String? // Norwegian
+  nrText String? // South Ndebele
+  nvText String? // Navajo
+  nyText String? // Nyanja
+  ocText String? // Occitan
+  ojText String? // Ojibwa
+  omText String? // Oromo
+  orText String? // Oriya
+  osText String? // Ossetian
+  paText String? // Panjabi
+  piText String? // Pali
+  plText String? // Polish
+  psText String? // Pushto
+  ptText String? // Portuguese
+  quText String? // Quechua
+  rmText String? // Romansh
+  rnText String? // Rundi
+  roText String? // Romanian
+  ruText String? // Russian
+  rwText String? // Kinyarwanda
+  saText String? // Sanskrit
+  scText String? // Sardinian
+  sdText String? // Sindhi
+  seText String? // Northern Sami
+  sgText String? // Sango
+  siText String? // Sinhala
+  skText String? // Slovak
+  slText String? // Slovenian
+  smText String? // Samoan
+  snText String? // Shona
+  soText String? // Somali
+  sqText String? // Albanian
+  srText String? // Serbian
+  ssText String? // Swati
+  stText String? // Southern Sotho
+  suText String? // Sundanese
+  svText String? // Swedish
+  swText String? // Swahili
+  taText String? // Tamil
+  teText String? // Telugu
+  tgText String? // Tajik
+  thText String? // Thai
+  tiText String? // Tigrinya
+  tkText String? // Turkmen
+  tlText String? // Tagalog
+  tnText String? // Tswana
+  toText String? // Tonga
+  trText String? // Turkish
+  tsText String? // Tsonga
+  ttText String? // Tatar
+  twText String? // Twi
+  tyText String? // Tahitian
+  ugText String? // Uighur
+  ukText String? // Ukrainian
+  urText String? // Urdu
+  uzText String? // Uzbek
+  veText String? // Venda
+  viText String? // Vietnamese
+  voText String? // Volapük
+  waText String? // Walloon
+  woText String? // Wolof
+  xhText String? // Xhosa
+  yiText String? // Yiddish
+  yoText String? // Yoruba
+  zaText String? // Zhuang
+  zhText String? // Chinese
+  zuText String? // Zulu
 
   // relations
   Project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId String?
 
   // indexes
+  @@index([aaText])
+  @@index([abText])
+  @@index([aeText])
+  @@index([afText])
+  @@index([akText])
+  @@index([amText])
+  @@index([anText])
+  @@index([arText])
+  @@index([asText])
+  @@index([avText])
+  @@index([ayText])
+  @@index([azText])
+  @@index([baText])
+  @@index([beText])
+  @@index([bgText])
+  @@index([bhText])
+  @@index([biText])
+  @@index([bmText])
+  @@index([bnText])
+  @@index([boText])
+  @@index([brText])
+  @@index([bsText])
+  @@index([caText])
+  @@index([ceText])
+  @@index([chText])
+  @@index([coText])
+  @@index([crText])
+  @@index([csText])
+  @@index([cuText])
+  @@index([cvText])
+  @@index([cyText])
+  @@index([daText])
+  @@index([deText])
+  @@index([dvText])
+  @@index([dzText])
+  @@index([eeText])
+  @@index([elText])
   @@index([enText])
-  @@index([koText])
-  @@index([jaText])
-  @@index([zhText])
-  @@index([uzText])
-  @@index([viText])
-  @@index([ruText])
-  @@index([kkText])
-  @@index([mnText])
-  @@index([thText])
+  @@index([eoText])
+  @@index([esText])
+  @@index([etText])
+  @@index([euText])
+  @@index([faText])
+  @@index([ffText])
+  @@index([fiText])
+  @@index([fjText])
+  @@index([foText])
+  @@index([frText])
+  @@index([fyText])
+  @@index([gaText])
+  @@index([gdText])
+  @@index([glText])
+  @@index([gnText])
+  @@index([guText])
+  @@index([gvText])
+  @@index([haText])
+  @@index([heText])
+  @@index([hiText])
+  @@index([hoText])
+  @@index([hrText])
+  @@index([htText])
+  @@index([huText])
+  @@index([hyText])
+  @@index([hzText])
+  @@index([iaText])
   @@index([idText])
+  @@index([ieText])
+  @@index([igText])
+  @@index([iiText])
+  @@index([ikText])
+  @@index([ioText])
+  @@index([isText])
+  @@index([itText])
+  @@index([iuText])
+  @@index([jaText])
+  @@index([jvText])
+  @@index([kaText])
+  @@index([kgText])
+  @@index([kiText])
+  @@index([kjText])
+  @@index([kkText])
+  @@index([klText])
+  @@index([kmText])
+  @@index([knText])
+  @@index([koText])
+  @@index([krText])
+  @@index([ksText])
+  @@index([kuText])
+  @@index([kvText])
+  @@index([kwText])
+  @@index([kyText])
+  @@index([laText])
+  @@index([lbText])
+  @@index([lgText])
+  @@index([liText])
+  @@index([lnText])
+  @@index([loText])
+  @@index([ltText])
+  @@index([luText])
+  @@index([lvText])
+  @@index([mgText])
+  @@index([mhText])
+  @@index([miText])
+  @@index([mkText])
+  @@index([mlText])
+  @@index([mnText])
+  @@index([mrText])
+  @@index([msText])
+  @@index([mtText])
+  @@index([myText])
+  @@index([naText])
+  @@index([nbText])
+  @@index([ndText])
+  @@index([neText])
+  @@index([ngText])
+  @@index([nlText])
+  @@index([nnText])
+  @@index([noText])
+  @@index([nrText])
+  @@index([nvText])
+  @@index([nyText])
+  @@index([ocText])
+  @@index([ojText])
+  @@index([omText])
+  @@index([orText])
+  @@index([osText])
+  @@index([paText])
+  @@index([piText])
+  @@index([plText])
+  @@index([psText])
+  @@index([ptText])
+  @@index([quText])
+  @@index([rmText])
+  @@index([rnText])
+  @@index([roText])
+  @@index([ruText])
+  @@index([rwText])
+  @@index([saText])
+  @@index([scText])
+  @@index([sdText])
+  @@index([seText])
+  @@index([sgText])
+  @@index([siText])
+  @@index([skText])
+  @@index([slText])
+  @@index([smText])
+  @@index([snText])
+  @@index([soText])
+  @@index([sqText])
+  @@index([srText])
+  @@index([ssText])
+  @@index([stText])
+  @@index([suText])
+  @@index([svText])
+  @@index([swText])
+  @@index([taText])
+  @@index([teText])
+  @@index([tgText])
+  @@index([thText])
+  @@index([tiText])
+  @@index([tkText])
+  @@index([tlText])
+  @@index([tnText])
+  @@index([toText])
+  @@index([trText])
+  @@index([tsText])
+  @@index([ttText])
+  @@index([twText])
+  @@index([tyText])
+  @@index([ugText])
+  @@index([ukText])
+  @@index([urText])
+  @@index([uzText])
+  @@index([veText])
+  @@index([viText])
+  @@index([voText])
+  @@index([waText])
+  @@index([woText])
+  @@index([xhText])
+  @@index([yiText])
+  @@index([yoText])
+  @@index([zaText])
+  @@index([zhText])
+  @@index([zuText])
 }
 
 model TranslationLog {
