@@ -11,8 +11,8 @@ ENV NODE_ENV=production
 
 FROM build AS production
 WORKDIR /app
-RUN bunx prisma generate
 RUN bunx prisma migrate deploy
+RUN bunx prisma generate
 ENV NODE_ENV=production
 CMD ["bun", "run", "start"]
 EXPOSE 8000

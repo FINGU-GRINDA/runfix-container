@@ -117,6 +117,11 @@ Redis is used for caching frequently requested translations to improve performan
 
 Contributions are welcome! Please feel free to submit a Pull Request.
 
+## Roadmap / Feature
+
+- [ ] add support for context when doing translation, context will be infered from project description
+- [ ] logging of translation, to see which translation is used and how many times
+
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.

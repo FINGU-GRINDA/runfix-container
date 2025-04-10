@@ -1,12 +1,5 @@
 import { Static, t } from "elysia";
+import { ApiKey, ApiKeyPlain } from "../../../prisma/prismabox/ApiKey";
 
-export const apiKeySchema = t.Object({
-  id: t.String(),
-  createdAt: t.Date(),
-  updatedAt: t.Date(),
-  key: t.String(),
-  usageCount: t.Number(),
-  userId: t.String(),
-});
-
-export type ApiKey = Static<typeof apiKeySchema>;
+export const BaseApiKeySchema = ApiKeyPlain;
+export type BaseApiKey = Static<typeof BaseApiKeySchema>;

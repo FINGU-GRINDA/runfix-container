@@ -5,7 +5,7 @@ export const getTranslationFromDB = async (params: {
   sourceText: string;
   sourceLanguage: string;
   targetLanguage: string;
-  userId: string;
+  projectId: string;
 }): Promise<string | null> => {
   const dbSourceLanguageCode = languageToDbCode({
     languageCode: params.sourceLanguage,
@@ -13,7 +13,7 @@ export const getTranslationFromDB = async (params: {
 
   const dbTranslation = await prisma.translation.findFirst({
     where: {
-      userId: params.userId,
+      projectId: params.projectId,
       [dbSourceLanguageCode]: params.sourceText,
     },
   });

@@ -13,7 +13,7 @@ import { rpID, rpName, origin } from "./constants";
 import { prisma } from "../../deps/prisma";
 import { HttpError } from "elysia-http-error";
 import jwt from "@elysiajs/jwt";
-import { UserRole } from "@prisma/client";
+import { OrganizationMemberRole, UserRole } from "@prisma/client";
 
 export const authAccountRouter = new Elysia({
   prefix: "/auth-accounts",
@@ -49,6 +49,23 @@ export const authAccountRouter = new Elysia({
               password: hashedPassword,
             },
           },
+          OrganizationMembers: {
+            create: {
+              role: OrganizationMemberRole.OWNER,
+              Organization: {
+                create: {
+                  name: "Default Organization",
+                  description: "Default Organization",
+                  Projects: {
+                    create: {
+                      name: "Default Project",
+                      description: "Default Project",
+                    },
+                  },
+                },
+              },
+            },
+          },
         },
       });
 
@@ -69,6 +86,7 @@ export const authAccountRouter = new Elysia({
         message: t.String(),
         userEmail: t.String(),
       }),
+      detail: "Create a new user, organizaton, and project",
     }
   )
   .post(

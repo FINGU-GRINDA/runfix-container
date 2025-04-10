@@ -8,6 +8,19 @@ generator client {
   provider = "prisma-client-js"
 }
 
+generator prismabox {
+  provider                    = "prismabox"
+  // you can optionally specify the output location. Defaults to ./prismabox
+  // if you want, you can customize the imported variable name that is used for the schemes. Defaults to "Type" which is what the standard typebox package offers
+  typeboxImportVariableName   = "t"
+  // you also can specify the dependency from which the above import should happen. This is useful if a package re-exports the typebox package and you would like to use that
+  typeboxImportDependencyName = "elysia"
+  // by default the generated schemes do not allow additional properties. You can allow them by setting this to true
+  additionalProperties        = true
+  // optionally enable the data model generation. See the data model section below for more info
+  inputModel                  = true
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -22,8 +35,8 @@ model ApiKey {
   usageCount BigInt @default(0)
 
   // relations
-  userId String
-  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Project   Project? @relation(fields: [projectId], references: [id])
+  projectId String?
 }
 
 model EmailAuth {
@@ -56,6 +69,39 @@ model PasskeyAuth {
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+enum OrganizationMemberRole {
+  ADMIN
+  MEMBER
+  OWNER
+}
+
+model OrganizationMember {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  role OrganizationMemberRole
+
+  // relations
+  User           User?         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String?
+  Organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String?
+}
+
+model Organization {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name        String
+  description String
+
+  // relations
+  OrganizationMembers OrganizationMember[]
+  Projects            Project[]
+}
+
 enum UserRole {
   USER
   ADMIN
@@ -72,12 +118,11 @@ model User {
   role           UserRole
 
   // relations
-  PasskeyAuths   PasskeyAuth[]
-  EmailAuths     EmailAuth[]
-  Sessions       Session[]
-  ApiKeys        ApiKey[]
-  Translations   Translation[]
-  TranslationLog TranslationLog[]
+  PasskeyAuths        PasskeyAuth[]
+  EmailAuths          EmailAuth[]
+  Sessions            Session[]
+  TranslationLog      TranslationLog[]
+  OrganizationMembers OrganizationMember[]
 }
 
 model Session {
@@ -93,6 +138,21 @@ model Session {
 
   userId String
   User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Project {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name        String
+  description String
+
+  // relations
+  Organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String?
+  ApiKeys        ApiKey[]
+  Translations   Translation[]
 }
 
 model Translation {
@@ -113,9 +173,10 @@ model Translation {
   idText String? // Indonesian
 
   // relations
-  User   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId String?
+  Project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  projectId String?
 
+  // indexes
   @@index([enText])
   @@index([koText])
   @@index([jaText])
@@ -127,7 +188,6 @@ model Translation {
   @@index([mnText])
   @@index([thText])
   @@index([idText])
-  @@index([userId])
 }
 
 model TranslationLog {
