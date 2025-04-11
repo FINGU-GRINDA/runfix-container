@@ -7,16 +7,56 @@ import { PrivacyPolicy } from "@/components/privacy-policy";
 import { TermsOfService } from "@/components/tos";
 import Image from "next/image";
 import Link from "next/link";
+import { serverApi } from "@/services/server";
+import { useRouter } from "next/router";
 
 export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const router = useRouter();
+  const signInWithEmail = serverApi.useMutation(
+    "post",
+    "/api/auth-sessions/create-with-email-sign-in"
+  );
+
+  const signInWithEmailHandler = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+
+    if (!formData.get("email")) {
+      throw new Error("Invalid email");
+    }
+
+    if (!formData.get("password")) {
+      throw new Error("Invalid password");
+    }
+
+    try {
+      await signInWithEmail.mutateAsync({
+        body: {
+          emailAddress: formData.get("email") as string,
+          password: formData.get("password") as string,
+        },
+      });
+
+      // Redirect to organizations page
+      console.log("Sign in successful");
+      await router.push("/organizations");
+      console.log("redirected");
+    } catch (error) {
+      console.error("Sign in error:", error);
+      // Form will remain intact with entered values if there's an error
+    }
+  };
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8">
+          <div className="p-6 md:p-8">
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
                 <h1 className="text-2xl font-bold">Welcome back</h1>
@@ -24,18 +64,39 @@ export function LoginForm({
                   Login to your Grinda Internationalization account
                 </p>
               </div>
-              <div className="grid gap-3">
-                <Label htmlFor="email">Email</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="m@example.com"
-                  required
-                />
-              </div>
+              <form
+                onSubmit={signInWithEmailHandler}
+                className="flex flex-col gap-3"
+              >
+                <div className="grid gap-3">
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    placeholder="m@example.com"
+                    required
+                  />
+                  <Label htmlFor="password">Password</Label>
+                  <Input
+                    id="password"
+                    name="password"
+                    type="password"
+                    required
+                    minLength={8}
+                    maxLength={100}
+                  />
+                </div>
+                <Button
+                  type="submit"
+                  className="w-full"
+                  disabled={signInWithEmail.isPending}
+                >
+                  {signInWithEmail.isPending ? "Signing in..." : "Sign in"}
+                </Button>
+              </form>
               <div className="grid gap-3">
                 <div className="flex items-center">
-                  <Label htmlFor="password">Password</Label>
                   <a
                     href="#"
                     className="ml-auto text-sm underline-offset-2 hover:underline"
@@ -43,11 +104,7 @@ export function LoginForm({
                     Forgot your password?
                   </a>
                 </div>
-                <Input id="password" type="password" required />
               </div>
-              <Button type="submit" className="w-full">
-                Login
-              </Button>
               <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                 <span className="bg-card text-muted-foreground relative z-10 px-2">
                   Or continue with
@@ -107,7 +164,7 @@ export function LoginForm({
                 </Link>
               </div>
             </div>
-          </form>
+          </div>
           <div className="bg-muted relative hidden md:block">
             <Image
               src="/auth/sidebox.jpeg"
@@ -122,9 +179,22 @@ export function LoginForm({
       </Card>
       <div className="text-muted-foreground text-center text-xs text-balance">
         By clicking continue, you agree to our{" "}
-        <TermsOfService trigger={<Button variant="link" className="text-xs h-auto p-0 font-normal">Terms of Service</Button>} />{" "}
+        <TermsOfService
+          trigger={
+            <Button variant="link" className="text-xs h-auto p-0 font-normal">
+              Terms of Service
+            </Button>
+          }
+        />{" "}
         and{" "}
-        <PrivacyPolicy trigger={<Button variant="link" className="text-xs h-auto p-0 font-normal">Privacy Policy</Button>} />.
+        <PrivacyPolicy
+          trigger={
+            <Button variant="link" className="text-xs h-auto p-0 font-normal">
+              Privacy Policy
+            </Button>
+          }
+        />
+        .
       </div>
     </div>
   );
