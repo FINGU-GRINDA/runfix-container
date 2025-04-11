@@ -189,6 +189,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   const parsedOrganizations =
     dataOrganizations?.map((organization) => ({
+      id: organization.id,
       name: organization.name,
       logo: GalleryVerticalEnd,
       plan: "Free",
@@ -197,7 +198,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const parsedProjects =
     dataProjects?.map((project) => ({
       name: project.name,
-      url: `#`,
+      url: `/organizations/${project.organizationId}/projects/${project.id}`,
       icon: Frame,
     })) ?? [];
 

@@ -77,6 +77,7 @@ export const organizationRouter = new Elysia({
           OrganizationMembers: {
             create: {
               role: OrganizationMemberRole.OWNER,
+              userId: ctx.user.id,
             },
           },
         },
