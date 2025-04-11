@@ -24,6 +24,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar";
 import { serverApi } from "@/services/server";
+import { useRouter } from "next/router";
 
 // This is sample data.
 const data = {
@@ -156,6 +157,9 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const router = useRouter();
+  const organizationId = router.query.id;
+
   const { data: dataUser } = serverApi.useQuery(
     "get",
     "/api/auth-sessions/who-am-i"
@@ -180,11 +184,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     {
       params: {
         query: {
-          organizationId: dataOrganizations?.[0]?.id as string,
+          organizationId: organizationId as string,
         },
       },
     },
-    { enabled: !!dataOrganizations && !!dataOrganizations[0]?.id }
+    { enabled: !!organizationId }
   );
 
   const parsedOrganizations =
