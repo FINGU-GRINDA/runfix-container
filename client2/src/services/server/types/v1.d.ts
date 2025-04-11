@@ -212,6 +212,38 @@ export interface paths {
         patch: operations["patchApiOrganizationsById"];
         trace?: never;
     };
+    "/api/organization-members": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["getApiOrganization-members"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/organization-members/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["deleteApiOrganization-membersById"];
+        options?: never;
+        head?: never;
+        patch: operations["patchApiOrganization-membersById"];
+        trace?: never;
+    };
     "/api/projects": {
         parameters: {
             query?: never;
@@ -1283,6 +1315,150 @@ export interface operations {
                         name: string;
                         description: string;
                     };
+                };
+            };
+        };
+    };
+    "getApiOrganization-members": {
+        parameters: {
+            query: {
+                organizationId: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        id: string;
+                        createdAt: Record<string, never> | string | number;
+                        updatedAt: Record<string, never> | string | number;
+                        role: "ADMIN" | "MEMBER" | "OWNER";
+                        userId: null | string;
+                        organizationId: null | string;
+                    }[];
+                    "multipart/form-data": {
+                        id: string;
+                        createdAt: Record<string, never> | string | number;
+                        updatedAt: Record<string, never> | string | number;
+                        role: "ADMIN" | "MEMBER" | "OWNER";
+                        userId: null | string;
+                        organizationId: null | string;
+                    }[];
+                    "text/plain": {
+                        id: string;
+                        createdAt: Record<string, never> | string | number;
+                        updatedAt: Record<string, never> | string | number;
+                        role: "ADMIN" | "MEMBER" | "OWNER";
+                        userId: null | string;
+                        organizationId: null | string;
+                    }[];
+                };
+            };
+        };
+    };
+    "deleteApiOrganization-membersById": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        id: string;
+                        createdAt: Record<string, never> | string | number;
+                        updatedAt: Record<string, never> | string | number;
+                        role: "ADMIN" | "MEMBER" | "OWNER";
+                        userId: null | string;
+                        organizationId: null | string;
+                    } | null;
+                    "multipart/form-data": {
+                        id: string;
+                        createdAt: Record<string, never> | string | number;
+                        updatedAt: Record<string, never> | string | number;
+                        role: "ADMIN" | "MEMBER" | "OWNER";
+                        userId: null | string;
+                        organizationId: null | string;
+                    } | null;
+                    "text/plain": {
+                        id: string;
+                        createdAt: Record<string, never> | string | number;
+                        updatedAt: Record<string, never> | string | number;
+                        role: "ADMIN" | "MEMBER" | "OWNER";
+                        userId: null | string;
+                        organizationId: null | string;
+                    } | null;
+                };
+            };
+        };
+    };
+    "patchApiOrganization-membersById": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": {
+                    role: "ADMIN" | "MEMBER" | "OWNER";
+                };
+                "multipart/form-data": {
+                    role: "ADMIN" | "MEMBER" | "OWNER";
+                };
+                "text/plain": {
+                    role: "ADMIN" | "MEMBER" | "OWNER";
+                };
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        id: string;
+                        createdAt: Record<string, never> | string | number;
+                        updatedAt: Record<string, never> | string | number;
+                        role: "ADMIN" | "MEMBER" | "OWNER";
+                        userId: null | string;
+                        organizationId: null | string;
+                    } | null;
+                    "multipart/form-data": {
+                        id: string;
+                        createdAt: Record<string, never> | string | number;
+                        updatedAt: Record<string, never> | string | number;
+                        role: "ADMIN" | "MEMBER" | "OWNER";
+                        userId: null | string;
+                        organizationId: null | string;
+                    } | null;
+                    "text/plain": {
+                        id: string;
+                        createdAt: Record<string, never> | string | number;
+                        updatedAt: Record<string, never> | string | number;
+                        role: "ADMIN" | "MEMBER" | "OWNER";
+                        userId: null | string;
+                        organizationId: null | string;
+                    } | null;
                 };
             };
         };
