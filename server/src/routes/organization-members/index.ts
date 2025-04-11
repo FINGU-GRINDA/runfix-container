@@ -8,6 +8,7 @@ import { UpdateOrganizationMemberSchema } from "./models";
 
 export const organizationMemberRouter = new Elysia({
   prefix: "/organization-members",
+  tags: ["organization-members"],
 })
   .use(authenticateUser)
   .get(
