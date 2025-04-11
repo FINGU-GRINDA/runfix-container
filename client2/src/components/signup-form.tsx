@@ -7,16 +7,71 @@ import { PrivacyPolicy } from "@/components/privacy-policy";
 import { TermsOfService } from "@/components/tos";
 import Image from "next/image";
 import Link from "next/link";
+import { serverApi } from "@/services/server";
+import { useRouter } from "next/router";
 
 export function SignupForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const router = useRouter();
+  const emailSignUp = serverApi.useMutation(
+    "post",
+    "/api/auth-accounts/create-with-email"
+  );
+
+  const emailSignUpHandler = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.currentTarget);
+
+    if (!formData.get("firstName")) {
+      throw new Error("Invalid first name");
+    }
+
+    if (!formData.get("lastName")) {
+      throw new Error("Invalid last name");
+    }
+
+    if (!formData.get("email")) {
+      throw new Error("Invalid email");
+    }
+
+    if (!formData.get("password")) {
+      throw new Error("Invalid password");
+    }
+
+    if (!formData.get("confirmPassword")) {
+      throw new Error("Invalid confirm password");
+    }
+
+    if (formData.get("password") !== formData.get("confirmPassword")) {
+      throw new Error("Passwords do not match");
+    }
+
+    try {
+      await emailSignUp.mutateAsync({
+        body: {
+          firstName: formData.get("firstName") as string,
+          lastName: formData.get("lastName") as string,
+          emailAddress: formData.get("email") as string,
+          password: formData.get("password") as string,
+          confirmPassword: formData.get("confirmPassword") as string,
+        },
+      });
+
+      // redirect to signin page
+      await router.push("/auth/sign-in");
+    } catch (error) {
+      console.error("Sign up error:", error);
+      // Form will remain intact with entered values if there's an error
+    }
+  };
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="overflow-hidden p-0">
         <CardContent className="grid p-0 md:grid-cols-2">
-          <form className="p-6 md:p-8">
+          <form className="p-6 md:p-8" onSubmit={emailSignUpHandler}>
             <div className="flex flex-col gap-6">
               <div className="flex flex-col items-center text-center">
                 <h1 className="text-2xl font-bold">Create an account</h1>
@@ -29,6 +84,7 @@ export function SignupForm({
                   <Label htmlFor="firstName">First Name</Label>
                   <Input
                     id="firstName"
+                    name="firstName"
                     type="text"
                     placeholder="John"
                     required
@@ -36,13 +92,20 @@ export function SignupForm({
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="lastName">Last Name</Label>
-                  <Input id="lastName" type="text" placeholder="Doe" required />
+                  <Input
+                    id="lastName"
+                    name="lastName"
+                    type="text"
+                    placeholder="Doe"
+                    required
+                  />
                 </div>
               </div>
               <div className="grid gap-3">
                 <Label htmlFor="email">Email</Label>
                 <Input
                   id="email"
+                  name="email"
                   type="email"
                   placeholder="m@example.com"
                   required
@@ -50,14 +113,25 @@ export function SignupForm({
               </div>
               <div className="grid gap-3">
                 <Label htmlFor="password">Password</Label>
-                <Input id="password" type="password" required />
+                <Input id="password" name="password" type="password" required />
               </div>
               <div className="grid gap-3">
                 <Label htmlFor="confirmPassword">Confirm Password</Label>
-                <Input id="confirmPassword" type="password" required />
+                <Input
+                  id="confirmPassword"
+                  name="confirmPassword"
+                  type="password"
+                  minLength={8}
+                  maxLength={100}
+                  required
+                />
               </div>
-              <Button type="submit" className="w-full">
-                Sign Up
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={emailSignUp.isPending}
+              >
+                {emailSignUp.isPending ? "Signing up..." : "Sign Up"}
               </Button>
               <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                 <span className="bg-card text-muted-foreground relative z-10 px-2">
@@ -133,9 +207,22 @@ export function SignupForm({
       </Card>
       <div className="text-muted-foreground text-center text-xs text-balance">
         By clicking sign up, you agree to our{" "}
-        <TermsOfService trigger={<Button variant="link" className="text-xs h-auto p-0 font-normal">Terms of Service</Button>} />{" "}
+        <TermsOfService
+          trigger={
+            <Button variant="link" className="text-xs h-auto p-0 font-normal">
+              Terms of Service
+            </Button>
+          }
+        />{" "}
         and{" "}
-        <PrivacyPolicy trigger={<Button variant="link" className="text-xs h-auto p-0 font-normal">Privacy Policy</Button>} />.
+        <PrivacyPolicy
+          trigger={
+            <Button variant="link" className="text-xs h-auto p-0 font-normal">
+              Privacy Policy
+            </Button>
+          }
+        />
+        .
       </div>
     </div>
   );
