@@ -1,4 +1,4 @@
-import * as React from "react"
+import * as React from "react";
 import {
   AudioWaveform,
   BookOpen,
@@ -10,19 +10,20 @@ import {
   PieChart,
   Settings2,
   SquareTerminal,
-} from "lucide-react"
+} from "lucide-react";
 
-import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
-import { NavUser } from "@/components/nav-user"
-import { TeamSwitcher } from "@/components/team-switcher"
+import { NavMain } from "@/components/nav-main";
+import { NavProjects } from "@/components/nav-projects";
+import { NavUser } from "@/components/nav-user";
+import { TeamSwitcher } from "@/components/team-switcher";
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
+import { serverApi } from "@/services/server";
 
 // This is sample data.
 const data = {
@@ -152,22 +153,72 @@ const data = {
       icon: Map,
     },
   ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { data: dataUser } = serverApi.useQuery(
+    "get",
+    "/api/auth-sessions/who-am-i"
+  );
+
+  const { data: dataOrganizations } = serverApi.useQuery(
+    "get",
+    "/api/organizations",
+    {
+      params: {
+        query: {
+          userId: dataUser?.id as string,
+        },
+      },
+    },
+    { enabled: !!dataUser && !!dataUser.id }
+  );
+
+  const { data: dataProjects } = serverApi.useQuery(
+    "get",
+    "/api/projects",
+    {
+      params: {
+        query: {
+          organizationId: dataOrganizations?.[0]?.id as string,
+        },
+      },
+    },
+    { enabled: !!dataOrganizations && !!dataOrganizations[0]?.id }
+  );
+
+  const parsedOrganizations =
+    dataOrganizations?.map((organization) => ({
+      name: organization.name,
+      logo: GalleryVerticalEnd,
+      plan: "Free",
+    })) ?? [];
+
+  const parsedProjects =
+    dataProjects?.map((project) => ({
+      name: project.name,
+      url: `#`,
+      icon: Frame,
+    })) ?? [];
+
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <TeamSwitcher teams={parsedOrganizations} />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
+        <NavProjects projects={parsedProjects} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser
+          user={{
+            avatar: dataUser?.profilePicture ?? "",
+            name: `${dataUser?.firstName} ${dataUser?.lastName}`,
+          }}
+        />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }
