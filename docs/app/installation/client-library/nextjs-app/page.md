@@ -36,7 +36,7 @@ export default function Translator({
 }) {
   const cookies = useCookies();
   const path = usePathname();
-  // get user language and default to english if none is found
+  // get user language from locale and default to english if none is found
   const userLanguage = cookies.get("NEXT_LOCALE") ?? "en";
 
 	useEffect(() => {
