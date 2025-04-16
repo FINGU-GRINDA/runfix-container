@@ -27,6 +27,7 @@ create this file `components/translator-layout.tsx`
 import { useEffect } from "react";
 import { translateAndFit, getGrindaTranslateFn } from "runfix-container";
 import { useCookies } from 'next-client-cookies';
+import { usePathname } from "next/navigation";
 
 export default function Translator({
 	children,
@@ -34,7 +35,7 @@ export default function Translator({
 	children: React.ReactNode;
 }) {
   const cookies = useCookies();
-
+  const path = usePathname();
   // get user language and default to english if none is found
   const userLanguage = cookies.get("NEXT_LOCALE") ?? "en";
 
@@ -65,12 +66,10 @@ export default function Translator({
 				},
 			});
 
-			// Update the html lang attribute
-			document.querySelector("html")?.setAttribute("lang", parsedUserLanguage);
 		};
 
 		startTranslation();
-	}, [parsedUserLanguage]);
+	}, [parsedUserLanguage, path]);
 
 	return <>{children}</>;
 }
@@ -148,6 +147,7 @@ export const translateAndFitParams = {
   translateConfig: {
     skipTranslateClass: "skip-translate",
     translateFn: translateTextWithGoogle,
+    skipTranslateTagNames: ["PRE", "CODE", "TEXTAREA", "SELECT", "INPUT", "SCRIPT", "SPAN"],
   },
 };
 
