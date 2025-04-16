@@ -16,7 +16,7 @@ A robust REST API server for translation management.
 - **Documentation**: [Server README](./server/README.md)
 - **API Documentation**: [Swagger UI](https://hana-i18n.198.23.164.177.sslip.io/docs)
 
-### 2. Client: RunFix Container npm Package
+### 2. Client-library / package : RunFix Container npm Package
 
 A browser-compatible package for integrating remote translation capabilities.
 
@@ -24,7 +24,7 @@ A browser-compatible package for integrating remote translation capabilities.
 - **Documentation**: [Client README](./client/README.md)
 - **Installation**: `npm install @runfix/container` or add script tag to html `<script src="https://cdn.jsdelivr.net/npm/@runfix/container"></script>`
 
-### 3. Dashboard UI
+### 3. Dashboard UI - Roadmap
 
 Administrative interface for the remote translation server _(In Progress)_ / ROADMAP.
 
@@ -34,7 +34,7 @@ Administrative interface for the remote translation server _(In Progress)_ / ROA
 
 ### 4. NextJS Test Application
 
-A demonstration application showcasing the integration of RunFix Container.
+A demonstration application showcasing the integration of RunFix Container. [demo repo](./demo/README.md)
 
 - **Purpose**: Example implementation using NextJS (Page Router)
 - **Documentation**: [Test App README](./test/README.md)
