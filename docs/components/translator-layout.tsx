@@ -19,14 +19,17 @@ export default function Translator({
 		const currentLanguage = document
 			.querySelector("html")
 			?.getAttribute("lang");
-		if (!currentLanguage || !targetLanguage) return;
-		if (currentLanguage === targetLanguage) return;
+		const parsedTargetLanguage = targetLanguage
+			? targetLanguage.toLowerCase().split("-")[0]
+			: "en";
+		if (!currentLanguage || !parsedTargetLanguage) return;
+		if (currentLanguage === parsedTargetLanguage) return;
 
-		console.log("language", currentLanguage, targetLanguage);
+		console.log("language", currentLanguage, parsedTargetLanguage);
 		const startTranslation = async () => {
 			await translateAndFit({
 				sourceLanguage: currentLanguage,
-				targetLanguage: targetLanguage,
+				targetLanguage: parsedTargetLanguage,
 				fitConfig: {
 					addOverflowBreak: true,
 				},
@@ -41,7 +44,9 @@ export default function Translator({
 			});
 
 			// Update the html lang attribute
-			document.querySelector("html")?.setAttribute("lang", targetLanguage);
+			document
+				.querySelector("html")
+				?.setAttribute("lang", parsedTargetLanguage);
 			console.log("translated");
 		};
 
