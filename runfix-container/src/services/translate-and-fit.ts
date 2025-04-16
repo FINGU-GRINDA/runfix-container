@@ -17,6 +17,7 @@ export const translateAndFitParams = {
   translateConfig: {
     skipTranslateClass: "skip-translate",
     translateFn: translateTextWithGoogle,
+    skipTranslateTagNames: ["PRE", "CODE", "TEXTAREA", "SELECT", "INPUT", "SCRIPT", "SPAN"],
   },
 };
 
@@ -49,9 +50,11 @@ export const translateAndFit = async (userParams?: TranslateAndFitParams) => {
     if (element.classList.contains(params.translateConfig.skipTranslateClass)) {
       continue;
     }
-    if (element.tagName === "PRE") {
+    if (params.translateConfig.skipTranslateTagNames.includes(element.tagName)) {
       continue;
     }
+    console.log("translating", element.tagName);
+    console.log("text", element.textContent);
     translationTasks.push(
       translateElement({
         element: element,

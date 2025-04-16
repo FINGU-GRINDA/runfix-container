@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 import { translateAndFit, getGrindaTranslateFn } from "runfix-container";
 import { useCookies } from "next-client-cookies";
+import { usePathname } from "next/navigation";
 
 export default function Translator({
 	children,
@@ -11,8 +12,11 @@ export default function Translator({
 }) {
 	const cookies = useCookies();
 	const targetLanguage = cookies.get("NEXT_LOCALE");
+	const path = usePathname();
+	console.log("path", path);
 	console.log("target language", targetLanguage);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		if (!window.document) return;
 
@@ -44,14 +48,14 @@ export default function Translator({
 			});
 
 			// Update the html lang attribute
-			document
-				.querySelector("html")
-				?.setAttribute("lang", parsedTargetLanguage);
+			// document
+			// 	.querySelector("html")
+			// 	?.setAttribute("lang", parsedTargetLanguage);
 			console.log("translated");
 		};
 
 		startTranslation();
-	}, [targetLanguage]);
+	}, [targetLanguage, path]);
 
 	return <>{children}</>;
 }
