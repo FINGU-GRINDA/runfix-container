@@ -1,4 +1,7 @@
 {
+	"name": "runfix-container-doc",
+	"version": "0.1.0",
+	"private": true,
 	"dependencies": {
 		"@formatjs/intl-localematcher": "^0.6.1",
 		"@radix-ui/react-accordion": "^1.2.4",
