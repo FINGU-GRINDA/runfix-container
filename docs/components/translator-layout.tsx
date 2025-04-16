@@ -2,16 +2,15 @@
 
 import { useEffect } from "react";
 import { translateAndFit, getGrindaTranslateFn } from "runfix-container";
-import { useCookies } from "next-client-cookies";
 import { usePathname } from "next/navigation";
+import getUserLocale from "get-user-locale";
 
 export default function Translator({
 	children,
 }: {
 	children: React.ReactNode;
 }) {
-	const cookies = useCookies();
-	const targetLanguage = cookies.get("NEXT_LOCALE");
+	const targetLanguage = getUserLocale();
 	const path = usePathname();
 	console.log("path", path);
 	console.log("target language", targetLanguage);
