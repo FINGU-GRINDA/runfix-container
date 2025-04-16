@@ -20,7 +20,7 @@
 		"dev": "next",
 		"build": "next build",
 		"start": "next start",
-		"postbuild": "pagefind --site .next/server/app --output-path out/_pagefind"
+		"postbuild": "pagefind --site .next/server --output-path out/_pagefind"
 	},
 	"devDependencies": {
 		"@types/node": "22.14.1",
