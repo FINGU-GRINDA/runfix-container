@@ -109,6 +109,18 @@ Redis is used for caching frequently requested translations to improve performan
 - Distributed caching enables horizontal scaling
 - Cache invalidation occurs on new translations or updates
 
+## Admin dashboard
+Currently client app for this api is not developed. To edit translation (as admin), you can use prisma studio.
+
+```bash
+bunx prisma generate
+bunx prisma studio
+```
+![prisma studio ui](image.png)
+![translation ui](image-1.png)
+
+here you can edit / correct the translations
+
 ## Performance Considerations
 
 - The server is built on Bun and Elysia.js for maximum performance
