@@ -10,4 +10,4 @@ bunx prisma studio
 
 here you can edit / correct the translations
 
-![prisma studio](image.png)
+![prisma studio](./image.png)
