@@ -1,16 +1,21 @@
-# NextJS pages router
+# NextJS app router
 
 ## Installation
 
-add `runfix-container` and `nuqs` package
+add `runfix-container` package `next-client-cookies` package
 
 ```bash
-npm install runfix-container nuqs
+npm install runfix-container next-client-cookies
 ```
-Finish setting up nuqs if you haven't, this enable typesafe url query state management - optional.
+On your app/layout.tsx file, add the CookiesProvider:
 
-[nuqs-setup](https://nuqs.47ng.com/docs/adapters)
+```tsx
+import { CookiesProvider } from 'next-client-cookies/server';
 
+export default function RootLayout({ children }) {
+  return <CookiesProvider>{children}</CookiesProvider>;
+}
+```
 on your layout component that is rendered on the client, add this
 
 
@@ -19,34 +24,35 @@ create this file `components/translator-layout.tsx`
 ```tsx
 "use client";
 
-import { parseAsString, useQueryState } from "nuqs";
 import { useEffect } from "react";
 import { translateAndFit, getGrindaTranslateFn } from "runfix-container";
+import { useCookies } from 'next-client-cookies';
 
 export default function Translator({
 	children,
 }: {
 	children: React.ReactNode;
 }) {
-	// Use nuqs for query state management
-	const [langParam, setLangParam] = useQueryState(
-		"lang",
-		parseAsString.withDefault("ko"),
-	);
+  const cookies = useCookies();
+
+  // get user language and default to english if none is found
+  const userLanguage = cookies.get("NEXT_LOCALE") ?? "en";
 
 	useEffect(() => {
 		if (!window.document) return;
 
+    const parsedUserLanguage = userLanguage.toLowerCase().split("-")[0];
+
 		const currentLanguage = document
 			.querySelector("html")
 			?.getAttribute("lang");
-		if (!currentLanguage || !langParam) return;
-		if (currentLanguage === langParam) return;
+		if (!currentLanguage || !parsedUserLanguage) return;
+		if (currentLanguage === parsedUserLanguage) return;
 
 		const startTranslation = async () => {
 			await translateAndFit({
 				sourceLanguage: currentLanguage,
-				targetLanguage: langParam,
+				targetLanguage: parsedUserLanguage,
 				fitConfig: {
 					addOverflowBreak: true,
 				},
@@ -60,11 +66,11 @@ export default function Translator({
 			});
 
 			// Update the html lang attribute
-			document.querySelector("html")?.setAttribute("lang", langParam);
+			document.querySelector("html")?.setAttribute("lang", parsedUserLanguage);
 		};
 
 		startTranslation();
-	}, [langParam]);
+	}, [parsedUserLanguage]);
 
 	return <>{children}</>;
 }
@@ -88,7 +94,7 @@ export default async function RootLayout({ children }) {
 				{/* Your additional tags should be passed as `children` of `<Head>` element */}
 			</Head>
 			<body>
-				<NuqsAdapter>
+				<CookiesProvider>
 					<Translator>
 						<Layout
 							banner={banner}
@@ -106,7 +112,7 @@ export default async function RootLayout({ children }) {
 							{children}
 						</Layout>
 					</Translator>
-				</NuqsAdapter>
+				</CookiesProvider>
 			</body>
 		</html>
 	);
@@ -115,12 +121,12 @@ export default async function RootLayout({ children }) {
 
 What does it do ?
 
-- it will translate the whole doc every time the language changes (query param `?lang=xx`)
+- it will translate the whole html to target language
 - it will deduct the source language based on
     - html lang attribute
 - it will deduct target language based on
-    - query param `?lang=xx`
-    - default to `ko`
+    - cookie `NEXT_LOCALE`
+    - default to `en`
 - it will add overflow break to prevent text overflow
 - it will check for existing overflow, and diff it after translation
 - it will group scale the translated text to prevent overflow
