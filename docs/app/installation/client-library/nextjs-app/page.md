@@ -2,26 +2,21 @@
 
 ## Installation
 
-add `runfix-container` package `next-client-cookies` package
+add `runfix-container` package `get-user-locale` package
 
 ```bash
-npm install runfix-container next-client-cookies
+npm install runfix-container get-user-locale
 ```
 On your app/layout.tsx file, add the CookiesProvider:
 
-```tsx
-import { CookiesProvider } from 'next-client-cookies/server';
 
-export default function RootLayout({ children }) {
-  return <CookiesProvider>{children}</CookiesProvider>;
-}
-```
 on your layout component that is rendered on the client, add this
 
 
-create this file `components/translator-layout.tsx`
+create this file `components/translator.tsx`
 
-```tsx
+
+```tsx filename="components/translator.tsx"
 "use client";
 
 import { useEffect } from "react";
@@ -102,25 +97,23 @@ export default async function RootLayout({ children }) {
 				{/* Your additional tags should be passed as `children` of `<Head>` element */}
 			</Head>
 			<body>
-				<CookiesProvider>
-					<Translator>
-						<Layout
-							banner={banner}
-							navbar={navbar}
-							pageMap={await getPageMap()}
-							docsRepositoryBase="https://github.com/FINGU-GRINDA/runfix-container/tree/main/docs"
-							feedback={{
-								content:
-									"https://github.com/FINGU-GRINDA/runfix-container/issues",
-								labels: "bug",
-							}}
-							footer={footer}
-							// ... Your additional layout options
-						>
-							{children}
-						</Layout>
-					</Translator>
-				</CookiesProvider>
+				<Translator>
+					<Layout
+						banner={banner}
+						navbar={navbar}
+						pageMap={await getPageMap()}
+						docsRepositoryBase="https://github.com/FINGU-GRINDA/runfix-container/tree/main/docs"
+						feedback={{
+							content:
+								"https://github.com/FINGU-GRINDA/runfix-container/issues",
+							labels: "bug",
+						}}
+						footer={footer}
+						// ... Your additional layout options
+					>
+						{children}
+					</Layout>
+				</Translator>
 			</body>
 		</html>
 	);
@@ -133,7 +126,7 @@ What does it do ?
 - it will deduct the source language based on
     - html lang attribute
 - it will deduct target language based on
-    - cookie `NEXT_LOCALE`
+    - `get-user-locale` package
     - default to `en`
 - it will add overflow break to prevent text overflow
 - it will check for existing overflow, and diff it after translation
