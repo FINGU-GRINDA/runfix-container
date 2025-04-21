@@ -1,0 +1,28 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["prismaSchemaFolder"]
+}
+
+generator prismabox {
+  provider                    = "prismabox"
+  // you can optionally specify the output location. Defaults to ./prismabox
+  // if you want, you can customize the imported variable name that is used for the schemes. Defaults to "Type" which is what the standard typebox package offers
+  typeboxImportVariableName   = "t"
+  // you also can specify the dependency from which the above import should happen. This is useful if a package re-exports the typebox package and you would like to use that
+  typeboxImportDependencyName = "elysia"
+  // by default the generated schemes do not allow additional properties. You can allow them by setting this to true
+  additionalProperties        = true
+  // optionally enable the data model generation. See the data model section below for more info
+  inputModel                  = true
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}

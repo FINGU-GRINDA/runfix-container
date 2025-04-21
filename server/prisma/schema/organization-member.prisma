@@ -1,0 +1,22 @@
+enum OrganizationMemberRole {
+  ADMIN
+  MEMBER
+  OWNER
+}
+
+model OrganizationMember {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  role OrganizationMemberRole
+
+  // relations
+  User           User?         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId         String?
+  Organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String?
+
+  @@index([userId])
+  @@index([organizationId])
+}

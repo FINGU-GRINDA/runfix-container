@@ -1,0 +1,19 @@
+model PasskeyAuth {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  publicKey        Bytes     @unique
+  webAuthnUserId   String
+  counter          Int
+  deviceType       String    @db.VarChar(32)
+  backedUpAt       DateTime?
+  isBackupEligible Boolean?
+  transports       String
+
+  // relations
+  userId String?
+  User   User?   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
