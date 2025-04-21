@@ -4,7 +4,6 @@ import { HttpError } from "elysia-http-error";
 import { prisma } from "../deps/prisma";
 import { UserPlain } from "../../prisma/prismabox/User";
 import { ProjectPlain } from "../../prisma/prismabox/Project";
-import { Project } from "@prisma/client";
 
 export const SessionUserSchema = UserPlain;
 
@@ -15,106 +14,106 @@ export const SessionProjectSchema = ProjectPlain;
 export type SessionProject = Static<typeof SessionProjectSchema>;
 
 export const tokenSessionPlugin = new Elysia()
-  .guard({
-    cookie: t.Object({
-      session: t.Optional(t.String()),
-    }),
-  })
-  .as("plugin");
+	.guard({
+		cookie: t.Object({
+			session: t.Optional(t.String()),
+		}),
+	})
+	.as("plugin");
 
 export const authenticateUser = new Elysia({
-  name: "authenticateUser",
+	name: "authenticateUser",
 })
-  .use(tokenSessionPlugin)
-  .use(
-    jwt({
-      name: "jwt",
-      secret: process.env.JWT_SECRET!,
-    })
-  )
-  .resolve(async (ctx) => {
-    if (!ctx.cookie.session.value) {
-      return {
-        user: undefined,
-      };
-    }
+	.use(tokenSessionPlugin)
+	.use(
+		jwt({
+			name: "jwt",
+			secret: process.env.JWT_SECRET!,
+		}),
+	)
+	.resolve(async (ctx) => {
+		if (!ctx.cookie.session.value) {
+			return {
+				user: undefined,
+			};
+		}
 
-    const decodedToken = await ctx.jwt.verify(ctx.cookie.session.value);
+		const decodedToken = await ctx.jwt.verify(ctx.cookie.session.value);
 
-    if (!decodedToken) {
-      throw HttpError.Unauthorized("Invalid token");
-    }
+		if (!decodedToken) {
+			throw HttpError.Unauthorized("Invalid token");
+		}
 
-    if (!decodedToken.sub) {
-      throw HttpError.Unauthorized("Invalid token");
-    }
+		if (!decodedToken.sub) {
+			throw HttpError.Unauthorized("Invalid token");
+		}
 
-    const user = JSON.parse(decodedToken.sub) as SessionUser;
+		const user = JSON.parse(decodedToken.sub) as SessionUser;
 
-    return {
-      user: user,
-    };
-  })
-  .as("plugin");
+		return {
+			user: user,
+		};
+	})
+	.as("plugin");
 
 export const apiKeyPlugin = new Elysia()
-  .guard({
-    headers: t.Object({
-      "api-key": t.String(),
-    }),
-  })
-  .as("plugin");
+	.guard({
+		headers: t.Object({
+			"api-key": t.String(),
+		}),
+	})
+	.as("plugin");
 
 export const authenticateApiKeyProject = new Elysia({
-  name: "authenticateApiKeyProject",
+	name: "authenticateApiKeyProject",
 })
-  .use(apiKeyPlugin)
-  .use(
-    jwt({
-      name: "jwt",
-      secret: process.env.JWT_SECRET!,
-    })
-  )
-  .resolve(async (ctx) => {
-    const token = ctx.headers["api-key"];
+	.use(apiKeyPlugin)
+	.use(
+		jwt({
+			name: "jwt",
+			secret: process.env.JWT_SECRET!,
+		}),
+	)
+	.resolve(async (ctx) => {
+		const token = ctx.headers["api-key"];
 
-    if (!token) {
-      throw HttpError.Unauthorized("Missing API key");
-    }
+		if (!token) {
+			throw HttpError.Unauthorized("Missing API key");
+		}
 
-    const decodedToken = await ctx.jwt.verify(token);
+		const decodedToken = await ctx.jwt.verify(token);
 
-    if (!decodedToken) {
-      throw HttpError.Unauthorized("Invalid API key");
-    }
+		if (!decodedToken) {
+			throw HttpError.Unauthorized("Invalid API key");
+		}
 
-    if (!decodedToken.sub) {
-      throw HttpError.Unauthorized("Invalid API key");
-    }
+		if (!decodedToken.sub) {
+			throw HttpError.Unauthorized("Invalid API key");
+		}
 
-    const project = JSON.parse(decodedToken.sub) as SessionProject;
+		const project = JSON.parse(decodedToken.sub) as SessionProject;
 
-    return {
-      project: project,
-    };
-  })
-  .onAfterResponse(async (ctx) => {
-    const token = ctx.headers["api-key"];
+		return {
+			project: project,
+		};
+	})
+	.onAfterResponse(async (ctx) => {
+		const token = ctx.headers["api-key"];
 
-    if (!token) {
-      throw HttpError.Unauthorized("Missing API key");
-    }
+		if (!token) {
+			throw HttpError.Unauthorized("Missing API key");
+		}
 
-    // increment api key usage
-    await prisma.apiKey.update({
-      where: {
-        key: token,
-      },
-      data: {
-        usageCount: {
-          increment: 1,
-        },
-      },
-    });
-  })
-  .as("plugin");
+		// increment api key usage
+		await prisma.apiKey.update({
+			where: {
+				key: token,
+			},
+			data: {
+				usageCount: {
+					increment: 1,
+				},
+			},
+		});
+	})
+	.as("plugin");

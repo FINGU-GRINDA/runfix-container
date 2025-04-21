@@ -1,11 +1,11 @@
-import { getAllElementsToBeTranslated } from "../utils/get-all-elements-to-be-translated.ts";
 import { getSortedUniqueContainerWithOverflow } from "../utils/get-unique-container-with-overflow.ts";
 import { textFitter } from "../utils/text-fitter.ts";
-import { translateElement } from "../utils/translate-element.ts";
 import { translateTextWithGoogle } from "../utils/translate-text.ts";
 import { mergeWithDefaults } from "../types/type-utils.ts";
 import type { DeepPartial } from "../types/type-utils.ts";
 import { waitForDOMLoad } from "../utils/wait-for-DOM-load.ts";
+import { getAllTextNodesToBeTranslated } from "../utils/get-all-text-nodes-to-be-translated.ts";
+import { translateTextNode } from "../utils/translate-text-node.ts";
 
 export const translateAndFitParams = {
   sourceLanguage: "en",
@@ -17,7 +17,7 @@ export const translateAndFitParams = {
   translateConfig: {
     skipTranslateClass: "skip-translate",
     translateFn: translateTextWithGoogle,
-    skipTranslateTagNames: ["PRE", "CODE", "TEXTAREA", "SELECT", "INPUT", "SCRIPT", "SPAN"],
+    skipTranslateTagNames: ["PRE", "CODE", "SCRIPT"],
   },
 };
 
@@ -35,29 +35,23 @@ export const translateAndFit = async (userParams?: TranslateAndFitParams) => {
   // Now we can safely use params without null checks since all values have defaults
   await waitForDOMLoad();
 
-  const elementsToTranslate = getAllElementsToBeTranslated({
+  const textNodesToBeTranslated = getAllTextNodesToBeTranslated({
     skipClass: params.translateConfig.skipTranslateClass,
+    skipTagNames: params.translateConfig.skipTranslateTagNames,
   });
 
   // keep record of original containers with overflow
   const originalUniqueContainerWithOverflow = getSortedUniqueContainerWithOverflow({
-    elements: elementsToTranslate,
+    elements: Array.from(document.querySelector("body")?.querySelectorAll("*") || []),
   });
 
   // Then translate the content
   const translationTasks = [];
-  for (const element of elementsToTranslate) {
-    if (element.classList.contains(params.translateConfig.skipTranslateClass)) {
-      continue;
-    }
-    if (params.translateConfig.skipTranslateTagNames.includes(element.tagName)) {
-      continue;
-    }
-    console.log("translating", element.tagName);
-    console.log("text", element.textContent);
+  for (const textNode of textNodesToBeTranslated) {
+    if (!textNode.textContent) continue;
     translationTasks.push(
-      translateElement({
-        element: element,
+      translateTextNode({
+        textNode: textNode,
         sourceLanguage: params.sourceLanguage,
         targetLanguage: params.targetLanguage,
         translateFn: params.translateConfig.translateFn,
@@ -74,11 +68,19 @@ export const translateAndFit = async (userParams?: TranslateAndFitParams) => {
 
   // narrow down search to elements that we will modify, we won't modify elements that have existing overflow
   const uniqueContainerWithOverflow = getSortedUniqueContainerWithOverflow({
-    elements: elementsToTranslate,
+    elements: Array.from(document.querySelector("body")?.querySelectorAll("*") || []),
   })
     .filter((container: HTMLElement) => !originalUniqueContainerWithOverflowSet.has(container))
     .filter(
       (container: HTMLElement) => !container.classList.contains(params.fitConfig.skipFitClass)
+    )
+    .filter(
+      (container: HTMLElement) =>
+        !container.classList.contains(params.translateConfig.skipTranslateClass)
+    )
+    .filter(
+      (container: HTMLElement) =>
+        !params.translateConfig.skipTranslateTagNames.includes(container.tagName)
     )
     .map((container: HTMLElement) => {
       if (params.fitConfig.addOverflowBreak) {

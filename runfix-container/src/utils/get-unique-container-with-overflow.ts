@@ -7,20 +7,6 @@ export const getSortedUniqueContainerWithOverflow = (params: {
 
   // we do checking starting from the child elements to the self to the parent
   for (const element of params.elements) {
-    // // get direct child elements
-    // const childElements = Array.from(element.children) as HTMLElement[];
-
-    // // check if any of the child elements has overflow
-    // for (const child of childElements) {
-    //   const overflow = checkContainerOverflow({
-    //     container: child,
-    //   });
-
-    //   if (overflow.hasOverflow) {
-    //     uniqueContainersWithOverflow.add(element);
-    //   }
-    // }
-
     const overflow = checkContainerOverflow({
       container: element,
     });

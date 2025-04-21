@@ -29,11 +29,11 @@ export const textFitter = (params: TextFitterParams) => {
     const elementRefs = children
       .map((domElement) => ({
         domElement, // This is a mutable reference to the actual DOM element
-        originalFontSize: parseFloat(window.getComputedStyle(domElement).fontSize),
+        originalFontSize: Number.parseFloat(window.getComputedStyle(domElement).fontSize),
       }))
       .concat({
         domElement: container,
-        originalFontSize: parseFloat(window.getComputedStyle(container).fontSize),
+        originalFontSize: Number.parseFloat(window.getComputedStyle(container).fontSize),
       });
 
     // Binary search for the optimal scale until it reach the desired precision
@@ -41,9 +41,9 @@ export const textFitter = (params: TextFitterParams) => {
       const currentScale = (low + high) / 2;
 
       // Apply font size scaling to direct children and self
-      elementRefs.forEach(({ domElement, originalFontSize }) => {
+      for (const { domElement, originalFontSize } of elementRefs) {
         domElement.style.fontSize = `${originalFontSize * currentScale}px`;
-      });
+      }
 
       // Check for overflow
       const { hasOverflow: overflow } = checkContainerOverflow({ container });
@@ -63,14 +63,14 @@ export const textFitter = (params: TextFitterParams) => {
 
     // Apply the best scale found
     if (bestScale !== 1.0) {
-      elementRefs.forEach(({ domElement, originalFontSize }) => {
+      for (const { domElement, originalFontSize } of elementRefs) {
         domElement.style.fontSize = `${originalFontSize * bestScale}px`;
-      });
+      }
     } else {
       // Reset to original font sizes if no scaling needed
-      elementRefs.forEach(({ domElement, originalFontSize }) => {
+      for (const { domElement, originalFontSize } of elementRefs) {
         domElement.style.fontSize = `${originalFontSize}px`;
-      });
+      }
     }
   }
 };
