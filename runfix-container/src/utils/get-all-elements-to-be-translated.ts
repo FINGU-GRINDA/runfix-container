@@ -1,4 +1,4 @@
-import { bfsDOMTraversalWithSkip } from "./bfs-dom-traversal-with-skip";
+import { bfsDOMTraversalWithSkip } from "./bfs-dom-traversal-with-skip.ts";
 
 export const getAllElementsToBeTranslated = (params: {
   skipClasses: Set<string>;
