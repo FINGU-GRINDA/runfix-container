@@ -7,25 +7,24 @@ export const getAllElementsToBeTranslated = (params: {
   const bodyElement = document.querySelector("body");
 
   if (!bodyElement) throw new Error("Can't find body element");
+  const allElements = Array.from(bodyElement.querySelectorAll("*"));
 
-  const allElements = Array.from(bodyElement.querySelectorAll("*")).filter((element) => {
+  const allAllowedElements = allElements.filter((element) => {
     // if it has skip tag name, skip it
     if (params.skipTagNames.includes(element.tagName)) return false;
 
     // if it has skip class, skip it
     if (element.classList.contains(params.skipClass)) return false;
 
-    // has only text
-    const hasOnlyText =
-      element.innerHTML === element.textContent && element.textContent?.trim().length > 0;
-
     // Check for placeholder attribute
     const hasPlaceholder = element.getAttribute("placeholder") !== null;
 
-    if (!hasOnlyText && !hasPlaceholder) return false;
+    const hasTextContent = element.textContent !== null;
+
+    if (!hasPlaceholder && !hasTextContent) return false;
 
     return true;
-  }) as HTMLElement[];
+  });
 
-  return allElements;
+  return allAllowedElements as HTMLElement[];
 };

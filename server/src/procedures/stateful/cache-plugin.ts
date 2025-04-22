@@ -21,7 +21,11 @@ export const cachePlugin = new Elysia({
 
 					return JSON.parse(cachedValue);
 				},
-				set: async (params: { key: string; value: object; ttl?: number }) => {
+				set: async (params: {
+					key: string;
+					value: object | string | number;
+					ttl?: number;
+				}) => {
 					await redis.set(params.key, JSON.stringify(params.value), {
 						EX: params.ttl || env.CACHE_TTL,
 					});

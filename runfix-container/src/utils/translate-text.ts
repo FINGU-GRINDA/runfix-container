@@ -21,6 +21,33 @@ export const translateTextWithGoogle = async (params: {
   return data[0][0][0];
 };
 
+export const debugTranslateTextWithGoogle = async (params: {
+  sourceText: string;
+  sourceLanguage: string;
+  targetLanguage: string;
+  context?: string;
+}): Promise<string> => {
+  if (params.sourceLanguage === params.targetLanguage) {
+    return params.sourceText;
+  }
+
+  const res = await fetch(
+    `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${
+      params.sourceLanguage
+    }&tl=${params.targetLanguage}&dt=t&q=${encodeURIComponent(params.sourceText)}`
+  );
+  const data = await res.json();
+
+  console.table({
+    sourceLanguage: params.sourceLanguage,
+    targetLanguage: params.targetLanguage,
+    sourceText: params.sourceText,
+    translation: data[0][0][0],
+  });
+
+  return data[0][0][0];
+};
+
 export const getGrindaTranslateFn = (params: { apiKey: string; baseUrl: string }) => {
   return async (translateParams: {
     sourceText: string;

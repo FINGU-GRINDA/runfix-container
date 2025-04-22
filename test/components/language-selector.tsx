@@ -2,7 +2,10 @@ import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { Globe } from "lucide-react";
 import { useEffect } from "react";
 import { parseAsString, useQueryState } from "nuqs";
-import { translateAndFit } from "runfix-container";
+import {
+	debugTranslateTextWithGoogle,
+	translateAndFit,
+} from "runfix-container";
 
 interface Language {
 	code: string;
@@ -63,6 +66,9 @@ export function LanguageSelector() {
 				targetLanguage: langParam,
 				fitConfig: {
 					addOverflowBreak: true,
+				},
+				translateConfig: {
+					translateFn: debugTranslateTextWithGoogle,
 				},
 			});
 

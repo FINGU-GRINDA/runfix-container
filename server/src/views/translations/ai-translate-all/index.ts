@@ -5,15 +5,15 @@ import { authenticateUserPlugin } from "../../../procedures/stateful/authenticat
 import { cachePlugin } from "../../../procedures/stateful/cache-plugin";
 import { translateTextWithGoogle } from "../ai-translate/procedures/google-translate";
 import { allLanguageCodes, languageToDbCode } from "../constants";
+import { llmTranslate } from "./procedures/llm-translate";
 import { isValidLanguageCode } from "./procedures/language-validation";
 
 export const aiTranslateAllRouter = new Elysia({
 	prefix: "/translations",
 	tags: ["Translations"],
-	name: "ai-translate-all-router",
 	detail: {
-		description: "Translate text using AI",
-		summary: "Translate text using AI",
+		description: "Pre-translate all text using AI, this will take a while ",
+		summary: "Pre-translate all text using AI",
 	},
 })
 	.use(authenticateUserPlugin)
@@ -50,40 +50,94 @@ export const aiTranslateAllRouter = new Elysia({
 					},
 				},
 			});
+			/**
+			 * LLM TRANSLATE 1 target language at the time
+			 */
+			const sourceLanguage = ctx.body.originalLanguage;
+			const remainingTargetLanguages = ctx.body.targetLanguage;
+			const sourceTexts = translations.map(
+				(t) =>
+					t[
+						languageToDbCode({
+							languageCode: sourceLanguage,
+						}) as keyof typeof t
+					] as string,
+			);
 
-			// translate all translations
-			const promises = translations.map(async (translation) => {
-				const translatedTexts: Record<string, string | undefined> = {};
+			while (true) {
+				const targetLanguage = remainingTargetLanguages.pop();
 
-				for (const languageCode of ctx.body.targetLanguage) {
-					const translatedText = await translateTextWithGoogle({
-						sourceText: translation[
-							languageToDbCode({
-								languageCode: ctx.body.originalLanguage,
-							}) as keyof typeof translation
-						] as string,
-						sourceLanguage: ctx.body.originalLanguage,
-						targetLanguage: languageCode,
-					});
-
-					translatedTexts[languageToDbCode({ languageCode })] = translatedText;
+				if (!targetLanguage) {
+					break;
 				}
 
-				// save to db
-				const updatedTranslation = await ctx.db.translation.update({
-					where: {
-						id: translation.id,
-					},
-					data: translatedTexts,
+				const translatedTexts = await llmTranslate({
+					sourceTexts: sourceTexts,
+					sourceLanguage: sourceLanguage,
+					targetLanguage: targetLanguage,
+					context: "",
 				});
 
-				return updatedTranslation;
+				const promises = [];
+				for (let i = 0; i < sourceTexts.length; i++) {
+					const translatedText = translatedTexts[i];
+					promises.push(
+						ctx.db.translation.update({
+							where: {
+								id: translations[i].id,
+							},
+							data: {
+								[languageToDbCode({ languageCode: targetLanguage })]:
+									translatedText,
+							},
+						}),
+					);
+				}
+
+				await Promise.all(promises);
+			}
+
+			const updatedTranslations = await ctx.db.translation.findMany({
+				where: {
+					projectId: ctx.body.projectId,
+				},
 			});
 
-			const updatedTranslations = await Promise.all(promises);
+			/**
+			 * GOOGLE TRANSLATE
+			 */
 
-			// invalidate all cache
-			// TODO: make it only for this project
+			// // translate all translations using google
+			// const promises = translations.map(async (translation) => {
+			// 	const translatedTexts: Record<string, string | undefined> = {};
+
+			// 	for (const languageCode of ctx.body.targetLanguage) {
+			// 		const translatedText = await translateTextWithGoogle({
+			// 			sourceText: translation[
+			// 				languageToDbCode({
+			// 					languageCode: ctx.body.originalLanguage,
+			// 				}) as keyof typeof translation
+			// 			] as string,
+			// 			sourceLanguage: ctx.body.originalLanguage,
+			// 			targetLanguage: languageCode,
+			// 		});
+
+			// 		translatedTexts[languageToDbCode({ languageCode })] = translatedText;
+			// 	}
+
+			// 	// save to db
+			// 	const updatedTranslation = await ctx.db.translation.update({
+			// 		where: {
+			// 			id: translation.id,
+			// 		},
+			// 		data: translatedTexts,
+			// 	});
+
+			// 	return updatedTranslation;
+			// });
+
+			// const updatedTranslations = await Promise.all(promises);
+
 			await ctx.cache.delete({ key: `*${ctx.body.projectId}*` });
 
 			return {

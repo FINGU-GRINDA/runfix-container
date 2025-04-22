@@ -19,11 +19,5 @@ export const translateTextNode = async (params: {
     targetLanguage: params.targetLanguage,
     context: params.textNode.textContent,
   });
-  console.table({
-    sourceLanguage: params.sourceLanguage,
-    targetLanguage: params.targetLanguage,
-    sourceText: params.textNode.textContent,
-    translation: translation,
-  });
   params.textNode.textContent = translation;
 };
