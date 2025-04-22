@@ -132,6 +132,9 @@ export const aiTranslateRouter = new Elysia({
 								[languageToDbCode({ languageCode: ctx.body.sourceLanguage })]:
 									ctx.body.sourceText,
 							},
+							orderBy: {
+								createdAt: "asc",
+							},
 						});
 
 						if (existingTranslation) {
