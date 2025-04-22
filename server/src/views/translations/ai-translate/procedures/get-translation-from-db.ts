@@ -16,6 +16,9 @@ export const getTranslationFromDB = async (params: {
 			projectId: params.projectId,
 			[dbSourceLanguageCode]: params.sourceText,
 		},
+		orderBy: {
+			createdAt: "asc",
+		},
 	});
 
 	if (!dbTranslation) {
