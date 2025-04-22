@@ -43,6 +43,10 @@ export default function Translator({
 				translateConfig: {
 					// translateFn: debugTranslateTextWithGoogle,
 					skipTranslateClasses: ["not-prose"],
+					translateFn: getGrindaTranslateFn({
+						apiKey: process.env.NEXT_PUBLIC_HANA_API_KEY,
+						baseUrl: "https://api.hanalangconnect.site",
+					}),
 				},
 			});
 
