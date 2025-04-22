@@ -3,10 +3,9 @@ import { HttpError } from "elysia-http-error";
 import { TranslationPlain } from "../../../../prisma/schema/prismabox/Translation";
 import { authenticateUserPlugin } from "../../../procedures/stateful/authenticate-user-plugin";
 
-export const readTranslationRouter = new Elysia({
+export const readRouter = new Elysia({
 	prefix: "/translations",
 	tags: ["Translations"],
-	name: "read-translation-router",
 	detail: {
 		description: "Read a translation",
 		summary: "Read a translation",

@@ -5,15 +5,14 @@ import { authenticateUserPlugin } from "../../../procedures/stateful/authenticat
 import { cachePlugin } from "../../../procedures/stateful/cache-plugin";
 import { translateTextWithGoogle } from "../ai-translate/procedures/google-translate";
 import { allLanguageCodes, languageToDbCode } from "../constants";
-import { llmTranslate } from "./llm-translate";
+import { llmTranslate } from "./procedures/llm-translate";
 import { isValidLanguageCode } from "./procedures/language-validation";
 
 export const aiTranslateAllRouter = new Elysia({
 	prefix: "/translations",
 	tags: ["Translations"],
-	name: "ai-translate-all-router",
 	detail: {
-		description: "Pre-translate all text using AI",
+		description: "Pre-translate all text using AI, this will take a while ",
 		summary: "Pre-translate all text using AI",
 	},
 })

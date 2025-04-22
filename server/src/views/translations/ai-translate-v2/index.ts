@@ -6,7 +6,7 @@ import { authenticateApiKeyProjectPlugin } from "../../../procedures/stateful/au
 import { cachePlugin } from "../../../procedures/stateful/cache-plugin";
 import { databasePlugin } from "../../../procedures/stateful/database-plugin";
 import { languageToDbCode } from "../constants";
-import { batchTranslateTextWithBing } from "./procedures";
+import { batchTranslateTextWithBing } from "./procedures/procedures";
 
 export const aiTranslateV2Router = new Elysia({
 	name: "ai-translate-v2-router",
