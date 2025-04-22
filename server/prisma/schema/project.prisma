@@ -1,0 +1,16 @@
+model Project {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name        String
+  description String
+
+  // relations
+  Organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId String?
+  ApiKeys        ApiKey[]
+  Translations   Translation[]
+
+  @@index([organizationId])
+}

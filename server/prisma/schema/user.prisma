@@ -1,0 +1,21 @@
+enum UserRole {
+  USER
+  ADMIN
+}
+
+model User {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  firstName      String
+  lastName       String
+  profilePicture String?
+  role           UserRole
+
+  // relations
+  PasskeyAuths        PasskeyAuth[]
+  EmailAuths          EmailAuth[]
+  Sessions            Session[]
+  OrganizationMembers OrganizationMember[]
+}

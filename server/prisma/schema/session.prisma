@@ -1,0 +1,16 @@
+model Session {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userAgent     String?
+  headers       Json
+  ipAddress     String?
+  invalidatedAt DateTime?
+  version       Int       @default(1)
+
+  userId String
+  User   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
