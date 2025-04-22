@@ -125,7 +125,7 @@ export const aiTranslateRouter = new Elysia({
 				//   save translation to database
 				await ctx.db.$transaction(
 					async (tx) => {
-						// find existing translation
+						// find oldest existing translation (original)
 						const existingTranslation = await tx.translation.findFirst({
 							where: {
 								projectId: ctx.apiKey.projectId,
@@ -137,14 +137,28 @@ export const aiTranslateRouter = new Elysia({
 							},
 						});
 
+						await tx.translation.upsert({
+							where: {
+								id: existingTranslation?.id,
+							},
+							create: {
+								projectId: ctx.apiKey.projectId,
+								[languageToDbCode({ languageCode: ctx.body.sourceLanguage })]:
+									ctx.body.sourceText,
+								[languageToDbCode({ languageCode: ctx.body.targetLanguage })]:
+									translatedText,
+							},
+							update: {
+								[languageToDbCode({ languageCode: ctx.body.targetLanguage })]:
+									translatedText,
+							},
+						});
+
 						if (existingTranslation) {
 							// update translation
-							await tx.translation.updateMany({
+							await tx.translation.update({
 								where: {
-									projectId: ctx.apiKey.projectId,
-									[languageToDbCode({
-										languageCode: ctx.body.sourceLanguage,
-									})]: ctx.body.sourceText,
+									id: existingTranslation.id,
 								},
 								data: {
 									[languageToDbCode({
