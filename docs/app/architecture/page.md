@@ -66,4 +66,4 @@ sequenceDiagram
 
 ## Server ERD
 
-![alt text](../../../server/prisma/schema/ERD.svg)
+![alt text](./ERD.svg)
