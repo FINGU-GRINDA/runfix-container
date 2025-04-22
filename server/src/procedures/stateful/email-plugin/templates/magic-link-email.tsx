@@ -17,7 +17,7 @@ interface MagicLinkEmailProps {
 	verificationUrl: string;
 }
 
-const previewText = `Sign in to ${env.SERVER_DOMAIN}`;
+const previewText = `Sign in to ${env.ISSUER}`;
 
 export const MagicLinkEmail = (props: MagicLinkEmailProps) => {
 	return (
@@ -61,21 +61,20 @@ export const MagicLinkEmail = (props: MagicLinkEmailProps) => {
 						<Section className="mt-[32px] text-center">
 							{/* Placeholder for Logo - Replace with your SVG or Img */}
 							<Text className="text-2xl font-semibold text-text">
-								{env.SERVER_DOMAIN}
+								{env.ISSUER}
 							</Text>
 						</Section>
 
 						{/* --- Main Content Section --- */}
 						<Heading className="mx-0 my-[30px] p-0 text-center text-[24px] font-normal text-text">
-							Log in to <strong>{env.SERVER_DOMAIN}</strong>
+							Log in to <strong>{env.ISSUER}</strong>
 						</Heading>
 
 						<Text className="text-[14px] leading-[24px] text-text">Hello,</Text>
 
 						<Text className="text-[14px] leading-[24px] text-text">
-							Click the button below to securely log in to your{" "}
-							{env.SERVER_DOMAIN} account. This link will expire shortly for
-							your security.
+							Click the button below to securely log in to your {env.ISSUER}{" "}
+							account. This link will expire shortly for your security.
 						</Text>
 
 						{/* --- Login Button --- */}
@@ -103,8 +102,7 @@ export const MagicLinkEmail = (props: MagicLinkEmailProps) => {
 						{/* --- Footer Section --- */}
 						<Section className="mt-[32px] text-center">
 							<Text className="text-[12px] text-text-light">
-								{new Date().getFullYear()} {env.SERVER_DOMAIN}. All rights
-								reserved.
+								{new Date().getFullYear()} {env.ISSUER}. All rights reserved.
 							</Text>
 							{/* Optional: Add address or other contact info here */}
 							{/* <Text className="text-[12px] text-text-light">Your Company Address</Text> */}

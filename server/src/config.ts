@@ -14,9 +14,6 @@ const EnvSchema = Type.Object({
 
 	//   AUTH
 	JWT_SECRET: Type.String(),
-	CLIENT_DOMAIN: Type.String({
-		examples: ["localhost", "hanalangconnect.site"],
-	}),
 	CLIENT_BASE_URL: Type.String({
 		examples: ["http://localhost:3000", "https://hanalangconnect.site"],
 	}),
@@ -24,11 +21,9 @@ const EnvSchema = Type.Object({
 	SERVER_BASE_URL: Type.String({
 		examples: ["http://localhost:8000", "https://hanalangconnect.site"],
 	}),
-	SERVER_DOMAIN: Type.String({
-		default: "Hana-lang Connect",
+	ISSUER: Type.String({
 		examples: ["localhost", "hanalangconnect.site"],
 	}),
-
 	//   AI
 	OPENAI_API_KEY: Type.String(),
 
