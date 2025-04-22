@@ -12,7 +12,7 @@ import {
 
 // Environment variables
 const GRINDA_TRANSLATE_API_KEY = "your api key";
-const GRINDA_TRANSLATE_BASE_URL = "https://hanaconnectlang.site";
+const GRINDA_TRANSLATE_BASE_URL = "https://api.hanalangconnect.site";
 
 // extract source language from html lang
 const currentLanguage = document.documentElement.lang;
