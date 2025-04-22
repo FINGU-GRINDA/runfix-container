@@ -64,12 +64,12 @@ export function LanguageSelector() {
 				fitConfig: {
 					addOverflowBreak: true,
 				},
-				// translateConfig: {
-				//   translateFn: getGrindaTranslateFn({
-				//     apiKey: process.env.NEXT_PUBLIC_GRINDA_TRANSLATE_API_KEY!,
-				//     baseUrl: process.env.NEXT_PUBLIC_GRINDA_TRANSLATE_BASE_URL!,
-				//   }),
-				// },
+				translateConfig: {
+					translateFn: getGrindaTranslateFn({
+						apiKey: process.env.NEXT_PUBLIC_GRINDA_TRANSLATE_API_KEY!,
+						baseUrl: process.env.NEXT_PUBLIC_GRINDA_TRANSLATE_BASE_URL!,
+					}),
+				},
 			});
 
 			// Update the html lang attribute

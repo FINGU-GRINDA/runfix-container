@@ -15,19 +15,18 @@ const EnvSchema = Type.Object({
 	//   AUTH
 	JWT_SECRET: Type.String(),
 	CLIENT_DOMAIN: Type.String({
-		examples: ["localhost", "hanatranslate.space"],
+		examples: ["localhost", "hanalangconnect.site"],
 	}),
 	CLIENT_BASE_URL: Type.String({
-		examples: ["http://localhost:3000", "https://hanatranslate.space"],
+		examples: ["http://localhost:3000", "https://hanalangconnect.site"],
 	}),
 	AUTH_TOKEN_EXPIRY_DURATION_MINUTES: Type.Number({ default: 60 }),
-	ISSUER: Type.String({ default: "hanatranslate.space" }),
 	SERVER_BASE_URL: Type.String({
-		examples: ["http://localhost:8000", "https://hanatranslate.space"],
+		examples: ["http://localhost:8000", "https://hanalangconnect.site"],
 	}),
-	SERVER_NAME: Type.String({
-		default: "Hana Translate",
-		examples: ["localhost", "Hana Translate"],
+	SERVER_DOMAIN: Type.String({
+		default: "Hana-lang Connect",
+		examples: ["localhost", "hanalangconnect.site"],
 	}),
 
 	//   AI

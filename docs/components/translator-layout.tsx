@@ -39,8 +39,8 @@ export default function Translator({
 				translateConfig: {
 					translateFn: getGrindaTranslateFn({
 						apiKey:
-							"eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJUcmFuc2xhdGlvbiBBUEkiLCJzdWIiOiJ7XCJpZFwiOlwiY205Y21qaGVvMDAwYnVnaGkxZW8yMnNmMVwiLFwiY3JlYXRlZEF0XCI6XCIyMDI1LTA0LTExVDEwOjA4OjI1LjYwNFpcIixcInVwZGF0ZWRBdFwiOlwiMjAyNS0wNC0xMVQxMDowODoyNS42MDRaXCIsXCJuYW1lXCI6XCJEZWZhdWx0IFByb2plY3RcIixcImRlc2NyaXB0aW9uXCI6XCJEZWZhdWx0IFByb2plY3RcIixcIm9yZ2FuaXphdGlvbklkXCI6XCJjbTljbWpoZW8wMDBhdWdoaTIxYmNtaHVhXCJ9In0.Ea_TDMrqFP7YY4OU2PmXRsEirIE0jTOqw6_S5iHOKvU",
-						baseUrl: "https://hana-i18n.198.23.164.177.sslip.io",
+							"eyJhbGciOiJIUzI1NiJ9.eyJhcGlLZXkiOnsiaWQiOiJjbTlzMDNxcjUwMDA3dWc1ZW90ZGNrMmljIiwiY3JlYXRlZEF0IjoiMjAyNS0wNC0yMlQwNDoyNDozOC43MDZaIiwidXBkYXRlZEF0IjoiMjAyNS0wNC0yMlQwNDoyNDozOC43MDZaIiwibGFzdEZvdXJDaGFycyI6bnVsbCwidXNhZ2VDb3VudCI6MCwicHJvamVjdElkIjoiY205czAzaGp6MDAwNXVnNWUwaDlmcGR4aSIsIlByb2plY3QiOnsiaWQiOiJjbTlzMDNoanowMDA1dWc1ZTBoOWZwZHhpIiwiY3JlYXRlZEF0IjoiMjAyNS0wNC0yMlQwNDoyNDoyNS42NjlaIiwidXBkYXRlZEF0IjoiMjAyNS0wNC0yMlQwNDoyNDoyNS42NjlaIiwibmFtZSI6ImRvYyIsImRlc2NyaXB0aW9uIjoiIiwib3JnYW5pemF0aW9uSWQiOiJjbTlyeTJlcWMwMDAydWdrZG1zNzBvcDRhIn19LCJleHAiOjMzMjgxMjk1ODgwLCJpYXQiOjE3NDUyOTU4ODB9.6E6-YvvYIfaehndbOETQ29wJkDKulOj8d3fLxKIfqUc",
+						baseUrl: "https://hanaconnectlang.site",
 					}),
 					skipTranslateClass: "nextra-code",
 				},

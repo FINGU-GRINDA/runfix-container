@@ -7,9 +7,9 @@ const resend = new Resend(env.RESEND_API_KEY);
 (async () => {
 	const { data, error } = await resend.emails.send({
 		to: ["vikyw89@gmail.com"],
-		from: "pandaplan.work <test@pandaplan.work>",
-		subject: "Log in to pandaplan.work",
-		react: MagicLinkEmail({ verificationUrl: "https://pandaplan.work" }),
+		from: "Hana Translate <test@hanalangconnect.site>",
+		subject: "Log in to Hana Translate",
+		react: MagicLinkEmail({ verificationUrl: "https://hanalangconnect.site" }),
 	});
 
 	if (error) {

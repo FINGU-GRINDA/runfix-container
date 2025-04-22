@@ -377,4 +377,5 @@ model Translation {
     @@index([zaText])
     @@index([zhText])
     @@index([zuText])
+    @@index([projectId])
 }

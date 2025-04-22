@@ -53,6 +53,7 @@ export const aiTranslateRouter = new Elysia({
 					sourceLanguage: ctx.body.sourceLanguage,
 					targetLanguage: ctx.body.targetLanguage,
 					translatedText: maybeTranslation,
+					context: null,
 					isCached: false,
 				};
 			}
@@ -70,6 +71,7 @@ export const aiTranslateRouter = new Elysia({
 				sourceLanguage: ctx.body.sourceLanguage,
 				targetLanguage: ctx.body.targetLanguage,
 				translatedText: translatedText,
+				context: ctx.body.context || null,
 				isCached: false,
 			};
 
@@ -122,46 +124,49 @@ export const aiTranslateRouter = new Elysia({
 				const translatedText = ctx.response.translatedText;
 
 				//   save translation to database
-				await ctx.db.$transaction(async (tx) => {
-					// find existing translation
-					const existingTranslation = await tx.translation.findFirst({
-						where: {
-							projectId: ctx.apiKey.projectId,
-							[languageToDbCode({ languageCode: ctx.body.sourceLanguage })]:
-								ctx.body.sourceText,
-						},
-					});
-
-					if (existingTranslation) {
-						// update translation
-						await tx.translation.updateMany({
+				await ctx.db.$transaction(
+					async (tx) => {
+						// find existing translation
+						const existingTranslation = await tx.translation.findFirst({
 							where: {
 								projectId: ctx.apiKey.projectId,
-								[languageToDbCode({
-									languageCode: ctx.body.sourceLanguage,
-								})]: ctx.body.sourceText,
-							},
-							data: {
-								[languageToDbCode({
-									languageCode: ctx.body.targetLanguage,
-								})]: translatedText,
+								[languageToDbCode({ languageCode: ctx.body.sourceLanguage })]:
+									ctx.body.sourceText,
 							},
 						});
-					} else {
-						// create translation
-						await tx.translation.create({
-							data: {
-								projectId: ctx.apiKey.projectId,
-								[languageToDbCode({
-									languageCode: ctx.body.sourceLanguage,
-								})]: ctx.body.sourceText,
-								[languageToDbCode({
-									languageCode: ctx.body.targetLanguage,
-								})]: translatedText,
-							},
-						});
-					}
-				});
+
+						if (existingTranslation) {
+							// update translation
+							await tx.translation.updateMany({
+								where: {
+									projectId: ctx.apiKey.projectId,
+									[languageToDbCode({
+										languageCode: ctx.body.sourceLanguage,
+									})]: ctx.body.sourceText,
+								},
+								data: {
+									[languageToDbCode({
+										languageCode: ctx.body.targetLanguage,
+									})]: translatedText,
+								},
+							});
+						} else {
+							// create translation
+							await tx.translation.create({
+								data: {
+									projectId: ctx.apiKey.projectId,
+									[languageToDbCode({
+										languageCode: ctx.body.sourceLanguage,
+									})]: ctx.body.sourceText,
+									[languageToDbCode({
+										languageCode: ctx.body.targetLanguage,
+									})]: translatedText,
+								},
+							});
+						}
+					},
+					{ timeout: 1000 * 60 * 1000, maxWait: 1000 * 60 * 1000 },
+				);
 			},
 		},
 	);

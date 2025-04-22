@@ -82,10 +82,11 @@ export const signinWithMagicLinkRouter = new Elysia({
 					}),
 				},
 			});
-
+			const redirectUrl = `${env.SERVER_BASE_URL}/api/sessions/create-with-magic-link?token=${signedToken}&redirectUrl=${ctx.body.redirectUrl}`;
+			console.info({ redirectUrl });
 			// send email
 			await ctx.sendMagicLinkEmail({
-				verificationUrl: `${env.SERVER_BASE_URL}/api/sessions/create-with-magic-link?token=${signedToken}&redirectUrl=${ctx.body.redirectUrl}`,
+				verificationUrl: redirectUrl,
 				to: normalizedEmail,
 			});
 
