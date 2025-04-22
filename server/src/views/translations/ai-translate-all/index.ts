@@ -46,6 +46,9 @@ export const aiTranslateAllRouter = new Elysia({
 						},
 					},
 				},
+				orderBy: {
+					createdAt: "desc",
+				},
 			});
 			/**
 			 * LLM TRANSLATE 1 target language at the time
