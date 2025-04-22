@@ -3,7 +3,7 @@ export default {
 	introduction: "Introduction",
 	installation: "Installation",
 	usage: "Usage",
-	development: "Development",
+	architecture: "Architecture",
 	// about: {
 	// 	title: "Hana Translate",
 	// 	type: "page",
