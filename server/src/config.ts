@@ -24,6 +24,12 @@ const EnvSchema = Type.Object({
 	ISSUER: Type.String({
 		examples: ["localhost", "hanalangconnect.site"],
 	}),
+
+	// MAIL
+	MAIL_DOMAIN: Type.String({
+		examples: ["hanalangconnect.site"],
+	}),
+
 	//   AI
 	OPENAI_API_KEY: Type.String(),
 

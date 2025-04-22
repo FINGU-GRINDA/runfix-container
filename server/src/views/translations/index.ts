@@ -5,6 +5,7 @@ import { aiTranslateAllRouter } from "./ai-translate-all";
 import { aiTranslateV2Router } from "./ai-translate-v2";
 import { readRouter } from "./read";
 import { readAllTranslationRouter } from "./read-all";
+import { updateRouter } from "./update";
 
 export const translationRouter = new Elysia({
 	prefix: "/translations",
@@ -18,5 +19,6 @@ export const translationRouter = new Elysia({
 	.use(aiTranslateRouter)
 	.use(readAllTranslationRouter)
 	.use(readRouter)
+	.use(updateRouter)
 	.use(aiTranslateAllRouter)
 	.use(aiTranslateV2Router);

@@ -4,8 +4,6 @@ import { TranslationPlain } from "../../../../prisma/schema/prismabox/Translatio
 import { authenticateUserPlugin } from "../../../procedures/stateful/authenticate-user-plugin";
 
 export const readRouter = new Elysia({
-	prefix: "/translations",
-	tags: ["Translations"],
 	detail: {
 		description: "Read a translation",
 		summary: "Read a translation",

@@ -7,7 +7,6 @@ import { getTranslationFromDB } from "./procedures/get-translation-from-db";
 import { translateTextWithGoogle } from "./procedures/google-translate";
 
 export const aiTranslateRouter = new Elysia({
-	name: "ai-translate-router",
 	detail: {
 		description: "Translate text using AI",
 		summary: "Translate text using AI",

@@ -35,7 +35,7 @@ export const sendMagicLinkEmailPlugin = new Elysia({
 				to: string;
 			}) => {
 				await ctx.email.send({
-					from: `Sign in to ${env.ISSUER} <mail@${env.ISSUER}>`,
+					from: `Sign in to ${env.ISSUER} <mail@${env.MAIL_DOMAIN}>`,
 					to: props.to,
 					subject: `Sign in to ${env.ISSUER}`,
 					react: MagicLinkEmail({ verificationUrl: props.verificationUrl }),

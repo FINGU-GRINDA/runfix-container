@@ -3,8 +3,9 @@ import { HttpError } from "elysia-http-error";
 import { TranslationPlain } from "../../../../prisma/schema/prismabox/Translation";
 import { authenticateUserPlugin } from "../../../procedures/stateful/authenticate-user-plugin";
 import { allLanguageCodes } from "../constants";
+import * as _ from "lodash-es";
 
-export const UpdateTranslationSchema = t.Optional(
+export const UpdateTranslationSchema = t.Partial(
 	t.Omit(
 		t.Pick(TranslationPlain, [
 			...allLanguageCodes.map((code) => `${code}Text`),
@@ -13,10 +14,7 @@ export const UpdateTranslationSchema = t.Optional(
 	),
 );
 
-export const updateTranslationRouter = new Elysia({
-	prefix: "/translations",
-	tags: ["Translations"],
-	name: "update-translation-router",
+export const updateRouter = new Elysia({
 	detail: {
 		description: "Update a translation",
 		summary: "Update a translation",
@@ -34,11 +32,13 @@ export const updateTranslationRouter = new Elysia({
 				throw HttpError.BadRequest("Missing translation id");
 			}
 
+			const parsedUpdate = _.omitBy(ctx.body, _.isUndefined);
+
 			const dbTranslation = await ctx.db.translation.update({
 				where: {
 					id: ctx.params.id,
 				},
-				data: { ...ctx.body },
+				data: parsedUpdate,
 			});
 
 			return dbTranslation;

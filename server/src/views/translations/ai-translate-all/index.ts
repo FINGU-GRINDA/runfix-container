@@ -9,8 +9,6 @@ import { llmTranslate } from "./procedures/llm-translate";
 import { isValidLanguageCode } from "./procedures/language-validation";
 
 export const aiTranslateAllRouter = new Elysia({
-	prefix: "/translations",
-	tags: ["Translations"],
 	detail: {
 		description: "Pre-translate all text using AI, this will take a while ",
 		summary: "Pre-translate all text using AI",
