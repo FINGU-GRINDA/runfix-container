@@ -36,12 +36,35 @@ export const translateElement = async (params: {
     return;
   }
 
-  const translation = await params.translateFn({
-    sourceText: params.element.textContent || "",
-    sourceLanguage: actualSourceLanguage,
-    targetLanguage: params.targetLanguage,
-  });
+  // handle element with text content
+  const childNodes = params.element.childNodes;
 
-  params.element.textContent = translation;
+  const textNodes: Text[] = [];
+  for (const childNode of childNodes) {
+    if (childNode.nodeType !== Node.TEXT_NODE) continue;
+    if (!childNode.textContent) continue;
+    if (childNode.textContent.trim().length === 0) continue;
+    textNodes.push(childNode as Text);
+  }
+
+  // translate text nodes
+  const translationPromises: Promise<string>[] = [];
+  for (const textNode of textNodes) {
+    translationPromises.push(
+      params.translateFn({
+        sourceText: textNode.textContent as string,
+        sourceLanguage: actualSourceLanguage,
+        targetLanguage: params.targetLanguage,
+      })
+    );
+  }
+
+  const translations = await Promise.all(translationPromises);
+
+  for (let i = 0; i < textNodes.length; i++) {
+    textNodes[i].textContent = translations[i];
+  }
+
+  // for caching, sometimes ui interaction happens before translations are finished
   params.element.setAttribute("data-lang", params.targetLanguage);
 };
