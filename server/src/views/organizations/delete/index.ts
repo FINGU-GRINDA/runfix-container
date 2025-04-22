@@ -4,12 +4,11 @@ import { HttpError } from "elysia-http-error";
 import { authenticateUserPlugin } from "../../../procedures/stateful/authenticate-user-plugin";
 import { databasePlugin } from "../../../procedures/stateful/database-plugin";
 
-export const deleteOrganizationRouter = new Elysia({
-	name: "delete-organization-router",
+export const deleteRouter = new Elysia({
 	detail: {
 		description:
 			"Delete an organization. Only organization owners can perform this action.",
-		summary: "Delete an organization",
+		summary: "Delete",
 	},
 })
 	.use(authenticateUserPlugin)

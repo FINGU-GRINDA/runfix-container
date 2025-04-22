@@ -1,10 +1,9 @@
 import Elysia from "elysia";
 
 import { createWithMagicLinkRouter } from "./create-with-magic-link";
-import { createWithPasskeyRouter } from "./create-with-passkey";
-import { readAllSessionsRouter } from "./read-all";
-import { signOutSessionRouter } from "./sign-out";
-import { signOutAllSessionRouter } from "./sign-out-all";
+import { readAllRouter } from "./read-all";
+import { signOutRouter } from "./sign-out";
+import { signOutAllRouter } from "./sign-out-all";
 import { whoAmISessionRouter } from "./who-am-i";
 
 export const sessionsRouter = new Elysia({
@@ -17,8 +16,7 @@ export const sessionsRouter = new Elysia({
 	},
 })
 	.use(whoAmISessionRouter)
-	.use(readAllSessionsRouter)
+	.use(readAllRouter)
 	.use(createWithMagicLinkRouter)
-	.use(createWithPasskeyRouter)
-	.use(signOutSessionRouter)
-	.use(signOutAllSessionRouter);
+	.use(signOutRouter)
+	.use(signOutAllRouter);

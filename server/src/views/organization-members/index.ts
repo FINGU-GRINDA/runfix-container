@@ -1,7 +1,7 @@
 import Elysia from "elysia";
-import { deleteOrganizationMemberRouter } from "./delete";
-import { readAllOrganizationMembersRouter } from "./read-all";
-import { updateOrganizationMemberRouter } from "./update";
+import { deleteRouter } from "./delete";
+import { readAllRouter } from "./read-all";
+import { updateRouter } from "./update";
 
 export const organizationMemberRouter = new Elysia({
 	prefix: "/organization-members",
@@ -11,6 +11,6 @@ export const organizationMemberRouter = new Elysia({
 		summary: "Organization member management",
 	},
 })
-	.use(deleteOrganizationMemberRouter)
-	.use(readAllOrganizationMembersRouter)
-	.use(updateOrganizationMemberRouter);
+	.use(deleteRouter)
+	.use(readAllRouter)
+	.use(updateRouter);

@@ -11,11 +11,10 @@ export const CreateOrganization = t.Pick(OrganizationPlain, [
 ]);
 export type CreateOrganization = Static<typeof CreateOrganization>;
 
-export const createOrganizationRouter = new Elysia({
-	name: "create-organization-router",
+export const createRouter = new Elysia({
 	detail: {
 		description: "Create a new organization",
-		summary: "Create a new organization",
+		summary: "Create",
 	},
 })
 	.use(authenticateUserPlugin)

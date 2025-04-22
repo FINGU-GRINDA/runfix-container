@@ -1,7 +1,7 @@
 import Elysia from "elysia";
-import { createApiKeyRouter } from "./create";
-import { deleteApiKeyRouter } from "./delete";
-import { readAllApiKeysRouter } from "./read-all";
+import { createNewRouter } from "./create";
+import { deleteRouter } from "./delete";
+import { readAllRouter } from "./read-all";
 
 export const apiKeyRouter = new Elysia({
 	prefix: "/api-keys",
@@ -12,6 +12,6 @@ export const apiKeyRouter = new Elysia({
 		summary: "API key management",
 	},
 })
-	.use(createApiKeyRouter)
-	.use(readAllApiKeysRouter)
-	.use(deleteApiKeyRouter);
+	.use(createNewRouter)
+	.use(readAllRouter)
+	.use(deleteRouter);

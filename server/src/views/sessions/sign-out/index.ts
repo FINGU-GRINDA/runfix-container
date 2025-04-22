@@ -3,8 +3,7 @@ import { HttpError } from "elysia-http-error";
 import { authenticateUserPlugin } from "../../../procedures/stateful/authenticate-user-plugin";
 import { databasePlugin } from "../../../procedures/stateful/database-plugin";
 
-export const signOutSessionRouter = new Elysia({
-	name: "sign-out-session-router",
+export const signOutRouter = new Elysia({
 	detail: {
 		description: "Sign out the current session",
 		summary: "Sign out from current session",

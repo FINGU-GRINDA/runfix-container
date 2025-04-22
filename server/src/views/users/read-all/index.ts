@@ -5,11 +5,10 @@ import { UserPlain } from "../../../../prisma/schema/prismabox/User";
 import { authenticateUserPlugin } from "../../../procedures/stateful/authenticate-user-plugin";
 import { databasePlugin } from "../../../procedures/stateful/database-plugin";
 
-export const readAllUsersRouter = new Elysia({
-	name: "read-all-users-router",
+export const readAllRouter = new Elysia({
 	detail: {
 		description: "Get all users",
-		summary: "Get all users",
+		summary: "Read all",
 	},
 })
 	.use(authenticateUserPlugin)

@@ -3,10 +3,9 @@ import { HttpError } from "elysia-http-error";
 import { TranslationPlain } from "../../../../prisma/schema/prismabox/Translation";
 import { authenticateUserPlugin } from "../../../procedures/stateful/authenticate-user-plugin";
 import { cachePlugin } from "../../../procedures/stateful/cache-plugin";
-import { translateTextWithGoogle } from "../ai-translate/procedures/google-translate";
 import { allLanguageCodes, languageToDbCode } from "../constants";
-import { llmTranslate } from "./procedures/llm-translate";
 import { isValidLanguageCode } from "./procedures/language-validation";
+import { llmTranslateBatch } from "./procedures/llm-translate";
 
 export const aiTranslateAllRouter = new Elysia({
 	detail: {
@@ -69,7 +68,7 @@ export const aiTranslateAllRouter = new Elysia({
 					break;
 				}
 
-				const translatedTexts = await llmTranslate({
+				const translatedTexts = await llmTranslateBatch({
 					sourceTexts: sourceTexts,
 					sourceLanguage: sourceLanguage,
 					targetLanguage: targetLanguage,

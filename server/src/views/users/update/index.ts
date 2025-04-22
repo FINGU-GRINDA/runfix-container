@@ -6,11 +6,10 @@ import { authenticateUserPlugin } from "../../../procedures/stateful/authenticat
 import { databasePlugin } from "../../../procedures/stateful/database-plugin";
 import { UpdateUser } from "./model";
 
-export const updateUserRouter = new Elysia({
-	name: "update-user-router",
+export const updateRouter = new Elysia({
 	detail: {
 		description: "Update a user by ID",
-		summary: "Update a user by ID",
+		summary: "Update",
 	},
 })
 	.use(authenticateUserPlugin)

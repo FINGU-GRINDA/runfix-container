@@ -1,15 +1,13 @@
 import { Elysia, t } from "elysia";
 import { HttpError } from "elysia-http-error";
 import { OrganizationPlain } from "../../../../prisma/schema/prismabox/Organization";
-import { prisma } from "../../../data/prisma";
 import { authenticateUserPlugin } from "../../../procedures/stateful/authenticate-user-plugin";
 import { databasePlugin } from "../../../procedures/stateful/database-plugin";
 
-export const readOrganizationRouter = new Elysia({
-	name: "read-organization-router",
+export const readRouter = new Elysia({
 	detail: {
 		description: "Get organization by id",
-		summary: "Get organization by id",
+		summary: "Read",
 	},
 })
 	.use(authenticateUserPlugin)

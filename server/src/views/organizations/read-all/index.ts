@@ -1,15 +1,13 @@
 import { Elysia, t } from "elysia";
 import { HttpError } from "elysia-http-error";
 import { OrganizationPlain } from "../../../../prisma/schema/prismabox/Organization";
-import { prisma } from "../../../data/prisma";
 import { authenticateUserPlugin } from "../../../procedures/stateful/authenticate-user-plugin";
 import { databasePlugin } from "../../../procedures/stateful/database-plugin";
 
-export const readAllOrganizationsRouter = new Elysia({
-	name: "read-all-organizations-router",
+export const readAllRouter = new Elysia({
 	detail: {
 		description: "Get all organizations the user is a member of",
-		summary: "Get all organizations",
+		summary: "Read all",
 	},
 })
 	.use(authenticateUserPlugin)

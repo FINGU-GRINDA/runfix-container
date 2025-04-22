@@ -4,11 +4,10 @@ import { SessionPlain } from "../../../../prisma/schema/prismabox/Session";
 import { authenticateUserPlugin } from "../../../procedures/stateful/authenticate-user-plugin";
 import { databasePlugin } from "../../../procedures/stateful/database-plugin";
 
-export const readAllSessionsRouter = new Elysia({
-	name: "read-all-sessions-router",
+export const readAllRouter = new Elysia({
 	detail: {
 		description: "Get all user session",
-		summary: "Get all sessions",
+		summary: "Read all",
 	},
 })
 	.use(authenticateUserPlugin)

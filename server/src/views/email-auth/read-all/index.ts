@@ -4,11 +4,10 @@ import { EmailAuthPlain } from "../../../../prisma/schema/prismabox/EmailAuth";
 import { authenticateUserPlugin } from "../../../procedures/stateful/authenticate-user-plugin";
 import { databasePlugin } from "../../../procedures/stateful/database-plugin";
 
-export const readAllEmailAuthRouter = new Elysia({
-	name: "read-all-email-auth-router",
+export const readAllRouter = new Elysia({
 	detail: {
 		description: "Read all email auth router",
-		summary: "Read all email auth",
+		summary: "Read all",
 	},
 })
 	.use(authenticateUserPlugin)

@@ -1,6 +1,6 @@
 import { Elysia } from "elysia";
-import { deleteEmailAuthRouter } from "./delete";
-import { readAllEmailAuthRouter } from "./read-all";
+import { deleteRouter } from "./delete";
+import { readAllRouter } from "./read-all";
 import { signinWithMagicLinkRouter } from "./signin-with-magic-link";
 
 export const emailAuthRouter = new Elysia({
@@ -13,5 +13,5 @@ export const emailAuthRouter = new Elysia({
 	},
 })
 	.use(signinWithMagicLinkRouter)
-	.use(readAllEmailAuthRouter)
-	.use(deleteEmailAuthRouter);
+	.use(readAllRouter)
+	.use(deleteRouter);

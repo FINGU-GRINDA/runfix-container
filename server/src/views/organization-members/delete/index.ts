@@ -6,12 +6,11 @@ import { OrganizationMemberRole, UserRole } from "@prisma/client";
 import { OrganizationMemberPlain } from "../../../../prisma/schema/prismabox/OrganizationMember";
 import { authenticateUserPlugin } from "../../../procedures/stateful/authenticate-user-plugin";
 
-export const deleteOrganizationMemberRouter = new Elysia({
-	name: "delete-organization-member",
+export const deleteRouter = new Elysia({
 	detail: {
 		description:
 			"Delete an organization member. Only organization owners and admins can perform this action.",
-		summary: "Delete an organization member",
+		summary: "Delete",
 	},
 })
 	.use(authenticateUserPlugin)

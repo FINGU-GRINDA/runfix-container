@@ -12,7 +12,7 @@ import { getVersion } from "./procedures/stateful/get-version-plugin";
 import { apiRouter } from "./views";
 
 const app = new Elysia({
-	name: "Hana Translate",
+	name: "Hana Lang Connect",
 	detail: {
 		description: "A translation API",
 		summary: "A translation API",
@@ -33,7 +33,7 @@ const app = new Elysia({
 					}),
 				),
 			],
-			serviceName: "Hana Translate",
+			serviceName: "Hana Lang Connect",
 		}),
 	)
 	.use(cors())
@@ -42,10 +42,10 @@ const app = new Elysia({
 	.use(httpErrorDecorator)
 	.use(
 		swagger({
-			path: "/docs",
+			path: "/",
 			documentation: {
 				info: {
-					title: "Hana Translate API",
+					title: "Hana Lang Connect API",
 					version: await getVersion(),
 					description: "A translation API",
 					contact: {
@@ -53,13 +53,14 @@ const app = new Elysia({
 					},
 				},
 			},
+			exclude: ["/json"],
 		}),
 	)
 	.get(
-		"/",
+		"/health",
 		async () => {
 			return {
-				message: "go to /docs for documentation",
+				message: "go to / for documentation",
 				status: "success",
 				statusCode: 200,
 			};
@@ -79,5 +80,5 @@ const app = new Elysia({
 	.listen({ port: 8000, idleTimeout: 255 });
 
 console.log(
-	`🦊 Elysia is running at http://${app.server?.hostname}:${app.server?.port}/docs`,
+	`🦊 Elysia is running at http://${app.server?.hostname}:${app.server?.port}`,
 );

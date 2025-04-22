@@ -5,11 +5,10 @@ import { authenticateUserPlugin } from "../../../procedures/stateful/authenticat
 import { databasePlugin } from "../../../procedures/stateful/database-plugin";
 import { parseValue } from "../../../procedures/stateless/parse-value-plugin";
 
-export const deleteApiKeyRouter = new Elysia({
-	name: "delete-api-key-router",
+export const deleteRouter = new Elysia({
 	detail: {
 		description: "Delete an API key",
-		summary: "Delete an API key",
+		summary: "Delete",
 	},
 })
 	.use(authenticateUserPlugin)

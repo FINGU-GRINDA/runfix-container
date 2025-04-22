@@ -5,11 +5,10 @@ import { UserPlain } from "../../../../prisma/schema/prismabox/User";
 import { authenticateUserPlugin } from "../../../procedures/stateful/authenticate-user-plugin";
 import { databasePlugin } from "../../../procedures/stateful/database-plugin";
 
-export const deleteUserRouter = new Elysia({
-	name: "delete-user-router",
+export const deleteRouter = new Elysia({
 	detail: {
 		description: "Delete a user by ID",
-		summary: "Delete a user by ID",
+		summary: "Delete",
 	},
 })
 	.use(authenticateUserPlugin)

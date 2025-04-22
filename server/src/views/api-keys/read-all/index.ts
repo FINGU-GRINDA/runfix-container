@@ -4,11 +4,10 @@ import { ApiKeyPlain } from "../../../../prisma/schema/prismabox/ApiKey";
 import { authenticateUserPlugin } from "../../../procedures/stateful/authenticate-user-plugin";
 import { databasePlugin } from "../../../procedures/stateful/database-plugin";
 
-export const readAllApiKeysRouter = new Elysia({
-	name: "read-all-api-keys-router",
+export const readAllRouter = new Elysia({
 	detail: {
 		description: "Get all API keys for a specific project",
-		summary: "Get all API keys for a specific project",
+		summary: "Read all",
 	},
 })
 	.use(authenticateUserPlugin)

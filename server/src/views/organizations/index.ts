@@ -1,9 +1,9 @@
 import Elysia from "elysia";
-import { createOrganizationRouter } from "./create";
-import { deleteOrganizationRouter } from "./delete";
-import { readOrganizationRouter } from "./read";
-import { readAllOrganizationsRouter } from "./read-all";
-import { updateOrganizationRouter } from "./update";
+import { createRouter } from "./create";
+import { deleteRouter } from "./delete";
+import { readRouter } from "./read";
+import { readAllRouter } from "./read-all";
+import { updateRouter } from "./update";
 
 export const organizationRouter = new Elysia({
 	name: "organizations-router",
@@ -14,8 +14,8 @@ export const organizationRouter = new Elysia({
 		summary: "Organization management",
 	},
 })
-	.use(createOrganizationRouter)
-	.use(readOrganizationRouter)
-	.use(readAllOrganizationsRouter)
-	.use(updateOrganizationRouter)
-	.use(deleteOrganizationRouter);
+	.use(createRouter)
+	.use(readRouter)
+	.use(readAllRouter)
+	.use(updateRouter)
+	.use(deleteRouter);

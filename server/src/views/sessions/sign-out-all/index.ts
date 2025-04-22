@@ -1,11 +1,9 @@
 import Elysia, { t } from "elysia";
 import { HttpError } from "elysia-http-error";
-import { prisma } from "../../../data/prisma";
 import { authenticateUserPlugin } from "../../../procedures/stateful/authenticate-user-plugin";
 import { databasePlugin } from "../../../procedures/stateful/database-plugin";
 
-export const signOutAllSessionRouter = new Elysia({
-	name: "sign-out-all-session-router",
+export const signOutAllRouter = new Elysia({
 	detail: {
 		description: "Sign out from all sessions",
 		summary: "Sign out from all sessions",

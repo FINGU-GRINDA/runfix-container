@@ -7,7 +7,6 @@ import { getExpTimestampPlugin } from "../../../procedures/stateless/get-exp-tim
 import { jwtPlugin } from "../../../procedures/stateless/jwt-plugin";
 
 export const signinWithMagicLinkRouter = new Elysia({
-	name: "signin-with-magic-link-router",
 	detail: {
 		description: "Sign in with magic link",
 		summary: "Sign in with magic link",

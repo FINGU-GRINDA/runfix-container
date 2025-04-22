@@ -4,11 +4,10 @@ import { ProjectPlain } from "../../../../prisma/schema/prismabox/Project";
 import { authenticateUserPlugin } from "../../../procedures/stateful/authenticate-user-plugin";
 import { databasePlugin } from "../../../procedures/stateful/database-plugin";
 
-export const readProject = new Elysia({
-	name: "read-project-router",
+export const readRouter = new Elysia({
 	detail: {
 		description: "Get a project by ID",
-		summary: "Get a project by ID",
+		summary: "Read",
 	},
 })
 	.use(authenticateUserPlugin)

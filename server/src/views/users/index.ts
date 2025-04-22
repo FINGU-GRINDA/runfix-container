@@ -1,8 +1,8 @@
 import { Elysia } from "elysia";
-import { deleteUserRouter } from "./delete";
-import { readUserRouter } from "./read";
-import { readAllUsersRouter } from "./read-all";
-import { updateUserRouter } from "./update";
+import { deleteRouter } from "./delete";
+import { readRouter } from "./read";
+import { readAllRouter } from "./read-all";
+import { updateRouter } from "./update";
 
 export const usersRouter = new Elysia({
 	prefix: "/users",
@@ -13,7 +13,7 @@ export const usersRouter = new Elysia({
 		summary: "User management",
 	},
 })
-	.use(readUserRouter)
-	.use(readAllUsersRouter)
-	.use(updateUserRouter)
-	.use(deleteUserRouter);
+	.use(readRouter)
+	.use(readAllRouter)
+	.use(updateRouter)
+	.use(deleteRouter);

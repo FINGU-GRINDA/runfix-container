@@ -1,18 +1,17 @@
-import Elysia from "elysia";
+import Elysia, { t } from "elysia";
 import { HttpError } from "elysia-http-error";
 import { EmailAuthPlain } from "../../../../prisma/schema/prismabox/EmailAuth";
 import { authenticateUserPlugin } from "../../../procedures/stateful/authenticate-user-plugin";
 
-export const deleteEmailAuthRouter = new Elysia({
-	name: "delete-email-auth-router",
+export const deleteRouter = new Elysia({
 	detail: {
 		description: "Delete email auth",
-		summary: "Delete email auth",
+		summary: "Delete",
 	},
 })
 	.use(authenticateUserPlugin)
 	.delete(
-		":id",
+		"/:id",
 		async (ctx) => {
 			if (!ctx.user) {
 				throw HttpError.Unauthorized("Please sign in");

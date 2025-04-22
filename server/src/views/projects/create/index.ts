@@ -1,7 +1,5 @@
 import Elysia, { type Static, t } from "elysia";
 import { HttpError } from "elysia-http-error";
-import { prisma } from "../../../data/prisma";
-
 import { ProjectPlain } from "../../../../prisma/schema/prismabox/Project";
 import { authenticateUserPlugin } from "../../../procedures/stateful/authenticate-user-plugin";
 import { databasePlugin } from "../../../procedures/stateful/database-plugin";
@@ -14,11 +12,10 @@ export const CreateProject = t.Pick(ProjectPlain, [
 
 export type CreateProject = Static<typeof CreateProject>;
 
-export const createProject = new Elysia({
-	name: "create-project-router",
+export const createRouter = new Elysia({
 	detail: {
 		description: "Create a new project",
-		summary: "Create a new project",
+		summary: "Create",
 	},
 })
 	.use(authenticateUserPlugin)

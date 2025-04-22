@@ -4,11 +4,10 @@ import { ProjectPlain } from "../../../../prisma/schema/prismabox/Project";
 import { authenticateUserPlugin } from "../../../procedures/stateful/authenticate-user-plugin";
 import { databasePlugin } from "../../../procedures/stateful/database-plugin";
 
-export const deleteProject = new Elysia({
-	name: "delete-project-router",
+export const deleteRouter = new Elysia({
 	detail: {
 		description: "Delete a project by ID",
-		summary: "Delete a project by ID",
+		summary: "Delete",
 	},
 })
 	.use(authenticateUserPlugin)

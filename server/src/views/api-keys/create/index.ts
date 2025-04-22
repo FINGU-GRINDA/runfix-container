@@ -5,8 +5,7 @@ import { authenticateUserPlugin } from "../../../procedures/stateful/authenticat
 import { databasePlugin } from "../../../procedures/stateful/database-plugin";
 import { getExpTimestampPlugin } from "../../../procedures/stateless/get-exp-timestamp-plugin";
 
-export const createApiKeyRouter = new Elysia({
-	name: "create-api-key-router",
+export const createNewRouter = new Elysia({
 	detail: {
 		description: "Create a new API key for a project",
 		summary: "Create a new API key for a project",

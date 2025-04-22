@@ -1,9 +1,9 @@
 import Elysia, { t } from "elysia";
 import { HttpError } from "elysia-http-error";
+import * as _ from "lodash-es";
 import { TranslationPlain } from "../../../../prisma/schema/prismabox/Translation";
 import { authenticateUserPlugin } from "../../../procedures/stateful/authenticate-user-plugin";
 import { allLanguageCodes } from "../constants";
-import * as _ from "lodash-es";
 
 export const UpdateTranslationSchema = t.Partial(
 	t.Omit(

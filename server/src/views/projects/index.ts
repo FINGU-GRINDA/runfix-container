@@ -1,9 +1,9 @@
 import Elysia from "elysia";
-import { createProject } from "./create";
-import { deleteProject } from "./delete";
-import { readProject } from "./read";
-import { readAllProjects } from "./read-all";
-import { updateProject } from "./update";
+import { createRouter } from "./create";
+import { deleteRouter } from "./delete";
+import { readRouter } from "./read";
+import { readAllRouter } from "./read-all";
+import { updateRouter } from "./update";
 
 export const projectRouter = new Elysia({
 	prefix: "/projects",
@@ -13,8 +13,8 @@ export const projectRouter = new Elysia({
 		summary: "Projects",
 	},
 })
-	.use(createProject)
-	.use(readAllProjects)
-	.use(readProject)
-	.use(updateProject)
-	.use(deleteProject);
+	.use(createRouter)
+	.use(readAllRouter)
+	.use(readRouter)
+	.use(updateRouter)
+	.use(deleteRouter);

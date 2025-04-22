@@ -9,11 +9,10 @@ export const UpdateProject = t.Partial(
 );
 export type UpdateProject = Static<typeof UpdateProject>;
 
-export const updateProject = new Elysia({
-	name: "update-project-router",
+export const updateRouter = new Elysia({
 	detail: {
 		description: "Update a project by ID",
-		summary: "Update a project by ID",
+		summary: "Update",
 	},
 })
 	.use(authenticateUserPlugin)

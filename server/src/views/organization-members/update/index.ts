@@ -11,11 +11,10 @@ export const UpdateOrganizationMemberSchema = t.Partial(
 	t.Pick(OrganizationMemberPlain, ["role"]),
 );
 
-export const updateOrganizationMemberRouter = new Elysia({
-	name: "update-organization-member",
+export const updateRouter = new Elysia({
 	detail: {
 		description: "Update an organization member.",
-		summary: "Update an organization member",
+		summary: "Update",
 	},
 })
 	.use(authenticateUserPlugin)

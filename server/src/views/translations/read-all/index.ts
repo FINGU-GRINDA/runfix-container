@@ -2,7 +2,7 @@ import Elysia, { t } from "elysia";
 import { HttpError } from "elysia-http-error";
 import { TranslationPlain } from "../../../../prisma/schema/prismabox/Translation";
 import { authenticateUserPlugin } from "../../../procedures/stateful/authenticate-user-plugin";
-import { languageToDbCode, allLanguageCodes } from "../constants";
+import { allLanguageCodes, languageToDbCode } from "../constants";
 
 export const readAllTranslationRouter = new Elysia({
 	detail: {

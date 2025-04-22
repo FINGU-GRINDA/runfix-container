@@ -11,12 +11,11 @@ export const UpdateOrganization = t.Partial(
 
 export type UpdateOrganization = Static<typeof UpdateOrganization>;
 
-export const updateOrganizationRouter = new Elysia({
-	name: "update-organization-router",
+export const updateRouter = new Elysia({
 	detail: {
 		description:
 			"Update an organization's details. Only organization owners can perform this action.",
-		summary: "Update an organization's details",
+		summary: "Update",
 	},
 })
 	.use(authenticateUserPlugin)

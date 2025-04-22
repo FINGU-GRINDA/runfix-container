@@ -4,7 +4,6 @@ import { authenticateUserPlugin } from "../../../procedures/stateful/authenticat
 import { parseValue } from "../../../procedures/stateless/parse-value-plugin";
 
 export const whoAmISessionRouter = new Elysia({
-	name: "who-am-i-session-router",
 	detail: {
 		description: "Get the current session / user information",
 		summary: "Get current session / user",

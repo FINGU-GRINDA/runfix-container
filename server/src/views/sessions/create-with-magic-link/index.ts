@@ -1,5 +1,5 @@
-import { EmailAuth, OrganizationMemberRole, UserRole } from "@prisma/client";
-import Elysia, { t } from "elysia";
+import { OrganizationMemberRole, UserRole } from "@prisma/client";
+import Elysia, { t, type Static } from "elysia";
 import { HttpError } from "elysia-http-error";
 import { EmailAuthPlain } from "../../../../prisma/schema/prismabox/EmailAuth";
 import { databasePlugin } from "../../../procedures/stateful/database-plugin";
@@ -8,7 +8,6 @@ import { parseValuePlugin } from "../../../procedures/stateless/parse-value-plug
 import { wordsGeneratorPlugin } from "../../../procedures/stateless/words-generator-plugin";
 
 export const createWithMagicLinkRouter = new Elysia({
-	name: "create-with-magic-link-session-router",
 	detail: {
 		description:
 			"Create a new session with magic link from `/auth/create-magic-link-auth`",
@@ -28,7 +27,10 @@ export const createWithMagicLinkRouter = new Elysia({
 			const payload = await ctx.jwt.verify({ token: token });
 
 			// parse email auth
-			const emailAuth = ctx.parseValue(EmailAuthPlain, payload.emailAuth);
+			const emailAuth = ctx.parseValue(
+				EmailAuthPlain,
+				payload.emailAuth,
+			) as Static<typeof EmailAuthPlain>;
 
 			// only token that's exact match (latest magic link) is valid
 			const emailAuthForMagicLink = await ctx.db.emailAuth.findFirst({

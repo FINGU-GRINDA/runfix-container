@@ -4,11 +4,10 @@ import { OrganizationMemberPlain } from "../../../../prisma/schema/prismabox/Org
 import { authenticateUserPlugin } from "../../../procedures/stateful/authenticate-user-plugin";
 import { databasePlugin } from "../../../procedures/stateful/database-plugin";
 
-export const readAllOrganizationMembersRouter = new Elysia({
-	name: "read-all-organization-members",
+export const readAllRouter = new Elysia({
 	detail: {
 		description: "Get all organization members.",
-		summary: "Get all organization members",
+		summary: "Read all",
 	},
 })
 	.use(authenticateUserPlugin)
