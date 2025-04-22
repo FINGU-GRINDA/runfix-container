@@ -31,7 +31,9 @@ export const cachePlugin = new Elysia({
 					});
 				},
 				delete: async (params: { key: string }) => {
-					await redis.del(params.key);
+					const keys = await redis.keys(params.key);
+					const deletePromises = keys.map((key) => redis.del(key));
+					await Promise.all(deletePromises);
 				},
 			},
 		};

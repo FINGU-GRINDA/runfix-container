@@ -7,37 +7,37 @@ import { batchArray } from "./batch-array";
 const openaiClient = new OpenAI({ apiKey: env.OPENAI_API_KEY });
 
 export const TranslationSchema = z.object({
-	translations: z.array(z.string()),
+	translatedText: z.string(),
 });
 
 export const llmTranslate = async (params: {
-	sourceTexts: string[];
+	sourceText: string;
 	sourceLanguage: string;
 	targetLanguage: string;
 	context?: string;
-}): Promise<string[]> => {
+}): Promise<string> => {
 	const response = await openaiClient.beta.chat.completions.parse({
 		model: "gpt-4.1",
 		messages: [
 			{
 				role: "system",
-				content: `Translate the following from ${params.sourceLanguage} to ${params.targetLanguage} (ISO 639-1 codes).
-Maintain context and ordering:${params.context}
-
-
-${JSON.stringify(params.sourceTexts)}`,
+				content: `You are a translation assistant. Translate the following text from ${params.sourceLanguage} to ${params.targetLanguage} (ISO 639-1 codes). Respond ONLY with the translated text, without any additional explanation or formatting.`,
+			},
+			{
+				role: "user",
+				content: params.sourceText,
 			},
 		],
 		response_format: zodResponseFormat(TranslationSchema, "TranslationSchema"),
 	});
 
-	const maybeTranslations = response.choices[0].message.parsed?.translations;
+	const maybeTranslation = response.choices[0].message.parsed?.translatedText;
 
-	if (!maybeTranslations) {
+	if (!maybeTranslation) {
 		throw new Error("Failed to translate");
 	}
 
-	return maybeTranslations;
+	return maybeTranslation;
 };
 
 export const llmTranslateBatch = async (params: {
@@ -50,23 +50,23 @@ export const llmTranslateBatch = async (params: {
 
 	const batchedSourceTexts = batchArray({
 		array: params.sourceTexts,
-		batchSize: 50,
+		batchSize: 10,
 	});
 
-	const translationsPromises: Promise<string[]>[] = [];
+	const translations: string[] = [];
 
 	for (const batch of batchedSourceTexts) {
-		translationsPromises.push(
+		const promises = batch.map((text) =>
 			llmTranslate({
-				sourceTexts: batch,
+				sourceText: text,
 				sourceLanguage: params.sourceLanguage,
 				targetLanguage: params.targetLanguage,
 				context: params.context,
 			}),
 		);
+
+		translations.push(...(await Promise.all(promises)));
 	}
 
-	const translations = await Promise.all(translationsPromises);
-
-	return translations.flat();
+	return translations;
 };

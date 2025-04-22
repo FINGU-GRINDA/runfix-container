@@ -6,6 +6,8 @@ import { cachePlugin } from "../../../procedures/stateful/cache-plugin";
 import { allLanguageCodes, languageToDbCode } from "../constants";
 import { isValidLanguageCode } from "./procedures/language-validation";
 import { llmTranslateBatch } from "./procedures/llm-translate";
+import { batchTranslateTextWithBing } from "../ai-translate/procedures/procedures";
+import { translateTextWithGoogle } from "../ai-translate/procedures/google-translate";
 
 export const aiTranslateAllRouter = new Elysia({
 	detail: {
@@ -77,6 +79,12 @@ export const aiTranslateAllRouter = new Elysia({
 					targetLanguage: targetLanguage,
 					context: "",
 				});
+				// const translatedTexts = await batchTranslateTextWithBing({
+				// 	sourceTexts: sourceTexts,
+				// 	sourceLanguage: sourceLanguage,
+				// 	targetLanguage: targetLanguage,
+				// 	context: "",
+				// });
 
 				const promises = [];
 				for (let i = 0; i < sourceTexts.length; i++) {

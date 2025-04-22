@@ -7,7 +7,7 @@ import { cachePlugin } from "../../../procedures/stateful/cache-plugin";
 export const deleteAllRouter = new Elysia({
 	detail: {
 		description: "Delete all translations for a project",
-		summary: "Delete allt",
+		summary: "Delete all",
 	},
 })
 	.use(authenticateUserPlugin)
