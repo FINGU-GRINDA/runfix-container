@@ -13,12 +13,12 @@ export const translateAndFitParams = {
   targetLanguage: "ko",
   fitConfig: {
     addOverflowBreak: true,
-    skipFitClass: "skip-fit",
+    skipFitClasses: ["skip-fit"],
   },
   translateConfig: {
-    skipTranslateClass: "skip-translate",
+    skipTranslateClasses: ["skip-translate"],
     translateFn: translateTextWithGoogle,
-    skipTranslateTagNames: ["PRE", "CODE", "SCRIPT"],
+    skipTranslateTagNames: ["PRE", "CODE", "SCRIPT", "SVG", "PATH"],
   },
 };
 
@@ -35,10 +35,16 @@ export const translateAndFit = async (userParams?: TranslateAndFitParams) => {
 
   // Now we can safely use params without null checks since all values have defaults
   await waitForDOMLoad();
+  const parsedSkipTagNames = new Set(
+    params.translateConfig.skipTranslateTagNames.map((tag) => tag.toUpperCase())
+  );
+  const parsedSkipClasses = new Set(
+    params.translateConfig.skipTranslateClasses.map((cls) => cls.toUpperCase())
+  );
 
   const allElementsToBeTranslated = getAllElementsToBeTranslated({
-    skipClass: params.translateConfig.skipTranslateClass,
-    skipTagNames: params.translateConfig.skipTranslateTagNames,
+    skipClasses: parsedSkipClasses,
+    skipTagNames: parsedSkipTagNames,
   });
 
   const textNodesToBeTranslated = getAllTextNodesToBeTranslated({
@@ -77,9 +83,18 @@ export const translateAndFit = async (userParams?: TranslateAndFitParams) => {
   })
     .filter((container: HTMLElement) => {
       if (originalUniqueContainerWithOverflowSet.has(container)) return false;
-      if (container.classList.contains(params.fitConfig.skipFitClass)) return false;
-      if (container.classList.contains(params.translateConfig.skipTranslateClass)) return false;
-      if (params.translateConfig.skipTranslateTagNames.includes(container.tagName)) return false;
+      if (params.fitConfig.skipFitClasses.some((cls) => container.classList.contains(cls)))
+        return false;
+      if (
+        params.translateConfig.skipTranslateClasses.some((cls) => container.classList.contains(cls))
+      )
+        return false;
+      if (
+        params.translateConfig.skipTranslateTagNames.some(
+          (tagName) => container.tagName === tagName.toUpperCase()
+        )
+      )
+        return false;
       return true;
     })
     .map((container: HTMLElement) => {
