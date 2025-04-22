@@ -6,6 +6,7 @@ import type { DeepPartial } from "../types/type-utils.ts";
 import { waitForDOMLoad } from "../utils/wait-for-DOM-load.ts";
 import { getAllTextNodesToBeTranslated } from "../utils/get-all-text-nodes-to-be-translated.ts";
 import { translateTextNode } from "../utils/translate-text-node.ts";
+import { getAllElementsToBeTranslated } from "../utils/get-all-elements-to-be-translated.ts";
 
 export const translateAndFitParams = {
   sourceLanguage: "en",
@@ -35,20 +36,24 @@ export const translateAndFit = async (userParams?: TranslateAndFitParams) => {
   // Now we can safely use params without null checks since all values have defaults
   await waitForDOMLoad();
 
-  const textNodesToBeTranslated = getAllTextNodesToBeTranslated({
+  const allElementsToBeTranslated = getAllElementsToBeTranslated({
     skipClass: params.translateConfig.skipTranslateClass,
     skipTagNames: params.translateConfig.skipTranslateTagNames,
   });
 
+  const textNodesToBeTranslated = getAllTextNodesToBeTranslated({
+    elementsWithText: allElementsToBeTranslated,
+  });
+
   // keep record of original containers with overflow
+  // limit search scope to elements that we will translate
   const originalUniqueContainerWithOverflow = getSortedUniqueContainerWithOverflow({
-    elements: Array.from(document.querySelector("body")?.querySelectorAll("*") || []),
+    elements: allElementsToBeTranslated,
   });
 
   // Then translate the content
   const translationTasks = [];
   for (const textNode of textNodesToBeTranslated) {
-    if (!textNode.textContent) continue;
     translationTasks.push(
       translateTextNode({
         textNode: textNode,
@@ -68,20 +73,15 @@ export const translateAndFit = async (userParams?: TranslateAndFitParams) => {
 
   // narrow down search to elements that we will modify, we won't modify elements that have existing overflow
   const uniqueContainerWithOverflow = getSortedUniqueContainerWithOverflow({
-    elements: Array.from(document.querySelector("body")?.querySelectorAll("*") || []),
+    elements: allElementsToBeTranslated,
   })
-    .filter((container: HTMLElement) => !originalUniqueContainerWithOverflowSet.has(container))
-    .filter(
-      (container: HTMLElement) => !container.classList.contains(params.fitConfig.skipFitClass)
-    )
-    .filter(
-      (container: HTMLElement) =>
-        !container.classList.contains(params.translateConfig.skipTranslateClass)
-    )
-    .filter(
-      (container: HTMLElement) =>
-        !params.translateConfig.skipTranslateTagNames.includes(container.tagName)
-    )
+    .filter((container: HTMLElement) => {
+      if (originalUniqueContainerWithOverflowSet.has(container)) return false;
+      if (container.classList.contains(params.fitConfig.skipFitClass)) return false;
+      if (container.classList.contains(params.translateConfig.skipTranslateClass)) return false;
+      if (params.translateConfig.skipTranslateTagNames.includes(container.tagName)) return false;
+      return true;
+    })
     .map((container: HTMLElement) => {
       if (params.fitConfig.addOverflowBreak) {
         container.style.cssText +=

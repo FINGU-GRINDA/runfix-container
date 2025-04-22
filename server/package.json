@@ -36,11 +36,13 @@
 		"nodemailer": "^6.10.1",
 		"openai": "^4.91.1",
 		"prisma": "^6.5.0",
+		"prisma-erd-generator": "^2.0.4",
+		"prisma-markdown": "^2.0.0",
 		"react": "^19.1.0",
 		"redis": "^4.7.0",
 		"resend": "^4.2.0",
 		"unique-names-generator": "^4.7.1",
-		"zod": "^3.24.2"
+		"zod": "^3.24.3"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
@@ -48,7 +50,9 @@
 		"@types/react": "^19.1.1",
 		"bun-types": "latest",
 		"lefthook": "^1.11.9",
-		"prismabox": "^1.1.24"
+		"prisma-grapher": "^1.0.0",
+		"prismabox": "^1.1.24",
+		"schema2typebox": "^1.7.6"
 	},
 	"module": "src/index.js"
 }
