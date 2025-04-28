@@ -1,4 +1,4 @@
-import { getTagSelector } from "./get-tag-selector";
+import { getTagSelector } from "./get-tag-selector.ts";
 
 // DOM-based translation that preserves structure, references, and event listeners
 export const translateElement = async (params: {
