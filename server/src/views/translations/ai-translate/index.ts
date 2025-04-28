@@ -115,7 +115,7 @@ export const aiTranslateRouter = new Elysia({
 				const cacheKey = JSON.stringify({
 					route: ctx.path,
 					params: ctx.params,
-					body: ctx.body,
+					body: { ...ctx.body, isCached: true },
 					projectId: ctx.apiKey.projectId,
 				});
 
