@@ -8,185 +8,176 @@ import { allLanguageCodes, languageToDbCode } from "../constants";
 import { isValidLanguageCode } from "./procedures/language-validation";
 
 export const aiTranslateAllRouter = new Elysia({
-  detail: {
-    description: "Pre-translate all text using AI, this will take a while ",
-    summary: "Pre-translate all text using AI",
-  },
+	detail: {
+		description: "Pre-translate all text using AI, this will take a while ",
+		summary: "Pre-translate all text using AI",
+	},
 })
-  .use(authenticateUserPlugin)
-  .use(cachePlugin)
-  .post(
-    "/ai-translate-all",
-    async (ctx) => {
-      if (!ctx.user) {
-        throw HttpError.Unauthorized("None or invalid api key");
-      }
+	.use(authenticateUserPlugin)
+	.use(cachePlugin)
+	.post(
+		"/ai-translate-all",
+		async (ctx) => {
+			if (!ctx.user) {
+				throw HttpError.Unauthorized("None or invalid api key");
+			}
 
-      // validate language code
-      if (!isValidLanguageCode({ code: ctx.body.originalLanguage })) {
-        throw HttpError.BadRequest(
-          `Invalid language code, should be any of ${allLanguageCodes.join(", ")}`
-        );
-      }
+			// validate language code
+			if (!isValidLanguageCode({ code: ctx.body.originalLanguage })) {
+				throw HttpError.BadRequest(
+					`Invalid language code, should be any of ${allLanguageCodes.join(", ")}`,
+				);
+			}
 
-      // get all translations for the project
-      const translations = await ctx.db.translation.findMany({
-        where: {
-          projectId: ctx.body.projectId,
-          [languageToDbCode({ languageCode: ctx.body.originalLanguage })]: {
-            not: null,
-          },
-          Project: {
-            Organization: {
-              OrganizationMembers: {
-                some: {
-                  userId: ctx.user.id,
-                },
-              },
-            },
-          },
-        },
-        orderBy: {
-          createdAt: "desc",
-        },
-      });
-      /**
-       * LLM TRANSLATE 1 target language at the time
-       */
-      const sourceLanguage = ctx.body.originalLanguage;
-      const remainingTargetLanguages = ctx.body.targetLanguage;
-      const sourceTextWithContextAndPath: {
-        sourceTexts: string[];
-        paths: Array<string | null>;
-        contexts: Array<string | null>;
-      } = { sourceTexts: [], paths: [], contexts: [] };
+			// get all translations for the project
+			const translations = await ctx.db.translation.findMany({
+				where: {
+					projectId: ctx.body.projectId,
+					[languageToDbCode({ languageCode: ctx.body.originalLanguage })]: {
+						not: null,
+					},
+					Project: {
+						Organization: {
+							OrganizationMembers: {
+								some: {
+									userId: ctx.user.id,
+								},
+							},
+						},
+					},
+				},
+				orderBy: {
+					createdAt: "desc",
+				},
+			});
+			/**
+			 * LLM TRANSLATE 1 target language at the time
+			 */
+			const sourceLanguage = ctx.body.originalLanguage;
+			const remainingTargetLanguages = ctx.body.targetLanguage.filter(
+				(t) => t !== sourceLanguage,
+			);
+			const sourceTextWithContextAndPath: {
+				sourceTexts: string[];
+				paths: Array<string | null>;
+				contexts: Array<string | null>;
+			} = { sourceTexts: [], paths: [], contexts: [] };
 
-      for (let i = 0; i < translations.length; i++) {
-        const translation = translations[i];
-        const sourceText = translation[
-          languageToDbCode({
-            languageCode: sourceLanguage,
-          }) as keyof typeof translation
-        ] as string;
-        const path = translation.path;
-        const context = translation.context;
+			for (let i = 0; i < translations.length; i++) {
+				const translation = translations[i];
+				const sourceText = translation[
+					languageToDbCode({
+						languageCode: sourceLanguage,
+					}) as keyof typeof translation
+				] as string;
+				const path = translation.path;
+				const context = translation.context;
 
-        sourceTextWithContextAndPath.sourceTexts.push(sourceText);
-        sourceTextWithContextAndPath.paths.push(path);
-        sourceTextWithContextAndPath.contexts.push(context);
-      }
+				sourceTextWithContextAndPath.sourceTexts.push(sourceText);
+				sourceTextWithContextAndPath.paths.push(path);
+				sourceTextWithContextAndPath.contexts.push(context);
+			}
 
-      while (true) {
-        const targetLanguage = remainingTargetLanguages.pop();
+			while (true) {
+				const targetLanguage = remainingTargetLanguages.pop();
 
-        if (!targetLanguage) {
-          break;
-        }
+				if (!targetLanguage) {
+					break;
+				}
 
-        const translatedTexts = await llmTranslateBatch({
-          sourceTexts: sourceTextWithContextAndPath.sourceTexts,
-          sourceLanguage: sourceLanguage,
-          targetLanguage: targetLanguage,
-          path: sourceTextWithContextAndPath.paths,
-          contexts: sourceTextWithContextAndPath.contexts,
-        });
+				const translatedTexts = await llmTranslateBatch({
+					sourceTexts: sourceTextWithContextAndPath.sourceTexts,
+					sourceLanguage: sourceLanguage,
+					targetLanguage: targetLanguage,
+					path: sourceTextWithContextAndPath.paths,
+					contexts: sourceTextWithContextAndPath.contexts,
+				});
 
-        // const translatedTexts = await batchTranslateTextWithBing({
-        // 	sourceTexts: sourceTexts,
-        // 	sourceLanguage: sourceLanguage,
-        // 	targetLanguage: targetLanguage,
-        // 	context: "",
-        // });
+				// const translatedTexts = await batchTranslateTextWithBing({
+				// 	sourceTexts: sourceTexts,
+				// 	sourceLanguage: sourceLanguage,
+				// 	targetLanguage: targetLanguage,
+				// 	context: "",
+				// });
 
-        const promises = [];
-        for (let i = 0; i < sourceTextWithContextAndPath.contexts.length; i++) {
-          const translatedText = translatedTexts[i];
-          promises.push(
-            ctx.db.translation.update({
-              where: {
-                id: translations[i].id,
-              },
-              data: {
-                [languageToDbCode({ languageCode: targetLanguage })]:
-                  translatedText,
-              },
-            })
-          );
-        }
+				const promises = [];
+				for (let i = 0; i < sourceTextWithContextAndPath.contexts.length; i++) {
+					const translatedText = translatedTexts[i];
+					promises.push(
+						ctx.db.translation.update({
+							where: {
+								id: translations[i].id,
+							},
+							data: {
+								[languageToDbCode({ languageCode: targetLanguage })]:
+									translatedText,
+							},
+						}),
+					);
+				}
 
-        await Promise.all(promises);
-      }
+				await Promise.all(promises);
+			}
 
-      const updatedTranslations = await ctx.db.translation.findMany({
-        where: {
-          projectId: ctx.body.projectId,
-        },
-      });
+			const updatedTranslations = await ctx.db.translation.findMany({
+				where: {
+					projectId: ctx.body.projectId,
+				},
+			});
 
-      /**
-       * GOOGLE TRANSLATE
-       */
+			/**
+			 * GOOGLE TRANSLATE
+			 */
 
-      // // translate all translations using google
-      // const promises = translations.map(async (translation) => {
-      // 	const translatedTexts: Record<string, string | undefined> = {};
+			// // translate all translations using google
+			// const promises = translations.map(async (translation) => {
+			// 	const translatedTexts: Record<string, string | undefined> = {};
 
-      // 	for (const languageCode of ctx.body.targetLanguage) {
-      // 		const translatedText = await translateTextWithGoogle({
-      // 			sourceText: translation[
-      // 				languageToDbCode({
-      // 					languageCode: ctx.body.originalLanguage,
-      // 				}) as keyof typeof translation
-      // 			] as string,
-      // 			sourceLanguage: ctx.body.originalLanguage,
-      // 			targetLanguage: languageCode,
-      // 		});
+			// 	for (const languageCode of ctx.body.targetLanguage) {
+			// 		const translatedText = await translateTextWithGoogle({
+			// 			sourceText: translation[
+			// 				languageToDbCode({
+			// 					languageCode: ctx.body.originalLanguage,
+			// 				}) as keyof typeof translation
+			// 			] as string,
+			// 			sourceLanguage: ctx.body.originalLanguage,
+			// 			targetLanguage: languageCode,
+			// 		});
 
-      // 		translatedTexts[languageToDbCode({ languageCode })] = translatedText;
-      // 	}
+			// 		translatedTexts[languageToDbCode({ languageCode })] = translatedText;
+			// 	}
 
-      // 	// save to db
-      // 	const updatedTranslation = await ctx.db.translation.update({
-      // 		where: {
-      // 			id: translation.id,
-      // 		},
-      // 		data: translatedTexts,
-      // 	});
+			// 	// save to db
+			// 	const updatedTranslation = await ctx.db.translation.update({
+			// 		where: {
+			// 			id: translation.id,
+			// 		},
+			// 		data: translatedTexts,
+			// 	});
 
-      // 	return updatedTranslation;
-      // });
+			// 	return updatedTranslation;
+			// });
 
-      // const updatedTranslations = await Promise.all(promises);
+			// const updatedTranslations = await Promise.all(promises);
 
-      await ctx.cache.delete({ key: `*${ctx.body.projectId}*` });
+			await ctx.cache.delete({ key: `*${ctx.body.projectId}*` });
 
-      return {
-        message: "Translations completed",
-        updatedTranslations: updatedTranslations,
-      };
-    },
-    {
-      body: t.Object({
-        originalLanguage: t.String({ default: "ko" }),
-        projectId: t.String(),
-        targetLanguage: t.Array(t.String({ maxLength: 2, minLength: 2 }), {
-          default: [
-            "en",
-            "ja",
-            "zh",
-            "uz",
-            "vi",
-            "ru",
-            "kk",
-            "mn",
-            "th",
-            "id",
-          ],
-        }),
-      }),
-      response: t.Object({
-        message: t.String(),
-        updatedTranslations: t.Array(TranslationPlain),
-      }),
-    }
-  );
+			return {
+				message: "Translations completed",
+				updatedTranslations: updatedTranslations,
+			};
+		},
+		{
+			body: t.Object({
+				originalLanguage: t.String({ default: "ko" }),
+				projectId: t.String(),
+				targetLanguage: t.Array(t.String({ maxLength: 2, minLength: 2 }), {
+					default: ["en", "ja", "zh", "uz", "vi", "ru", "kk", "mn", "th", "id"],
+				}),
+			}),
+			response: t.Object({
+				message: t.String(),
+				updatedTranslations: t.Array(TranslationPlain),
+			}),
+		},
+	);
