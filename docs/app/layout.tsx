@@ -41,7 +41,7 @@ export default async function RootLayout({ children }) {
 			</Head>
 			<body>
 				<CookiesProvider>
-					<Translator>
+					{/* <Translator> */}
 						<Layout
 							banner={banner}
 							navbar={navbar}
@@ -57,7 +57,7 @@ export default async function RootLayout({ children }) {
 						>
 							{children}
 						</Layout>
-					</Translator>
+					{/* </Translator> */}
 				</CookiesProvider>
 			</body>
 		</html>
