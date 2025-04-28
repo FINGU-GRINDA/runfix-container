@@ -13,5 +13,5 @@ export const parseValuePlugin = new Elysia({
 	.as("plugin");
 
 export function parseValue<T extends TSchema>(schema: T, value: unknown) {
-	return Value.Parse(schema as unknown as T & { [Kind]: "" }, value);
+	return Value.Parse(schema, value) as T;
 }

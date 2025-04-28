@@ -39,6 +39,8 @@ export const ProjectRelations = t.Object({
       id: t.String(),
       createdAt: t.Date(),
       updatedAt: t.Date(),
+      context: __nullable__(t.String()),
+      path: __nullable__(t.String()),
       aaText: __nullable__(t.String()),
       abText: __nullable__(t.String()),
       aeText: __nullable__(t.String()),

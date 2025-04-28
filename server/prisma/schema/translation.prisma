@@ -3,190 +3,192 @@ model Translation {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    aaText String? // Afar
-    abText String? // Abkhazian
-    aeText String? // Avestan
-    afText String? // Afrikaans
-    akText String? // Akan
-    amText String? // Amharic
-    anText String? // Aragonese
-    arText String? // Arabic
-    asText String? // Assamese
-    avText String? // Avaric
-    ayText String? // Aymara
-    azText String? // Azerbaijani
-    baText String? // Bashkir
-    beText String? // Belarusian
-    bgText String? // Bulgarian
-    bhText String? // Bihari languages
-    biText String? // Bislama
-    bmText String? // Bambara
-    bnText String? // Bengali
-    boText String? // Tibetan
-    brText String? // Breton
-    bsText String? // Bosnian
-    caText String? // Catalan
-    ceText String? // Chechen
-    chText String? // Chamorro
-    coText String? // Corsican
-    crText String? // Cree
-    csText String? // Czech
-    cuText String? // Church Slavic
-    cvText String? // Chuvash
-    cyText String? // Welsh
-    daText String? // Danish
-    deText String? // German
-    dvText String? // Divehi
-    dzText String? // Dzongkha
-    eeText String? // Ewe
-    elText String? // Greek
-    enText String? // English
-    eoText String? // Esperanto
-    esText String? // Spanish
-    etText String? // Estonian
-    euText String? // Basque
-    faText String? // Persian
-    ffText String? // Fulah
-    fiText String? // Finnish
-    fjText String? // Fijian
-    foText String? // Faroese
-    frText String? // French
-    fyText String? // Western Frisian
-    gaText String? // Irish
-    gdText String? // Gaelic
-    glText String? // Galician
-    gnText String? // Guarani
-    guText String? // Gujarati
-    gvText String? // Manx
-    haText String? // Hausa
-    heText String? // Hebrew
-    hiText String? // Hindi
-    hoText String? // Hiri Motu
-    hrText String? // Croatian
-    htText String? // Haitian
-    huText String? // Hungarian
-    hyText String? // Armenian
-    hzText String? // Herero
-    iaText String? // Interlingua
-    idText String? // Indonesian
-    ieText String? // Interlingue
-    igText String? // Igbo
-    iiText String? // Sichuan Yi
-    ikText String? // Inupiaq
-    ioText String? // Ido
-    isText String? // Icelandic
-    itText String? // Italian
-    iuText String? // Inuktitut
-    jaText String? // Japanese
-    jvText String? // Javanese
-    kaText String? // Georgian
-    kgText String? // Kongo
-    kiText String? // Kikuyu
-    kjText String? // Kuanyama
-    kkText String? // Kazakh
-    klText String? // Kalaallisut
-    kmText String? // Central Khmer
-    knText String? // Kannada
-    koText String? // Korean
-    krText String? // Kanuri
-    ksText String? // Kashmiri
-    kuText String? // Kurdish
-    kvText String? // Komi
-    kwText String? // Cornish
-    kyText String? // Kirghiz
-    laText String? // Latin
-    lbText String? // Luxembourgish
-    lgText String? // Ganda
-    liText String? // Limburgan
-    lnText String? // Lingala
-    loText String? // Lao
-    ltText String? // Lithuanian
-    luText String? // Luba-Katanga
-    lvText String? // Latvian
-    mgText String? // Malagasy
-    mhText String? // Marshallese
-    miText String? // Maori
-    mkText String? // Macedonian
-    mlText String? // Malayalam
-    mnText String? // Mongolian
-    mrText String? // Marathi
-    msText String? // Malay
-    mtText String? // Maltese
-    myText String? // Burmese
-    naText String? // Nauru
-    nbText String? // Norwegian Bokmål
-    ndText String? // North Ndebele
-    neText String? // Nepali
-    ngText String? // Ndonga
-    nlText String? // Dutch
-    nnText String? // Norwegian Nynorsk
-    noText String? // Norwegian
-    nrText String? // South Ndebele
-    nvText String? // Navajo
-    nyText String? // Nyanja
-    ocText String? // Occitan
-    ojText String? // Ojibwa
-    omText String? // Oromo
-    orText String? // Oriya
-    osText String? // Ossetian
-    paText String? // Panjabi
-    piText String? // Pali
-    plText String? // Polish
-    psText String? // Pushto
-    ptText String? // Portuguese
-    quText String? // Quechua
-    rmText String? // Romansh
-    rnText String? // Rundi
-    roText String? // Romanian
-    ruText String? // Russian
-    rwText String? // Kinyarwanda
-    saText String? // Sanskrit
-    scText String? // Sardinian
-    sdText String? // Sindhi
-    seText String? // Northern Sami
-    sgText String? // Sango
-    siText String? // Sinhala
-    skText String? // Slovak
-    slText String? // Slovenian
-    smText String? // Samoan
-    snText String? // Shona
-    soText String? // Somali
-    sqText String? // Albanian
-    srText String? // Serbian
-    ssText String? // Swati
-    stText String? // Southern Sotho
-    suText String? // Sundanese
-    svText String? // Swedish
-    swText String? // Swahili
-    taText String? // Tamil
-    teText String? // Telugu
-    tgText String? // Tajik
-    thText String? // Thai
-    tiText String? // Tigrinya
-    tkText String? // Turkmen
-    tlText String? // Tagalog
-    tnText String? // Tswana
-    toText String? // Tonga
-    trText String? // Turkish
-    tsText String? // Tsonga
-    ttText String? // Tatar
-    twText String? // Twi
-    tyText String? // Tahitian
-    ugText String? // Uighur
-    ukText String? // Ukrainian
-    urText String? // Urdu
-    uzText String? // Uzbek
-    veText String? // Venda
-    viText String? // Vietnamese
-    voText String? // Volapük
-    waText String? // Walloon
-    woText String? // Wolof
-    xhText String? // Xhosa
-    yiText String? // Yiddish
-    yoText String? // Yoruba
-    zaText String? // Zhuang
-    zhText String? // Chinese
-    zuText String? // Zulu
+    context String?
+    path    String?
+    aaText  String? // Afar
+    abText  String? // Abkhazian
+    aeText  String? // Avestan
+    afText  String? // Afrikaans
+    akText  String? // Akan
+    amText  String? // Amharic
+    anText  String? // Aragonese
+    arText  String? // Arabic
+    asText  String? // Assamese
+    avText  String? // Avaric
+    ayText  String? // Aymara
+    azText  String? // Azerbaijani
+    baText  String? // Bashkir
+    beText  String? // Belarusian
+    bgText  String? // Bulgarian
+    bhText  String? // Bihari languages
+    biText  String? // Bislama
+    bmText  String? // Bambara
+    bnText  String? // Bengali
+    boText  String? // Tibetan
+    brText  String? // Breton
+    bsText  String? // Bosnian
+    caText  String? // Catalan
+    ceText  String? // Chechen
+    chText  String? // Chamorro
+    coText  String? // Corsican
+    crText  String? // Cree
+    csText  String? // Czech
+    cuText  String? // Church Slavic
+    cvText  String? // Chuvash
+    cyText  String? // Welsh
+    daText  String? // Danish
+    deText  String? // German
+    dvText  String? // Divehi
+    dzText  String? // Dzongkha
+    eeText  String? // Ewe
+    elText  String? // Greek
+    enText  String? // English
+    eoText  String? // Esperanto
+    esText  String? // Spanish
+    etText  String? // Estonian
+    euText  String? // Basque
+    faText  String? // Persian
+    ffText  String? // Fulah
+    fiText  String? // Finnish
+    fjText  String? // Fijian
+    foText  String? // Faroese
+    frText  String? // French
+    fyText  String? // Western Frisian
+    gaText  String? // Irish
+    gdText  String? // Gaelic
+    glText  String? // Galician
+    gnText  String? // Guarani
+    guText  String? // Gujarati
+    gvText  String? // Manx
+    haText  String? // Hausa
+    heText  String? // Hebrew
+    hiText  String? // Hindi
+    hoText  String? // Hiri Motu
+    hrText  String? // Croatian
+    htText  String? // Haitian
+    huText  String? // Hungarian
+    hyText  String? // Armenian
+    hzText  String? // Herero
+    iaText  String? // Interlingua
+    idText  String? // Indonesian
+    ieText  String? // Interlingue
+    igText  String? // Igbo
+    iiText  String? // Sichuan Yi
+    ikText  String? // Inupiaq
+    ioText  String? // Ido
+    isText  String? // Icelandic
+    itText  String? // Italian
+    iuText  String? // Inuktitut
+    jaText  String? // Japanese
+    jvText  String? // Javanese
+    kaText  String? // Georgian
+    kgText  String? // Kongo
+    kiText  String? // Kikuyu
+    kjText  String? // Kuanyama
+    kkText  String? // Kazakh
+    klText  String? // Kalaallisut
+    kmText  String? // Central Khmer
+    knText  String? // Kannada
+    koText  String? // Korean
+    krText  String? // Kanuri
+    ksText  String? // Kashmiri
+    kuText  String? // Kurdish
+    kvText  String? // Komi
+    kwText  String? // Cornish
+    kyText  String? // Kirghiz
+    laText  String? // Latin
+    lbText  String? // Luxembourgish
+    lgText  String? // Ganda
+    liText  String? // Limburgan
+    lnText  String? // Lingala
+    loText  String? // Lao
+    ltText  String? // Lithuanian
+    luText  String? // Luba-Katanga
+    lvText  String? // Latvian
+    mgText  String? // Malagasy
+    mhText  String? // Marshallese
+    miText  String? // Maori
+    mkText  String? // Macedonian
+    mlText  String? // Malayalam
+    mnText  String? // Mongolian
+    mrText  String? // Marathi
+    msText  String? // Malay
+    mtText  String? // Maltese
+    myText  String? // Burmese
+    naText  String? // Nauru
+    nbText  String? // Norwegian Bokmål
+    ndText  String? // North Ndebele
+    neText  String? // Nepali
+    ngText  String? // Ndonga
+    nlText  String? // Dutch
+    nnText  String? // Norwegian Nynorsk
+    noText  String? // Norwegian
+    nrText  String? // South Ndebele
+    nvText  String? // Navajo
+    nyText  String? // Nyanja
+    ocText  String? // Occitan
+    ojText  String? // Ojibwa
+    omText  String? // Oromo
+    orText  String? // Oriya
+    osText  String? // Ossetian
+    paText  String? // Panjabi
+    piText  String? // Pali
+    plText  String? // Polish
+    psText  String? // Pushto
+    ptText  String? // Portuguese
+    quText  String? // Quechua
+    rmText  String? // Romansh
+    rnText  String? // Rundi
+    roText  String? // Romanian
+    ruText  String? // Russian
+    rwText  String? // Kinyarwanda
+    saText  String? // Sanskrit
+    scText  String? // Sardinian
+    sdText  String? // Sindhi
+    seText  String? // Northern Sami
+    sgText  String? // Sango
+    siText  String? // Sinhala
+    skText  String? // Slovak
+    slText  String? // Slovenian
+    smText  String? // Samoan
+    snText  String? // Shona
+    soText  String? // Somali
+    sqText  String? // Albanian
+    srText  String? // Serbian
+    ssText  String? // Swati
+    stText  String? // Southern Sotho
+    suText  String? // Sundanese
+    svText  String? // Swedish
+    swText  String? // Swahili
+    taText  String? // Tamil
+    teText  String? // Telugu
+    tgText  String? // Tajik
+    thText  String? // Thai
+    tiText  String? // Tigrinya
+    tkText  String? // Turkmen
+    tlText  String? // Tagalog
+    tnText  String? // Tswana
+    toText  String? // Tonga
+    trText  String? // Turkish
+    tsText  String? // Tsonga
+    ttText  String? // Tatar
+    twText  String? // Twi
+    tyText  String? // Tahitian
+    ugText  String? // Uighur
+    ukText  String? // Ukrainian
+    urText  String? // Urdu
+    uzText  String? // Uzbek
+    veText  String? // Venda
+    viText  String? // Vietnamese
+    voText  String? // Volapük
+    waText  String? // Walloon
+    woText  String? // Wolof
+    xhText  String? // Xhosa
+    yiText  String? // Yiddish
+    yoText  String? // Yoruba
+    zaText  String? // Zhuang
+    zhText  String? // Chinese
+    zuText  String? // Zulu
 
     // relations
     Project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
@@ -378,4 +380,6 @@ model Translation {
     @@index([zhText])
     @@index([zuText])
     @@index([projectId])
+    @@index([context])
+    @@index([path])
 }

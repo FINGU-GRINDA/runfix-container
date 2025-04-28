@@ -6,6 +6,7 @@ export const getTranslationFromDB = async (params: {
 	sourceLanguage: string;
 	targetLanguage: string;
 	projectId: string;
+	path: string;
 }): Promise<string | null> => {
 	const dbSourceLanguageCode = languageToDbCode({
 		languageCode: params.sourceLanguage,
@@ -15,9 +16,8 @@ export const getTranslationFromDB = async (params: {
 		where: {
 			projectId: params.projectId,
 			[dbSourceLanguageCode]: params.sourceText,
-		},
-		orderBy: {
-			createdAt: "asc",
+			// context: params.context,
+			path: params.path,
 		},
 	});
 

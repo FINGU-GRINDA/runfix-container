@@ -2,7 +2,7 @@ import Elysia, { type Static, t } from "elysia";
 import { HttpError } from "elysia-http-error";
 import { Session } from "../../../prisma/schema/prismabox/Session";
 import { jwtPlugin } from "../stateless/jwt-plugin";
-import { parseValue } from "../stateless/parse-value-plugin";
+import { parseValue, parseValuePlugin } from "../stateless/parse-value-plugin";
 import { databasePlugin } from "./database-plugin";
 
 export const SessionUserSchema = t.Omit(Session, ["headers"]);
@@ -33,6 +33,7 @@ export const authenticateUserPlugin = new Elysia({
 	.use(tokenSessionPlugin)
 	.use(databasePlugin)
 	.use(jwtPlugin)
+	.use(parseValuePlugin)
 	.resolve(async (ctx) => {
 		const token = ctx.cookie.session.value;
 
@@ -45,7 +46,7 @@ export const authenticateUserPlugin = new Elysia({
 
 		try {
 			const verifiedToken = await ctx.jwt.verify({ token: token });
-			const session = parseValue(SessionUserSchema, verifiedToken.session);
+			const session = ctx.parseValue(SessionUserSchema, verifiedToken.session);
 
 			return {
 				user: session.User,
@@ -61,7 +62,10 @@ export const authenticateUserPlugin = new Elysia({
 		try {
 			const decodedToken = await ctx.jwt.decode({ token: token });
 
-			session = parseValue(SessionUserSchema, decodedToken.session);
+			session = ctx.parseValue(
+				SessionUserSchema,
+				decodedToken.session,
+			) as unknown as SessionUser;
 		} catch (_err) {
 			throw HttpError.BadRequest("Invalid token, token is malformed");
 		}

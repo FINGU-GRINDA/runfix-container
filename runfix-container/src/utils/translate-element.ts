@@ -1,3 +1,5 @@
+import { getTagSelector } from "./get-tag-selector";
+
 // DOM-based translation that preserves structure, references, and event listeners
 export const translateElement = async (params: {
   element: HTMLElement;
@@ -7,6 +9,8 @@ export const translateElement = async (params: {
     sourceText: string;
     sourceLanguage: string;
     targetLanguage: string;
+    path: string;
+    context?: string;
   }) => Promise<string>;
 }): Promise<void> => {
   // Skip if the element has already been translated to the target language
@@ -16,6 +20,8 @@ export const translateElement = async (params: {
   if (actualSourceLanguage === params.targetLanguage) {
     return;
   }
+
+  const tagSelector = getTagSelector({ element: params.element });
 
   // Handle input and textarea elements with placeholder attributes
   if (params.element instanceof HTMLInputElement || params.element instanceof HTMLTextAreaElement) {
@@ -29,6 +35,7 @@ export const translateElement = async (params: {
       sourceText: sourceText,
       sourceLanguage: actualSourceLanguage,
       targetLanguage: params.targetLanguage,
+      path: tagSelector,
     });
 
     params.element.setAttribute("placeholder", translation);
@@ -49,12 +56,17 @@ export const translateElement = async (params: {
 
   // translate text nodes
   const translationPromises: Promise<string>[] = [];
+
+  const context = params.element.textContent || undefined;
+
   for (const textNode of textNodes) {
     translationPromises.push(
       params.translateFn({
         sourceText: textNode.textContent as string,
         sourceLanguage: actualSourceLanguage,
         targetLanguage: params.targetLanguage,
+        path: tagSelector,
+        context: context,
       })
     );
   }

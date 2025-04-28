@@ -3,11 +3,9 @@ import { HttpError } from "elysia-http-error";
 import { TranslationPlain } from "../../../../prisma/schema/prismabox/Translation";
 import { authenticateUserPlugin } from "../../../procedures/stateful/authenticate-user-plugin";
 import { cachePlugin } from "../../../procedures/stateful/cache-plugin";
+import { llmTranslateBatch } from "../../../procedures/stateless/llm-translate";
 import { allLanguageCodes, languageToDbCode } from "../constants";
 import { isValidLanguageCode } from "./procedures/language-validation";
-import { llmTranslateBatch } from "./procedures/llm-translate";
-import { batchTranslateTextWithBing } from "../ai-translate/procedures/procedures";
-import { translateTextWithGoogle } from "../ai-translate/procedures/google-translate";
 
 export const aiTranslateAllRouter = new Elysia({
 	detail: {
@@ -57,14 +55,26 @@ export const aiTranslateAllRouter = new Elysia({
 			 */
 			const sourceLanguage = ctx.body.originalLanguage;
 			const remainingTargetLanguages = ctx.body.targetLanguage;
-			const sourceTexts = translations.map(
-				(t) =>
-					t[
-						languageToDbCode({
-							languageCode: sourceLanguage,
-						}) as keyof typeof t
-					] as string,
-			);
+			const sourceTextWithContextAndPath: {
+				sourceTexts: string[];
+				paths: Array<string | null>;
+				contexts: Array<string | null>;
+			} = { sourceTexts: [], paths: [], contexts: [] };
+
+			for (let i = 0; i < translations.length; i++) {
+				const translation = translations[i];
+				const sourceText = translation[
+					languageToDbCode({
+						languageCode: sourceLanguage,
+					}) as keyof typeof translation
+				] as string;
+				const path = translation.path;
+				const context = translation.context;
+
+				sourceTextWithContextAndPath.sourceTexts.push(sourceText);
+				sourceTextWithContextAndPath.paths.push(path);
+				sourceTextWithContextAndPath.contexts.push(context);
+			}
 
 			while (true) {
 				const targetLanguage = remainingTargetLanguages.pop();
@@ -74,11 +84,13 @@ export const aiTranslateAllRouter = new Elysia({
 				}
 
 				const translatedTexts = await llmTranslateBatch({
-					sourceTexts: sourceTexts,
+					sourceTexts: sourceTextWithContextAndPath.sourceTexts,
 					sourceLanguage: sourceLanguage,
 					targetLanguage: targetLanguage,
-					context: "",
+					path: sourceTextWithContextAndPath.paths,
+					contexts: sourceTextWithContextAndPath.contexts,
 				});
+
 				// const translatedTexts = await batchTranslateTextWithBing({
 				// 	sourceTexts: sourceTexts,
 				// 	sourceLanguage: sourceLanguage,
@@ -87,7 +99,7 @@ export const aiTranslateAllRouter = new Elysia({
 				// });
 
 				const promises = [];
-				for (let i = 0; i < sourceTexts.length; i++) {
+				for (let i = 0; i < sourceTextWithContextAndPath.contexts.length; i++) {
 					const translatedText = translatedTexts[i];
 					promises.push(
 						ctx.db.translation.update({

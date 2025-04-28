@@ -9,6 +9,11 @@ generator client {
   previewFeatures = ["prismaSchemaFolder", "typedSql"]
 }
 
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
 generator prismabox {
   provider                    = "prismabox"
   // you can optionally specify the output location. Defaults to ./prismabox
@@ -20,11 +25,6 @@ generator prismabox {
   additionalProperties        = true
   // optionally enable the data model generation. See the data model section below for more info
   inputModel                  = true
-}
-
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 generator erd {

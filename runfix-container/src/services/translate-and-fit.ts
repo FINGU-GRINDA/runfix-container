@@ -4,8 +4,6 @@ import { translateTextWithGoogle } from "../utils/translate-text.ts";
 import { mergeWithDefaults } from "../types/type-utils.ts";
 import type { DeepPartial } from "../types/type-utils.ts";
 import { waitForDOMLoad } from "../utils/wait-for-DOM-load.ts";
-import { getAllTextNodesToBeTranslated } from "../utils/get-all-text-nodes-to-be-translated.ts";
-import { translateTextNode } from "../utils/translate-text-node.ts";
 import { getAllElementsToBeTranslated } from "../utils/get-all-elements-to-be-translated.ts";
 import { translateElement } from "../utils/translate-element.ts";
 

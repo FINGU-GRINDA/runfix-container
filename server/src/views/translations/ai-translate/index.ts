@@ -2,9 +2,9 @@ import Elysia, { t } from "elysia";
 import { HttpError } from "elysia-http-error";
 import { authenticateApiKeyProjectPlugin } from "../../../procedures/stateful/authenticate-api-key-plugin";
 import { cachePlugin } from "../../../procedures/stateful/cache-plugin";
+import { batchTranslateTextWithBing } from "../../../procedures/stateless/batch-translate-bing";
 import { languageToDbCode } from "../constants";
 import { getTranslationFromDB } from "./procedures/get-translation-from-db";
-import { translateTextWithGoogle } from "./procedures/google-translate";
 
 export const aiTranslateRouter = new Elysia({
 	detail: {
@@ -43,6 +43,7 @@ export const aiTranslateRouter = new Elysia({
 				sourceText: ctx.body.sourceText,
 				sourceLanguage: ctx.body.sourceLanguage,
 				targetLanguage: ctx.body.targetLanguage,
+				path: ctx.body.path,
 				projectId: ctx.apiKey.projectId,
 			});
 
@@ -52,24 +53,29 @@ export const aiTranslateRouter = new Elysia({
 					sourceLanguage: ctx.body.sourceLanguage,
 					targetLanguage: ctx.body.targetLanguage,
 					translatedText: maybeTranslation,
-					context: null,
-					isCached: false,
+					path: ctx.body.path,
+					context: ctx.body.context || null,
+					isCached: true,
 				};
 			}
 
 			// translate
-			const translatedText = await translateTextWithGoogle({
-				sourceText: ctx.body.sourceText,
+			const translatedTexts = await batchTranslateTextWithBing({
+				sourceTexts: [ctx.body.sourceText],
 				sourceLanguage: ctx.body.sourceLanguage,
 				targetLanguage: ctx.body.targetLanguage,
-				context: ctx.body.context,
 			});
+
+			if (!translatedTexts || translatedTexts.length === 0) {
+				throw HttpError.Internal("Translation failed");
+			}
 
 			const response = {
 				sourceText: ctx.body.sourceText,
 				sourceLanguage: ctx.body.sourceLanguage,
 				targetLanguage: ctx.body.targetLanguage,
-				translatedText: translatedText,
+				translatedText: translatedTexts[0],
+				path: ctx.body.path,
 				context: ctx.body.context || null,
 				isCached: false,
 			};
@@ -81,6 +87,7 @@ export const aiTranslateRouter = new Elysia({
 				sourceText: t.String(),
 				sourceLanguage: t.String(),
 				targetLanguage: t.String(),
+				path: t.String(),
 				context: t.Optional(t.String()),
 			}),
 			response: t.Object({
@@ -88,24 +95,23 @@ export const aiTranslateRouter = new Elysia({
 				sourceLanguage: t.String(),
 				targetLanguage: t.String(),
 				translatedText: t.String(),
+				path: t.String(),
 				context: t.Nullable(t.String()),
 				isCached: t.Boolean(),
 			}),
 			afterResponse: async (ctx) => {
-				if (!ctx.apiKey) {
-					throw HttpError.Unauthorized("Please sign in");
-				}
+				const sourceText = ctx.body.sourceText;
+				const sourceLanguage = ctx.body.sourceLanguage;
+				const targetLanguage = ctx.body.targetLanguage;
+				const translatedText = ctx.response.translatedText;
+				const path = ctx.response.path;
+				const context = ctx.body.context;
+				const isCached = ctx.response.isCached;
 
-				if (!ctx.apiKey.projectId) {
-					throw HttpError.Unauthorized("Missing project id");
-				}
-
-				// TODO: save translation to log for analytics
-				if (ctx.response.isCached) {
+				if (isCached) {
 					return;
 				}
 
-				//   store cache
 				const cacheKey = JSON.stringify({
 					route: ctx.path,
 					params: ctx.params,
@@ -113,15 +119,12 @@ export const aiTranslateRouter = new Elysia({
 					projectId: ctx.apiKey.projectId,
 				});
 
-				ctx.response.isCached = true;
-
-				await ctx.cache.set({
+				const cachedResult = await ctx.cache.set({
 					key: cacheKey,
 					value: ctx.response,
 				});
 
-				const translatedText = ctx.response.translatedText;
-
+				// store cached result
 				//   save translation to database
 				await ctx.db.$transaction(
 					async (tx) => {
@@ -129,11 +132,10 @@ export const aiTranslateRouter = new Elysia({
 						const existingTranslation = await tx.translation.findFirst({
 							where: {
 								projectId: ctx.apiKey.projectId,
-								[languageToDbCode({ languageCode: ctx.body.sourceLanguage })]:
-									ctx.body.sourceText,
-							},
-							orderBy: {
-								createdAt: "asc",
+								[languageToDbCode({ languageCode: sourceLanguage })]:
+									sourceText,
+								path: path,
+								context: context,
 							},
 						});
 
@@ -145,7 +147,7 @@ export const aiTranslateRouter = new Elysia({
 								},
 								data: {
 									[languageToDbCode({
-										languageCode: ctx.body.targetLanguage,
+										languageCode: targetLanguage,
 									})]: translatedText,
 								},
 							});
@@ -155,11 +157,13 @@ export const aiTranslateRouter = new Elysia({
 								data: {
 									projectId: ctx.apiKey.projectId,
 									[languageToDbCode({
-										languageCode: ctx.body.sourceLanguage,
-									})]: ctx.body.sourceText,
+										languageCode: sourceLanguage,
+									})]: sourceText,
 									[languageToDbCode({
-										languageCode: ctx.body.targetLanguage,
+										languageCode: targetLanguage,
 									})]: translatedText,
+									path: path,
+									context: context,
 								},
 							});
 						}

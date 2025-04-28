@@ -82,7 +82,9 @@ export const signinWithMagicLinkRouter = new Elysia({
 				},
 			});
 			const redirectUrl = `${env.SERVER_BASE_URL}/api/sessions/create-with-magic-link?token=${signedToken}&redirectUrl=${ctx.body.redirectUrl}`;
+
 			console.info({ redirectUrl });
+
 			// send email
 			await ctx.sendMagicLinkEmail({
 				verificationUrl: redirectUrl,
@@ -97,7 +99,7 @@ export const signinWithMagicLinkRouter = new Elysia({
 		{
 			body: t.Object({
 				email: t.String(),
-				redirectUrl: t.String({ default: `${env.SERVER_BASE_URL}/docs` }),
+				redirectUrl: t.String({ default: `${env.SERVER_BASE_URL}` }),
 			}),
 			response: t.Object({
 				message: t.String(),

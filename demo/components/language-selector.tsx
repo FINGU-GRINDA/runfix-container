@@ -66,8 +66,9 @@ export function LanguageSelector() {
 				},
 				translateConfig: {
 					translateFn: getGrindaTranslateFn({
-						apiKey: process.env.NEXT_PUBLIC_GRINDA_TRANSLATE_API_KEY!,
-						baseUrl: process.env.NEXT_PUBLIC_GRINDA_TRANSLATE_BASE_URL!,
+						apiKey: process.env.NEXT_PUBLIC_GRINDA_TRANSLATE_API_KEY as string,
+						baseUrl: process.env
+							.NEXT_PUBLIC_GRINDA_TRANSLATE_BASE_URL as string,
 					}),
 				},
 			});

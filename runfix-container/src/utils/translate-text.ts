@@ -5,6 +5,7 @@ export const translateTextWithGoogle = async (params: {
   sourceText: string;
   sourceLanguage: string;
   targetLanguage: string;
+  path: string;
   context?: string;
 }): Promise<string> => {
   if (params.sourceLanguage === params.targetLanguage) {
@@ -16,6 +17,7 @@ export const translateTextWithGoogle = async (params: {
       params.sourceLanguage
     }&tl=${params.targetLanguage}&dt=t&q=${encodeURIComponent(params.sourceText)}`
   );
+
   const data = await res.json();
 
   return data[0][0][0];
@@ -25,6 +27,7 @@ export const debugTranslateTextWithGoogle = async (params: {
   sourceText: string;
   sourceLanguage: string;
   targetLanguage: string;
+  path: string;
   context?: string;
 }): Promise<string> => {
   if (params.sourceLanguage === params.targetLanguage) {
@@ -43,6 +46,7 @@ export const debugTranslateTextWithGoogle = async (params: {
     targetLanguage: params.targetLanguage,
     sourceText: params.sourceText,
     translation: data[0][0][0],
+    path: params.path,
   });
 
   return data[0][0][0];
@@ -53,6 +57,7 @@ export const getGrindaTranslateFn = (params: { apiKey: string; baseUrl: string }
     sourceText: string;
     sourceLanguage: string;
     targetLanguage: string;
+    path: string;
     context?: string;
   }): Promise<string> => {
     const client = createClient<paths>({ baseUrl: params.baseUrl });
@@ -62,6 +67,7 @@ export const getGrindaTranslateFn = (params: { apiKey: string; baseUrl: string }
         sourceLanguage: translateParams.sourceLanguage,
         sourceText: translateParams.sourceText,
         targetLanguage: translateParams.targetLanguage,
+        path: translateParams.path,
         context: translateParams.context,
       },
       params: {

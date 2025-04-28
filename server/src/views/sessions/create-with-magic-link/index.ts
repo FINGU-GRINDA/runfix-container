@@ -27,10 +27,7 @@ export const createWithMagicLinkRouter = new Elysia({
 			const payload = await ctx.jwt.verify({ token: token });
 
 			// parse email auth
-			const emailAuth = ctx.parseValue(
-				EmailAuthPlain,
-				payload.emailAuth,
-			) as Static<typeof EmailAuthPlain>;
+			const emailAuth = ctx.parseValue(EmailAuthPlain, payload.emailAuth);
 
 			// only token that's exact match (latest magic link) is valid
 			const emailAuthForMagicLink = await ctx.db.emailAuth.findFirst({

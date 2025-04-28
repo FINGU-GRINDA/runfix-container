@@ -8,6 +8,8 @@ export const TranslationPlain = t.Object({
   id: t.String(),
   createdAt: t.Date(),
   updatedAt: t.Date(),
+  context: __nullable__(t.String()),
+  path: __nullable__(t.String()),
   aaText: __nullable__(t.String()),
   abText: __nullable__(t.String()),
   aeText: __nullable__(t.String()),
@@ -209,6 +211,8 @@ export const TranslationRelations = t.Object({
 });
 
 export const TranslationPlainInputCreate = t.Object({
+  context: t.Optional(__nullable__(t.String())),
+  path: t.Optional(__nullable__(t.String())),
   aaText: t.Optional(__nullable__(t.String())),
   abText: t.Optional(__nullable__(t.String())),
   aeText: t.Optional(__nullable__(t.String())),
@@ -396,6 +400,8 @@ export const TranslationPlainInputCreate = t.Object({
 });
 
 export const TranslationPlainInputUpdate = t.Object({
+  context: t.Optional(__nullable__(t.String())),
+  path: t.Optional(__nullable__(t.String())),
   aaText: t.Optional(__nullable__(t.String())),
   abText: t.Optional(__nullable__(t.String())),
   aeText: t.Optional(__nullable__(t.String())),
@@ -616,6 +622,8 @@ export const TranslationWhere = t.Partial(
           id: t.String(),
           createdAt: t.Date(),
           updatedAt: t.Date(),
+          context: t.String(),
+          path: t.String(),
           aaText: t.String(),
           abText: t.String(),
           aeText: t.String(),
@@ -830,6 +838,8 @@ export const TranslationWhereUnique = t.Recursive(
             id: t.String(),
             createdAt: t.Date(),
             updatedAt: t.Date(),
+            context: t.String(),
+            path: t.String(),
             aaText: t.String(),
             abText: t.String(),
             aeText: t.String(),
@@ -1028,6 +1038,8 @@ export const TranslationSelect = t.Partial(
     id: t.Boolean(),
     createdAt: t.Boolean(),
     updatedAt: t.Boolean(),
+    context: t.Boolean(),
+    path: t.Boolean(),
     aaText: t.Boolean(),
     abText: t.Boolean(),
     aeText: t.Boolean(),
@@ -1231,6 +1243,12 @@ export const TranslationOrderBy = t.Partial(
       additionalProperties: true,
     }),
     updatedAt: t.Union([t.Literal("asc"), t.Literal("desc")], {
+      additionalProperties: true,
+    }),
+    context: t.Union([t.Literal("asc"), t.Literal("desc")], {
+      additionalProperties: true,
+    }),
+    path: t.Union([t.Literal("asc"), t.Literal("desc")], {
       additionalProperties: true,
     }),
     aaText: t.Union([t.Literal("asc"), t.Literal("desc")], {

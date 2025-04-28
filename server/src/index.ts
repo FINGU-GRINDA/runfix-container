@@ -40,6 +40,7 @@ const app = new Elysia({
 	.use(httpError())
 	.use(staticPlugin())
 	.use(httpErrorDecorator)
+	.use(apiRouter)
 	.use(
 		swagger({
 			path: "/",
@@ -76,7 +77,7 @@ const app = new Elysia({
 			description: "Get health status",
 		},
 	)
-	.use(apiRouter)
+
 	.listen({ port: 8000, idleTimeout: 255 });
 
 console.log(
