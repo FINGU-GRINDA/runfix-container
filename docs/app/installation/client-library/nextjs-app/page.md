@@ -134,8 +134,11 @@ export const translateAndFitParams = {
   sourceLanguage: "en",
   targetLanguage: "ko",
   fitConfig: {
+    // add overflow break to prevent text overflow, will create multilines
     addOverflowBreak: true,
     skipFitClasses: ["skip-fit"],
+    // enable single line spans
+    singleLineSpans: true,
   },
   translateConfig: {
     skipTranslateClasses: ["skip-translate"],

@@ -19,7 +19,6 @@ export const getAllElementsToBeTranslated = (params: {
   const allAllowedElements = allElements.filter((element) => {
     // Check for placeholder attribute
     const hasPlaceholder = element.getAttribute("placeholder") !== null;
-
     const hasTextContent = element.textContent !== null;
 
     if (!hasPlaceholder && !hasTextContent) return false;

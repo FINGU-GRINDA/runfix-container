@@ -6,13 +6,15 @@ import type { DeepPartial } from "../types/type-utils.ts";
 import { waitForDOMLoad } from "../utils/wait-for-DOM-load.ts";
 import { getAllElementsToBeTranslated } from "../utils/get-all-elements-to-be-translated.ts";
 import { translateElement } from "../utils/translate-element.ts";
+import { singleLineSpan } from "../utils/single-line-span.ts";
 
 export const translateAndFitParams = {
   sourceLanguage: "en",
   targetLanguage: "ko",
   fitConfig: {
-    addOverflowBreak: true,
+    addOverflowBreak: false,
     skipFitClasses: ["skip-fit"],
+    singleLineSpans: true,
   },
   translateConfig: {
     skipTranslateClasses: ["skip-translate"],
@@ -65,6 +67,11 @@ export const translateAndFit = async (userParams?: TranslateAndFitParams) => {
 
   await Promise.all(translationTasks);
 
+  if (params.fitConfig.singleLineSpans) {
+    console.log("Applying single line span");
+    singleLineSpan();
+  }
+
   // create a set of unique containers with overflow
   const originalUniqueContainerWithOverflowSet = new Set<HTMLElement>(
     originalUniqueContainerWithOverflow
@@ -76,19 +83,19 @@ export const translateAndFit = async (userParams?: TranslateAndFitParams) => {
   const uniqueContainerWithOverflow = getSortedUniqueContainerWithOverflow({
     elements: allElementsToBeTranslated,
   })
-    .filter((container: HTMLElement) => {
-      if (originalUniqueContainerWithOverflowSet.has(container)) return false;
-
-      if (Array.from(container.classList).some((cls) => parsedSkipFitClasses.has(cls)))
-        return false;
-      return true;
-    })
     .map((container: HTMLElement) => {
       if (params.fitConfig.addOverflowBreak) {
         container.style.cssText +=
           ";overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;hyphens: auto;white-space: normal;max-width: 100%;";
       }
       return container;
+    })
+    .filter((container: HTMLElement) => {
+      if (originalUniqueContainerWithOverflowSet.has(container)) return false;
+
+      if (Array.from(container.classList).some((cls) => parsedSkipFitClasses.has(cls)))
+        return false;
+      return true;
     });
 
   textFitter({ overflowContainers: uniqueContainerWithOverflow });
