@@ -62,7 +62,7 @@ export function LanguageSelector() {
 				sourceLanguage: currentLanguage,
 				targetLanguage: langParam,
 				fitConfig: {
-					addOverflowBreak: true,
+					addOverflowBreak: false,
 				},
 				translateConfig: {
 					translateFn: getGrindaTranslateFn({
