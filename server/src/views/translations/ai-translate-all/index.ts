@@ -7,9 +7,9 @@ import {
 } from "../../../data/language-codes";
 import { authenticateUserPlugin } from "../../../procedures/stateful/authenticate-user-plugin";
 import { cachePlugin } from "../../../procedures/stateful/cache-plugin";
+import { AlibabaTranslate } from "../../../procedures/stateless/llm-translation/alibaba-translate";
 import { OpenRouterTranslate } from "../../../procedures/stateless/llm-translation/openrouter-translate";
 import { isValidLanguageCode } from "./procedures/language-validation";
-import { AlibabaTranslate } from "../../../procedures/stateless/llm-translation/alibaba-translate";
 
 export const aiTranslateAllRouter = new Elysia({
 	detail: {
