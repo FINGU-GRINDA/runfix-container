@@ -9,6 +9,7 @@ import { authenticateUserPlugin } from "../../../procedures/stateful/authenticat
 import { cachePlugin } from "../../../procedures/stateful/cache-plugin";
 import { OpenRouterTranslate } from "../../../procedures/stateless/llm-translation/openrouter-translate";
 import { isValidLanguageCode } from "./procedures/language-validation";
+import { AlibabaTranslate } from "../../../procedures/stateless/llm-translation/alibaba-translate";
 
 export const aiTranslateAllRouter = new Elysia({
 	detail: {
@@ -81,8 +82,8 @@ export const aiTranslateAllRouter = new Elysia({
 				sourceTextWithContextAndPath.contexts.push(context);
 			}
 
-			const llmTranslator = new OpenRouterTranslate({
-				model: "qwen/qwen3-8b:free",
+			const llmTranslator = new AlibabaTranslate({
+				model: "qwen-plus-latest",
 			});
 
 			while (true) {
@@ -99,13 +100,6 @@ export const aiTranslateAllRouter = new Elysia({
 					path: sourceTextWithContextAndPath.paths,
 					contexts: sourceTextWithContextAndPath.contexts,
 				});
-
-				// const translatedTexts = await batchTranslateTextWithBing({
-				// 	sourceTexts: sourceTexts,
-				// 	sourceLanguage: sourceLanguage,
-				// 	targetLanguage: targetLanguage,
-				// 	context: "",
-				// });
 
 				const promises = [];
 				for (let i = 0; i < sourceTextWithContextAndPath.contexts.length; i++) {
