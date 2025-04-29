@@ -2,10 +2,10 @@ import type { PrismaClient } from "@prisma/client";
 import Elysia, { t } from "elysia";
 import { HttpError } from "elysia-http-error";
 import { env } from "../../../config";
+import { languageToDbCode } from "../../../data/language-codes";
 import { authenticateApiKeyProjectPlugin } from "../../../procedures/stateful/authenticate-api-key-plugin";
 import { cachePlugin } from "../../../procedures/stateful/cache-plugin";
 import { databasePlugin } from "../../../procedures/stateful/database-plugin";
-import { languageToDbCode } from "../constants";
 import { batchTranslateTextWithBing } from "./procedures/procedures";
 
 export const aiTranslateV2Router = new Elysia({

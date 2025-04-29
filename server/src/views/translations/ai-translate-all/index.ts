@@ -1,10 +1,13 @@
 import Elysia, { t } from "elysia";
 import { HttpError } from "elysia-http-error";
 import { TranslationPlain } from "../../../../prisma/schema/prismabox/Translation";
+import {
+	allLanguageCodes,
+	languageToDbCode,
+} from "../../../data/language-codes";
 import { authenticateUserPlugin } from "../../../procedures/stateful/authenticate-user-plugin";
 import { cachePlugin } from "../../../procedures/stateful/cache-plugin";
-import { llmTranslateBatch } from "../../../procedures/stateless/llm-translate";
-import { allLanguageCodes, languageToDbCode } from "../constants";
+import { OpenRouterTranslate } from "../../../procedures/stateless/llm-translation/openrouter-translate";
 import { isValidLanguageCode } from "./procedures/language-validation";
 
 export const aiTranslateAllRouter = new Elysia({
@@ -78,6 +81,10 @@ export const aiTranslateAllRouter = new Elysia({
 				sourceTextWithContextAndPath.contexts.push(context);
 			}
 
+			const llmTranslator = new OpenRouterTranslate({
+				model: "qwen/qwen3-8b:free",
+			});
+
 			while (true) {
 				const targetLanguage = remainingTargetLanguages.pop();
 
@@ -85,7 +92,7 @@ export const aiTranslateAllRouter = new Elysia({
 					break;
 				}
 
-				const translatedTexts = await llmTranslateBatch({
+				const translatedTexts = await llmTranslator.batchTranslate({
 					sourceTexts: sourceTextWithContextAndPath.sourceTexts,
 					sourceLanguage: sourceLanguage,
 					targetLanguage: targetLanguage,

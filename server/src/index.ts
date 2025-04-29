@@ -11,7 +11,7 @@ import { env } from "./config";
 import { getVersion } from "./procedures/stateful/get-version-plugin";
 import { apiRouter } from "./views";
 
-const app = new Elysia({
+export const app = new Elysia({
 	name: "Hana Lang Connect",
 	detail: {
 		description: "A translation API",
@@ -19,7 +19,7 @@ const app = new Elysia({
 	},
 })
 	// .use(pluginGracefulServer())
-	.use(Logestic.preset("fancy"))
+	.use(Logestic.preset("fancy", { showLevel: true, explicitLogging: true }))
 	.use(
 		opentelemetry({
 			spanProcessors: [
@@ -79,6 +79,8 @@ const app = new Elysia({
 	)
 
 	.listen({ port: 8000, idleTimeout: 255 });
+
+export type App = typeof app;
 
 console.log(
 	`🦊 Elysia is running at http://${app.server?.hostname}:${app.server?.port}`,

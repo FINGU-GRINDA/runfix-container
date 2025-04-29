@@ -32,9 +32,18 @@ const EnvSchema = Type.Object({
 
 	//   AI
 	OPENAI_API_KEY: Type.String(),
+	OPENROUTER_API_KEY: Type.String(),
+	OPENROUTER_BASE_URL: Type.String({ default: "https://openrouter.ai/api/v1" }),
+	ALIBABA_API_KEY: Type.String(),
+	ALIBABA_BASE_URL: Type.String({
+		default: "https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
+	}),
 
 	//   EMAIL SERVICES
 	RESEND_API_KEY: Type.String(),
+
+	// TESTING
+	TEST_API_KEY: Type.Optional(Type.String()),
 });
 
 export const env = Value.Parse(EnvSchema, process.env);

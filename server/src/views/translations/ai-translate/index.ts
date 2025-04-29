@@ -1,9 +1,9 @@
 import Elysia, { t } from "elysia";
 import { HttpError } from "elysia-http-error";
+import { languageToDbCode } from "../../../data/language-codes";
 import { authenticateApiKeyProjectPlugin } from "../../../procedures/stateful/authenticate-api-key-plugin";
 import { cachePlugin } from "../../../procedures/stateful/cache-plugin";
 import { batchTranslateTextWithBing } from "../../../procedures/stateless/batch-translate-bing";
-import { languageToDbCode } from "../constants";
 import { getTranslationFromDB } from "./procedures/get-translation-from-db";
 
 export const aiTranslateRouter = new Elysia({

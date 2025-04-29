@@ -1,5 +1,5 @@
+import { languageToDbCode } from "../../../../data/language-codes";
 import { prisma } from "../../../../data/prisma";
-import { languageToDbCode } from "../../constants";
 
 export const getTranslationFromDB = async (params: {
 	sourceText: string;

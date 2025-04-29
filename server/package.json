@@ -7,20 +7,23 @@
 	"maintainers": ["Viky <vikyw89@gmail.com>"],
 	"version": "1.0.0",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
+		"test": "bun test --timeout 255000",
 		"dev": "bun run --watch src/index.ts",
 		"start": "bun run src/index.ts",
 		"seed": "bun ./prisma/seed.ts",
 		"format": "bunx biome check --write ./src",
-		"sql": "bunx prisma generate --sql"
+		"sql": "bunx prisma generate --sql",
+		"codegen": "bunx openapi-typescript http://localhost:8000/json -o ./tests/client-sdk/api.d.ts"
 	},
 	"dependencies": {
 		"@elysiajs/bearer": "^1.2.0",
 		"@elysiajs/cors": "^1.2.0",
+		"@elysiajs/eden": "^1.2.0",
 		"@elysiajs/opentelemetry": "^1.2.0",
 		"@elysiajs/server-timing": "^1.2.1",
 		"@elysiajs/static": "^1.2.0",
 		"@elysiajs/swagger": "^1.2.2",
+		"@instructor-ai/instructor": "^1.7.0",
 		"@prisma/client": "^6.5.0",
 		"@react-email/components": "^0.0.36",
 		"@simplewebauthn/server": "^13.1.1",
@@ -39,6 +42,7 @@
 		"node-html-markdown": "^1.3.0",
 		"nodemailer": "^6.10.1",
 		"openai": "^4.91.1",
+		"openapi-fetch": "^0.13.5",
 		"prisma": "^6.5.0",
 		"prisma-erd-generator": "^2.0.4",
 		"prisma-markdown": "^2.0.0",
@@ -50,13 +54,17 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "1.9.4",
+		"@types/bun": "^1.2.11",
 		"@types/nodemailer": "^6.4.17",
 		"@types/react": "^19.1.1",
 		"bun-types": "latest",
+		"i": "^0.3.7",
 		"lefthook": "^1.11.9",
+		"openapi-typescript": "^7.6.1",
 		"prisma-grapher": "^1.0.0",
 		"prismabox": "^1.1.24",
-		"schema2typebox": "^1.7.6"
+		"schema2typebox": "^1.7.6",
+		"typescript": "^5.8.3"
 	},
 	"module": "src/index.js"
 }
