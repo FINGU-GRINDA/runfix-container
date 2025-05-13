@@ -7,6 +7,7 @@ import { waitForDOMLoad } from "../utils/wait-for-DOM-load.ts";
 import { getAllElementsToBeTranslated } from "../utils/get-all-elements-to-be-translated.ts";
 import { singleLineSpan } from "../utils/single-line-span.ts";
 import { translateAllElements } from "../utils/translate-all-elements.ts";
+import { revertToOriginalFontSizes } from "../utils/revert-to-original-font-sizes.ts";
 
 export const translateAndFitParams = {
   sourceLanguage: "en",
@@ -46,6 +47,10 @@ export const translateAndFit = async (userParams?: TranslateAndFitParams) => {
     skipTagNames: parsedSkipTagNames,
   });
 
+  revertToOriginalFontSizes({
+    elements: allElementsToBeTranslated,
+  });
+
   // keep record of original containers with overflow
   // limit search scope to elements that we will translate
   const originalUniqueContainerWithOverflow = getSortedUniqueContainerWithOverflow({
@@ -79,13 +84,19 @@ export const translateAndFit = async (userParams?: TranslateAndFitParams) => {
         container.style.cssText +=
           ";overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;hyphens: auto;white-space: normal;max-width: 100%;";
       }
+
       return container;
     })
     .filter((container: HTMLElement) => {
-      if (originalUniqueContainerWithOverflowSet.has(container)) return false;
-
-      if (Array.from(container.classList).some((cls) => parsedSkipFitClasses.has(cls)))
+      if (originalUniqueContainerWithOverflowSet.has(container)) {
+        container.setAttribute("data-skip-fit", "original-overflow");
         return false;
+      }
+
+      if (Array.from(container.classList).some((cls) => parsedSkipFitClasses.has(cls))) {
+        container.setAttribute("data-skip-fit", "skip-class");
+        return false;
+      }
       return true;
     });
 

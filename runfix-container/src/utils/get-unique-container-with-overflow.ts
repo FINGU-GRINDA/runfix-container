@@ -7,19 +7,6 @@ export const getSortedUniqueContainerWithOverflow = (params: {
 
   // we do checking starting from the child elements to the self to the parent
   for (const element of params.elements) {
-    // // get child elements
-    // const childrenElements = element.children;
-
-    // for (const childElement of childrenElements) {
-    //   const overflow = checkContainerOverflow({
-    //     container: childElement as HTMLElement,
-    //   });
-
-    //   if (overflow.hasOverflow) {
-    //     uniqueContainersWithOverflow.add(childElement as HTMLElement);
-    //   }
-    // }
-
     const overflow = checkElementOverflow({
       element: element,
     });
@@ -29,20 +16,6 @@ export const getSortedUniqueContainerWithOverflow = (params: {
     if (overflow.hasOverflow && parentContainer !== null) {
       uniqueContainersWithOverflow.add(parentContainer);
     }
-
-    // if (parentContainer === null || parentContainer.tagName === "BODY") {
-    //   continue;
-    // }
-
-    // const parentOverflow = checkContainerOverflow({
-    //   container: parentContainer,
-    // });
-
-    // if (!parentOverflow.hasOverflow) {
-    //   continue;
-    // }
-
-    // uniqueContainersWithOverflow.add(parentContainer);
   }
 
   // Convert Set to Array for sorting
