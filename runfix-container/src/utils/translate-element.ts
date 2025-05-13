@@ -15,7 +15,11 @@ export const translateElement = async (params: {
 }): Promise<void> => {
   // Skip if the element has already been translated to the target language
   // we use this instead of params.sourceLanguage because there are times when the source language is not the same as the target language
-  const actualSourceLanguage = params.element.getAttribute("data-lang") || params.sourceLanguage;
+  let actualSourceLanguage = params.element.getAttribute("data-lang");
+  if (!actualSourceLanguage) {
+    params.element.setAttribute("data-lang", params.sourceLanguage);
+    actualSourceLanguage = params.sourceLanguage;
+  }
 
   if (actualSourceLanguage === params.targetLanguage) {
     return;
@@ -77,6 +81,6 @@ export const translateElement = async (params: {
     textNodes[i].textContent = translations[i];
   }
 
-  // for caching, sometimes ui interaction happens before translations are finished
+  // for caching and correct source language tagging, sometimes ui interaction happens before translations are finished
   params.element.setAttribute("data-lang", params.targetLanguage);
 };

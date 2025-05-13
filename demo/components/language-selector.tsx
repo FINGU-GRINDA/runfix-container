@@ -28,21 +28,21 @@ const defaultLanguage = languages.find((lang) => lang.code === "ko")!;
 
 export function LanguageSelector() {
 	// Use nuqs for query state management
-	const [langParam, setLangParam] = useQueryState(
+	const [targetLanguage, setTargetLanguage] = useQueryState(
 		"lang",
 		parseAsString.withDefault("ko"),
 	);
 	const currentLanguage =
-		languages.find((lang) => lang.code === langParam) || defaultLanguage;
+		languages.find((lang) => lang.code === targetLanguage) || defaultLanguage;
 
 	const handleLanguageChange = async (language: Language) => {
 		if (!window.document) return;
 		// If language is Korean (default), remove the lang parameter
 		// Otherwise, set it to the selected language code
 		if (language.code === "ko") {
-			await setLangParam(null); // Remove the lang parameter from URL
+			await setTargetLanguage(null); // Remove the lang parameter from URL
 		} else {
-			await setLangParam(language.code);
+			await setTargetLanguage(language.code);
 		}
 		// Force page refresh to apply the translation
 		// This maintains the behavior of the original implementation
@@ -54,13 +54,13 @@ export function LanguageSelector() {
 		const currentLanguage = document
 			.querySelector("html")
 			?.getAttribute("lang");
-		if (!currentLanguage || !langParam) return;
-		if (currentLanguage === langParam) return;
+		if (!currentLanguage || !targetLanguage) return;
+		if (currentLanguage === targetLanguage) return;
 
 		const startTranslation = async () => {
 			await translateAndFit({
 				sourceLanguage: currentLanguage,
-				targetLanguage: langParam,
+				targetLanguage: targetLanguage,
 				fitConfig: {
 					addOverflowBreak: false,
 				},
@@ -74,11 +74,11 @@ export function LanguageSelector() {
 			});
 
 			// Update the html lang attribute
-			document.querySelector("html")?.setAttribute("lang", langParam);
+			document.querySelector("html")?.setAttribute("lang", targetLanguage);
 		};
 
 		startTranslation();
-	}, [langParam]);
+	}, [targetLanguage]);
 
 	return (
 		<DropdownMenu.Root>

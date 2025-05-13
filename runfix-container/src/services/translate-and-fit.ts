@@ -5,8 +5,8 @@ import { mergeWithDefaults } from "../types/type-utils.ts";
 import type { DeepPartial } from "../types/type-utils.ts";
 import { waitForDOMLoad } from "../utils/wait-for-DOM-load.ts";
 import { getAllElementsToBeTranslated } from "../utils/get-all-elements-to-be-translated.ts";
-import { translateElement } from "../utils/translate-element.ts";
 import { singleLineSpan } from "../utils/single-line-span.ts";
+import { translateAllElements } from "../utils/translate-all-elements.ts";
 
 export const translateAndFitParams = {
   sourceLanguage: "en",
@@ -52,23 +52,14 @@ export const translateAndFit = async (userParams?: TranslateAndFitParams) => {
     elements: allElementsToBeTranslated,
   });
 
-  // translate all elements
-  const translationTasks = [];
-  for (const element of allElementsToBeTranslated) {
-    translationTasks.push(
-      translateElement({
-        element: element,
-        sourceLanguage: params.sourceLanguage,
-        targetLanguage: params.targetLanguage,
-        translateFn: params.translateConfig.translateFn,
-      })
-    );
-  }
-
-  await Promise.all(translationTasks);
+  await translateAllElements({
+    elements: allElementsToBeTranslated,
+    sourceLanguage: params.sourceLanguage,
+    targetLanguage: params.targetLanguage,
+    translateFn: params.translateConfig.translateFn,
+  });
 
   if (params.fitConfig.singleLineSpans) {
-    console.log("Applying single line span");
     singleLineSpan();
   }
 
