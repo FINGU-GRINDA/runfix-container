@@ -1,6 +1,6 @@
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { Globe } from "lucide-react";
-import { useEffect } from "react";
+import { Globe, Loader2 } from "lucide-react";
+import { useEffect, useState } from "react";
 import { parseAsString, useQueryState } from "nuqs";
 import { translateAndFit, getGrindaTranslateFn } from "runfix-container";
 
@@ -32,11 +32,13 @@ export function LanguageSelector() {
 		"lang",
 		parseAsString.withDefault("ko"),
 	);
+	// Add state to track when translation is in progress
+	const [isTranslating, setIsTranslating] = useState(false);
 	const currentLanguage =
 		languages.find((lang) => lang.code === targetLanguage) || defaultLanguage;
 
 	const handleLanguageChange = async (language: Language) => {
-		if (!window.document) return;
+		if (!window.document || isTranslating) return;
 		// If language is Korean (default), remove the lang parameter
 		// Otherwise, set it to the selected language code
 		if (language.code === "ko") {
@@ -58,23 +60,30 @@ export function LanguageSelector() {
 		if (currentLanguage === targetLanguage) return;
 
 		const startTranslation = async () => {
-			await translateAndFit({
-				sourceLanguage: currentLanguage,
-				targetLanguage: targetLanguage,
-				fitConfig: {
-					addOverflowBreak: false,
-				},
-				translateConfig: {
-					translateFn: getGrindaTranslateFn({
-						apiKey: process.env.NEXT_PUBLIC_GRINDA_TRANSLATE_API_KEY as string,
-						baseUrl: process.env
-							.NEXT_PUBLIC_GRINDA_TRANSLATE_BASE_URL as string,
-					}),
-				},
-			});
+			setIsTranslating(true);
+			try {
+				await translateAndFit({
+					sourceLanguage: currentLanguage,
+					targetLanguage: targetLanguage,
+					fitConfig: {
+						addOverflowBreak: false,
+					},
+					translateConfig: {
+						translateFn: getGrindaTranslateFn({
+							apiKey: process.env.NEXT_PUBLIC_GRINDA_TRANSLATE_API_KEY as string,
+							baseUrl: process.env
+								.NEXT_PUBLIC_GRINDA_TRANSLATE_BASE_URL as string,
+						}),
+					},
+				});
 
-			// Update the html lang attribute
-			document.querySelector("html")?.setAttribute("lang", targetLanguage);
+				// Update the html lang attribute
+				document.querySelector("html")?.setAttribute("lang", targetLanguage);
+			} catch (error) {
+				console.error("Translation failed:", error);
+			} finally {
+				setIsTranslating(false);
+			}
 		};
 
 		startTranslation();
@@ -82,8 +91,15 @@ export function LanguageSelector() {
 
 	return (
 		<DropdownMenu.Root>
-			<DropdownMenu.Trigger className="skip-translate flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-gray-100 dark:hover:bg-gray-800">
-				<Globe className="w-4 h-4" />
+			<DropdownMenu.Trigger
+				disabled={isTranslating}
+				className={`skip-translate flex items-center gap-2 px-3 py-2 text-sm rounded-md ${isTranslating ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-100 dark:hover:bg-gray-800'}`}
+			>
+				{isTranslating ? (
+					<Loader2 className="w-4 h-4 animate-spin" />
+				) : (
+					<Globe className="w-4 h-4" />
+				)}
 				<span className="skip-translate">{currentLanguage.name}</span>
 			</DropdownMenu.Trigger>
 
