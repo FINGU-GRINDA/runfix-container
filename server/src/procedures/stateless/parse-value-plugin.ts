@@ -1,4 +1,3 @@
-import { Kind } from "@sinclair/typebox";
 import { Value } from "@sinclair/typebox/value";
 import { Elysia, type TSchema } from "elysia";
 

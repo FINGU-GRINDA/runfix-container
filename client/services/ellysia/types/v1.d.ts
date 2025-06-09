@@ -4,14 +4,38 @@
  */
 
 export interface paths {
-	"/": {
+	"/api/email-auth/signin-with-magic-link": {
 		parameters: {
 			query?: never;
 			header?: never;
 			path?: never;
 			cookie?: never;
 		};
-		get: operations["getIndex"];
+		get?: never;
+		put?: never;
+		/**
+		 * Sign in with magic link
+		 * @description Sign in with magic link
+		 */
+		post: operations["postApiEmail-authSignin-with-magic-link"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/email-auth": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Read all
+		 * @description Read all email auth router
+		 */
+		get: operations["getApiEmail-auth"];
 		put?: never;
 		post?: never;
 		delete?: never;
@@ -20,17 +44,21 @@ export interface paths {
 		patch?: never;
 		trace?: never;
 	};
-	"/api/users": {
+	"/api/email-auth/{id}": {
 		parameters: {
 			query?: never;
 			header?: never;
 			path?: never;
 			cookie?: never;
 		};
-		get: operations["getApiUsers"];
+		get?: never;
 		put?: never;
-		post: operations["postApiUsers"];
-		delete?: never;
+		post?: never;
+		/**
+		 * Delete
+		 * @description Delete email auth
+		 */
+		delete: operations["deleteApiEmail-authById"];
 		options?: never;
 		head?: never;
 		patch?: never;
@@ -43,137 +71,309 @@ export interface paths {
 			path?: never;
 			cookie?: never;
 		};
+		/**
+		 * Read
+		 * @description Get a user by ID
+		 */
 		get: operations["getApiUsersById"];
 		put?: never;
 		post?: never;
+		/**
+		 * Delete
+		 * @description Delete a user by ID
+		 */
 		delete: operations["deleteApiUsersById"];
 		options?: never;
 		head?: never;
+		/**
+		 * Update
+		 * @description Update a user by ID
+		 */
 		patch: operations["patchApiUsersById"];
 		trace?: never;
 	};
-	"/api/auth-accounts/create-with-email": {
+	"/api/users": {
 		parameters: {
 			query?: never;
 			header?: never;
 			path?: never;
 			cookie?: never;
 		};
-		get?: never;
-		put?: never;
-		post: operations["postApiAuth-accountsCreate-with-email"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/api/auth-accounts/create-passkey-options": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: operations["postApiAuth-accountsCreate-passkey-options"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/api/auth-accounts/create-with-passkey": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: operations["postApiAuth-accountsCreate-with-passkey"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/api/auth-sessions/create-with-email-sign-in": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: operations["postApiAuth-sessionsCreate-with-email-sign-in"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/api/auth-sessions/sign-out": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: operations["postApiAuth-sessionsSign-out"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/api/auth-sessions/create-with-passkey-options": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: operations["postApiAuth-sessionsCreate-with-passkey-options"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/api/auth-sessions/create-with-passkey": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get?: never;
-		put?: never;
-		post: operations["postApiAuth-sessionsCreate-with-passkey"];
-		delete?: never;
-		options?: never;
-		head?: never;
-		patch?: never;
-		trace?: never;
-	};
-	"/api/auth-sessions/who-am-i": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		get: operations["getApiAuth-sessionsWho-am-i"];
+		/**
+		 * Read all
+		 * @description Get all users
+		 */
+		get: operations["getApiUsers"];
 		put?: never;
 		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/sessions/who-am-i": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/**
+		 * Get current session / user
+		 * @description Get the current session / user information
+		 */
+		post: operations["postApiSessionsWho-am-i"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/sessions": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Read all
+		 * @description Get all user session
+		 */
+		get: operations["getApiSessions"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/sessions/create-with-magic-link": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Create session with magic link
+		 * @description Create a new session with magic link from `/auth/create-magic-link-auth`
+		 */
+		get: operations["getApiSessionsCreate-with-magic-link"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/sessions/sign-out-current-session": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/**
+		 * Sign out from current session
+		 * @description Sign out the current session
+		 */
+		post: operations["postApiSessionsSign-out-current-session"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/sessions/sign-out-all-sessions": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/**
+		 * Sign out from all sessions
+		 * @description Sign out from all sessions
+		 */
+		post: operations["postApiSessionsSign-out-all-sessions"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/organizations": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Read all
+		 * @description Get all organizations the user is a member of
+		 */
+		get: operations["getApiOrganizations"];
+		put?: never;
+		/**
+		 * Create
+		 * @description Create a new organization
+		 */
+		post: operations["postApiOrganizations"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/organizations/{id}": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Read
+		 * @description Get organization by id
+		 */
+		get: operations["getApiOrganizationsById"];
+		put?: never;
+		post?: never;
+		/**
+		 * Delete
+		 * @description Delete an organization. Only organization owners can perform this action.
+		 */
+		delete: operations["deleteApiOrganizationsById"];
+		options?: never;
+		head?: never;
+		/**
+		 * Update
+		 * @description Update an organization's details. Only organization owners can perform this action.
+		 */
+		patch: operations["patchApiOrganizationsById"];
+		trace?: never;
+	};
+	"/api/organization-members/{id}": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		post?: never;
+		/**
+		 * Delete
+		 * @description Delete an organization member. Only organization owners and admins can perform this action.
+		 */
+		delete: operations["deleteApiOrganization-membersById"];
+		options?: never;
+		head?: never;
+		/**
+		 * Update
+		 * @description Update an organization member.
+		 */
+		patch: operations["patchApiOrganization-membersById"];
+		trace?: never;
+	};
+	"/api/organization-members": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Read all
+		 * @description Get all organization members.
+		 */
+		get: operations["getApiOrganization-members"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/projects": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Read all
+		 * @description Get all projects in an organization
+		 */
+		get: operations["getApiProjects"];
+		put?: never;
+		/**
+		 * Create
+		 * @description Create a new project
+		 */
+		post: operations["postApiProjects"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/projects/{id}": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Read
+		 * @description Get a project by ID
+		 */
+		get: operations["getApiProjectsById"];
+		put?: never;
+		post?: never;
+		/**
+		 * Delete
+		 * @description Delete a project by ID
+		 */
+		delete: operations["deleteApiProjectsById"];
+		options?: never;
+		head?: never;
+		/**
+		 * Update
+		 * @description Update a project by ID
+		 */
+		patch: operations["patchApiProjectsById"];
+		trace?: never;
+	};
+	"/api/api-keys/create-new": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/**
+		 * Create a new API key for a project
+		 * @description Create a new API key for a project
+		 */
+		post: operations["postApiApi-keysCreate-new"];
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -187,9 +387,13 @@ export interface paths {
 			path?: never;
 			cookie?: never;
 		};
+		/**
+		 * Read all
+		 * @description Get all API keys for a specific project
+		 */
 		get: operations["getApiApi-keys"];
 		put?: never;
-		post: operations["postApiApi-keys"];
+		post?: never;
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -206,7 +410,31 @@ export interface paths {
 		get?: never;
 		put?: never;
 		post?: never;
+		/**
+		 * Delete
+		 * @description Delete an API key
+		 */
 		delete: operations["deleteApiApi-keysById"];
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/translations/ai-translate": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/**
+		 * Translate text using AI
+		 * @description Translate text using AI
+		 */
+		post: operations["postApiTranslationsAi-translate"];
+		delete?: never;
 		options?: never;
 		head?: never;
 		patch?: never;
@@ -219,9 +447,117 @@ export interface paths {
 			path?: never;
 			cookie?: never;
 		};
+		/**
+		 * Read all
+		 * @description Read all translations
+		 */
 		get: operations["getApiTranslations"];
 		put?: never;
-		post: operations["postApiTranslations"];
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/translations/{id}": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * Read a translation
+		 * @description Read a translation
+		 */
+		get: operations["getApiTranslationsById"];
+		put?: never;
+		post?: never;
+		delete?: never;
+		options?: never;
+		head?: never;
+		/**
+		 * Update a translation
+		 * @description Update a translation
+		 */
+		patch: operations["patchApiTranslationsById"];
+		trace?: never;
+	};
+	"/api/translations/ai-translate-all": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/**
+		 * Pre-translate all text using AI
+		 * @description Pre-translate all text using AI, this will take a while
+		 */
+		post: operations["postApiTranslationsAi-translate-all"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/translations/ai-translate-v2": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		/**
+		 * Translate text using AI v2
+		 * @description Translate text using AI v2
+		 */
+		post: operations["postApiTranslationsAi-translate-v2"];
+		delete?: never;
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/api/translations/delete-all": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		get?: never;
+		put?: never;
+		post?: never;
+		/**
+		 * Delete all
+		 * @description Delete all translations for a project
+		 */
+		delete: operations["deleteApiTranslationsDelete-all"];
+		options?: never;
+		head?: never;
+		patch?: never;
+		trace?: never;
+	};
+	"/health": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		/**
+		 * A translation API
+		 * @description A translation API
+		 */
+		get: operations["getHealth"];
+		put?: never;
+		post?: never;
 		delete?: never;
 		options?: never;
 		head?: never;
@@ -231,151 +567,7 @@ export interface paths {
 }
 export type webhooks = Record<string, never>;
 export interface components {
-	schemas: {
-		User: {
-			id: string;
-			createdAt:
-				| Record<string, never>
-				| string
-				| (
-						| number
-						| string
-						| (
-								| number
-								| string
-								| (
-										| number
-										| string
-										| (
-												| number
-												| string
-												| (
-														| number
-														| string
-														| (
-																| number
-																| string
-																| (
-																		| number
-																		| string
-																		| (number | string | (number | string))
-																  )
-														  )
-												  )
-										  )
-								  )
-						  )
-				  );
-			updatedAt:
-				| Record<string, never>
-				| string
-				| (
-						| number
-						| string
-						| (
-								| number
-								| string
-								| (
-										| number
-										| string
-										| (
-												| number
-												| string
-												| (
-														| number
-														| string
-														| (
-																| number
-																| string
-																| (
-																		| number
-																		| string
-																		| (number | string | (number | string))
-																  )
-														  )
-												  )
-										  )
-								  )
-						  )
-				  );
-			name: string;
-			authIds: string[];
-		};
-		CreateUser: {
-			name: string;
-		};
-		UpdateUser: {
-			name?: string;
-		};
-		ApiKey: {
-			id: string;
-			createdAt:
-				| Record<string, never>
-				| string
-				| (
-						| number
-						| string
-						| (
-								| number
-								| string
-								| (
-										| number
-										| string
-										| (
-												| number
-												| string
-												| (
-														| number
-														| string
-														| (number | string | (number | string))
-												  )
-										  )
-								  )
-						  )
-				  );
-			updatedAt:
-				| Record<string, never>
-				| string
-				| (
-						| number
-						| string
-						| (
-								| number
-								| string
-								| (
-										| number
-										| string
-										| (
-												| number
-												| string
-												| (
-														| number
-														| string
-														| (number | string | (number | string))
-												  )
-										  )
-								  )
-						  )
-				  );
-			key: string;
-			usageCount:
-				| string
-				| (
-						| number
-						| string
-						| (
-								| number
-								| string
-								| (
-										| number
-										| string
-										| (number | string | (number | string | (number | string)))
-								  )
-						  )
-				  );
-			userId: string;
-		};
-	};
+	schemas: never;
 	responses: never;
 	parameters: never;
 	requestBodies: never;
@@ -384,289 +576,7 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
-	getIndex: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": {
-						message: string;
-						status: string;
-						statusCode: number;
-					};
-					"multipart/form-data": {
-						message: string;
-						status: string;
-						statusCode: number;
-					};
-					"text/plain": {
-						message: string;
-						status: string;
-						statusCode: number;
-					};
-				};
-			};
-		};
-	};
-	getApiUsers: {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": {
-						id: string;
-						createdAt:
-							| Record<string, never>
-							| string
-							| (
-									| number
-									| string
-									| (
-											| number
-											| string
-											| (
-													| number
-													| string
-													| (
-															| number
-															| string
-															| (
-																	| number
-																	| string
-																	| (
-																			| number
-																			| string
-																			| (
-																					| number
-																					| string
-																					| (
-																							| number
-																							| string
-																							| (number | string)
-																					  )
-																			  )
-																	  )
-															  )
-													  )
-											  )
-									  )
-							  );
-						updatedAt:
-							| Record<string, never>
-							| string
-							| (
-									| number
-									| string
-									| (
-											| number
-											| string
-											| (
-													| number
-													| string
-													| (
-															| number
-															| string
-															| (
-																	| number
-																	| string
-																	| (
-																			| number
-																			| string
-																			| (
-																					| number
-																					| string
-																					| (
-																							| number
-																							| string
-																							| (number | string)
-																					  )
-																			  )
-																	  )
-															  )
-													  )
-											  )
-									  )
-							  );
-						name: string;
-						authIds: string[];
-					}[];
-					"multipart/form-data": {
-						id: string;
-						createdAt:
-							| Record<string, never>
-							| string
-							| (
-									| number
-									| string
-									| (
-											| number
-											| string
-											| (
-													| number
-													| string
-													| (
-															| number
-															| string
-															| (
-																	| number
-																	| string
-																	| (
-																			| number
-																			| string
-																			| (
-																					| number
-																					| string
-																					| (
-																							| number
-																							| string
-																							| (number | string)
-																					  )
-																			  )
-																	  )
-															  )
-													  )
-											  )
-									  )
-							  );
-						updatedAt:
-							| Record<string, never>
-							| string
-							| (
-									| number
-									| string
-									| (
-											| number
-											| string
-											| (
-													| number
-													| string
-													| (
-															| number
-															| string
-															| (
-																	| number
-																	| string
-																	| (
-																			| number
-																			| string
-																			| (
-																					| number
-																					| string
-																					| (
-																							| number
-																							| string
-																							| (number | string)
-																					  )
-																			  )
-																	  )
-															  )
-													  )
-											  )
-									  )
-							  );
-						name: string;
-						authIds: string[];
-					}[];
-					"text/plain": {
-						id: string;
-						createdAt:
-							| Record<string, never>
-							| string
-							| (
-									| number
-									| string
-									| (
-											| number
-											| string
-											| (
-													| number
-													| string
-													| (
-															| number
-															| string
-															| (
-																	| number
-																	| string
-																	| (
-																			| number
-																			| string
-																			| (
-																					| number
-																					| string
-																					| (
-																							| number
-																							| string
-																							| (number | string)
-																					  )
-																			  )
-																	  )
-															  )
-													  )
-											  )
-									  )
-							  );
-						updatedAt:
-							| Record<string, never>
-							| string
-							| (
-									| number
-									| string
-									| (
-											| number
-											| string
-											| (
-													| number
-													| string
-													| (
-															| number
-															| string
-															| (
-																	| number
-																	| string
-																	| (
-																			| number
-																			| string
-																			| (
-																					| number
-																					| string
-																					| (
-																							| number
-																							| string
-																							| (number | string)
-																					  )
-																			  )
-																	  )
-															  )
-													  )
-											  )
-									  )
-							  );
-						name: string;
-						authIds: string[];
-					}[];
-				};
-			};
-		};
-	};
-	postApiUsers: {
+	"postApiEmail-authSignin-with-magic-link": {
 		parameters: {
 			query?: never;
 			header?: never;
@@ -675,9 +585,21 @@ export interface operations {
 		};
 		requestBody: {
 			content: {
-				"application/json": components["schemas"]["CreateUser"];
-				"multipart/form-data": components["schemas"]["CreateUser"];
-				"text/plain": components["schemas"]["CreateUser"];
+				"application/json": {
+					email: string;
+					/** @default http://localhost:8000 */
+					redirectUrl: string;
+				};
+				"multipart/form-data": {
+					email: string;
+					/** @default http://localhost:8000 */
+					redirectUrl: string;
+				};
+				"text/plain": {
+					email: string;
+					/** @default http://localhost:8000 */
+					redirectUrl: string;
+				};
 			};
 		};
 		responses: {
@@ -686,9 +608,131 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					"application/json": components["schemas"]["User"];
-					"multipart/form-data": components["schemas"]["User"];
-					"text/plain": components["schemas"]["User"];
+					"application/json": {
+						message: string;
+						userEmail: string;
+					};
+					"multipart/form-data": {
+						message: string;
+						userEmail: string;
+					};
+					"text/plain": {
+						message: string;
+						userEmail: string;
+					};
+				};
+			};
+		};
+	};
+	"getApiEmail-auth": {
+		parameters: {
+			query: {
+				/** @description Filter by user ID */
+				userId: string;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						emailAddress: string;
+						password: null | string;
+						verificationSendAt:
+							| null
+							| (Record<string, never> | string | number);
+						verifiedAt: null | (Record<string, never> | string | number);
+						userId: null | string;
+					}[];
+					"multipart/form-data": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						emailAddress: string;
+						password: null | string;
+						verificationSendAt:
+							| null
+							| (Record<string, never> | string | number);
+						verifiedAt: null | (Record<string, never> | string | number);
+						userId: null | string;
+					}[];
+					"text/plain": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						emailAddress: string;
+						password: null | string;
+						verificationSendAt:
+							| null
+							| (Record<string, never> | string | number);
+						verifiedAt: null | (Record<string, never> | string | number);
+						userId: null | string;
+					}[];
+				};
+			};
+		};
+	};
+	"deleteApiEmail-authById": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						emailAddress: string;
+						password: null | string;
+						verificationSendAt:
+							| null
+							| (Record<string, never> | string | number);
+						verifiedAt: null | (Record<string, never> | string | number);
+						userId: null | string;
+					};
+					"multipart/form-data": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						emailAddress: string;
+						password: null | string;
+						verificationSendAt:
+							| null
+							| (Record<string, never> | string | number);
+						verifiedAt: null | (Record<string, never> | string | number);
+						userId: null | string;
+					};
+					"text/plain": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						emailAddress: string;
+						password: null | string;
+						verificationSendAt:
+							| null
+							| (Record<string, never> | string | number);
+						verifiedAt: null | (Record<string, never> | string | number);
+						userId: null | string;
+					};
 				};
 			};
 		};
@@ -709,9 +753,33 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					"application/json": components["schemas"]["User"];
-					"multipart/form-data": components["schemas"]["User"];
-					"text/plain": components["schemas"]["User"];
+					"application/json": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						firstName: string;
+						lastName: string;
+						profilePicture: null | string;
+						role: "USER" | "ADMIN";
+					} | null;
+					"multipart/form-data": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						firstName: string;
+						lastName: string;
+						profilePicture: null | string;
+						role: "USER" | "ADMIN";
+					} | null;
+					"text/plain": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						firstName: string;
+						lastName: string;
+						profilePicture: null | string;
+						role: "USER" | "ADMIN";
+					} | null;
 				};
 			};
 		};
@@ -732,9 +800,33 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					"application/json": components["schemas"]["User"];
-					"multipart/form-data": components["schemas"]["User"];
-					"text/plain": components["schemas"]["User"];
+					"application/json": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						firstName: string;
+						lastName: string;
+						profilePicture: null | string;
+						role: "USER" | "ADMIN";
+					} | null;
+					"multipart/form-data": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						firstName: string;
+						lastName: string;
+						profilePicture: null | string;
+						role: "USER" | "ADMIN";
+					} | null;
+					"text/plain": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						firstName: string;
+						lastName: string;
+						profilePicture: null | string;
+						role: "USER" | "ADMIN";
+					} | null;
 				};
 			};
 		};
@@ -751,61 +843,16 @@ export interface operations {
 		requestBody: {
 			content: {
 				"application/json": {
-					name?: string;
-				};
-				"multipart/form-data": {
-					name?: string;
-				};
-				"text/plain": {
-					name?: string;
-				};
-			};
-		};
-		responses: {
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["User"];
-					"multipart/form-data": components["schemas"]["User"];
-					"text/plain": components["schemas"]["User"];
-				};
-			};
-		};
-	};
-	"postApiAuth-accountsCreate-with-email": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": {
 					firstName: string;
 					lastName: string;
-					/** Format: email */
-					emailAddress: string;
-					password: string;
-					confirmPassword: string;
 				};
 				"multipart/form-data": {
 					firstName: string;
 					lastName: string;
-					/** Format: email */
-					emailAddress: string;
-					password: string;
-					confirmPassword: string;
 				};
 				"text/plain": {
 					firstName: string;
 					lastName: string;
-					/** Format: email */
-					emailAddress: string;
-					password: string;
-					confirmPassword: string;
 				};
 			};
 		};
@@ -816,387 +863,42 @@ export interface operations {
 				};
 				content: {
 					"application/json": {
-						message: string;
-						userEmail: string;
-					};
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						firstName: string;
+						lastName: string;
+						profilePicture: null | string;
+						role: "USER" | "ADMIN";
+					} | null;
 					"multipart/form-data": {
-						message: string;
-						userEmail: string;
-					};
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						firstName: string;
+						lastName: string;
+						profilePicture: null | string;
+						role: "USER" | "ADMIN";
+					} | null;
 					"text/plain": {
-						message: string;
-						userEmail: string;
-					};
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						firstName: string;
+						lastName: string;
+						profilePicture: null | string;
+						role: "USER" | "ADMIN";
+					} | null;
 				};
 			};
 		};
 	};
-	"postApiAuth-accountsCreate-passkey-options": {
+	getApiUsers: {
 		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": {
-					name: string;
-					displayName: string;
-				};
-				"multipart/form-data": {
-					name: string;
-					displayName: string;
-				};
-				"text/plain": {
-					name: string;
-					displayName: string;
-				};
+			query?: {
+				take?: number;
+				skip?: number;
 			};
-		};
-		responses: {
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": {
-						attestation?: unknown;
-						attestationFormats?: unknown;
-						authenticatorSelection?: unknown;
-						challenge?: unknown;
-						excludeCredentials?: unknown;
-						extensions?: unknown;
-						hints?: unknown;
-						pubKeyCredParams: unknown;
-						rp: unknown;
-						timeout?: unknown;
-						user: unknown;
-					};
-					"multipart/form-data": {
-						attestation?: unknown;
-						attestationFormats?: unknown;
-						authenticatorSelection?: unknown;
-						challenge?: unknown;
-						excludeCredentials?: unknown;
-						extensions?: unknown;
-						hints?: unknown;
-						pubKeyCredParams: unknown;
-						rp: unknown;
-						timeout?: unknown;
-						user: unknown;
-					};
-					"text/plain": {
-						attestation?: unknown;
-						attestationFormats?: unknown;
-						authenticatorSelection?: unknown;
-						challenge?: unknown;
-						excludeCredentials?: unknown;
-						extensions?: unknown;
-						hints?: unknown;
-						pubKeyCredParams: unknown;
-						rp: unknown;
-						timeout?: unknown;
-						user: unknown;
-					};
-				};
-			};
-		};
-	};
-	"postApiAuth-accountsCreate-with-passkey": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": {
-					id: string;
-					rawId: string;
-					response: {
-						clientDataJSON: string;
-						attestationObject: string;
-						transports?: string[];
-						authenticatorData?: string;
-						publicKey?: string;
-						publicKeyAlgorithm?: number;
-					};
-					type: string;
-					clientExtensionResults?: Record<string, never>;
-				};
-				"multipart/form-data": {
-					id: string;
-					rawId: string;
-					response: {
-						clientDataJSON: string;
-						attestationObject: string;
-						transports?: string[];
-						authenticatorData?: string;
-						publicKey?: string;
-						publicKeyAlgorithm?: number;
-					};
-					type: string;
-					clientExtensionResults?: Record<string, never>;
-				};
-				"text/plain": {
-					id: string;
-					rawId: string;
-					response: {
-						clientDataJSON: string;
-						attestationObject: string;
-						transports?: string[];
-						authenticatorData?: string;
-						publicKey?: string;
-						publicKeyAlgorithm?: number;
-					};
-					type: string;
-					clientExtensionResults?: Record<string, never>;
-				};
-			};
-		};
-		responses: {
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": {
-						isVerified: boolean;
-					};
-					"multipart/form-data": {
-						isVerified: boolean;
-					};
-					"text/plain": {
-						isVerified: boolean;
-					};
-				};
-			};
-		};
-	};
-	"postApiAuth-sessionsCreate-with-email-sign-in": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": {
-					/** Format: email */
-					emailAddress: string;
-					password: string;
-				};
-				"multipart/form-data": {
-					/** Format: email */
-					emailAddress: string;
-					password: string;
-				};
-				"text/plain": {
-					/** Format: email */
-					emailAddress: string;
-					password: string;
-				};
-			};
-		};
-		responses: {
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": {
-						message: string;
-					};
-					"multipart/form-data": {
-						message: string;
-					};
-					"text/plain": {
-						message: string;
-					};
-				};
-			};
-		};
-	};
-	"postApiAuth-sessionsSign-out": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": {
-						success: boolean;
-						expiredSession: unknown;
-					};
-					"multipart/form-data": {
-						success: boolean;
-						expiredSession: unknown;
-					};
-					"text/plain": {
-						success: boolean;
-						expiredSession: unknown;
-					};
-				};
-			};
-		};
-	};
-	"postApiAuth-sessionsCreate-with-passkey-options": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": {
-					name: string;
-					displayName: string;
-				};
-				"multipart/form-data": {
-					name: string;
-					displayName: string;
-				};
-				"text/plain": {
-					name: string;
-					displayName: string;
-				};
-			};
-		};
-		responses: {
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": {
-						attestation?: unknown;
-						attestationFormats?: unknown;
-						authenticatorSelection?: unknown;
-						challenge?: unknown;
-						excludeCredentials?: unknown;
-						extensions?: unknown;
-						hints?: unknown;
-						pubKeyCredParams: unknown;
-						rp: unknown;
-						timeout?: unknown;
-						user: unknown;
-					};
-					"multipart/form-data": {
-						attestation?: unknown;
-						attestationFormats?: unknown;
-						authenticatorSelection?: unknown;
-						challenge?: unknown;
-						excludeCredentials?: unknown;
-						extensions?: unknown;
-						hints?: unknown;
-						pubKeyCredParams: unknown;
-						rp: unknown;
-						timeout?: unknown;
-						user: unknown;
-					};
-					"text/plain": {
-						attestation?: unknown;
-						attestationFormats?: unknown;
-						authenticatorSelection?: unknown;
-						challenge?: unknown;
-						excludeCredentials?: unknown;
-						extensions?: unknown;
-						hints?: unknown;
-						pubKeyCredParams: unknown;
-						rp: unknown;
-						timeout?: unknown;
-						user: unknown;
-					};
-				};
-			};
-		};
-	};
-	"postApiAuth-sessionsCreate-with-passkey": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody: {
-			content: {
-				"application/json": {
-					id: string;
-					rawId: string;
-					response: {
-						clientDataJSON: string;
-						attestationObject: string;
-						transports?: string[];
-						authenticatorData?: string;
-						publicKey?: string;
-						publicKeyAlgorithm?: number;
-					};
-					type: string;
-					clientExtensionResults?: Record<string, never>;
-				};
-				"multipart/form-data": {
-					id: string;
-					rawId: string;
-					response: {
-						clientDataJSON: string;
-						attestationObject: string;
-						transports?: string[];
-						authenticatorData?: string;
-						publicKey?: string;
-						publicKeyAlgorithm?: number;
-					};
-					type: string;
-					clientExtensionResults?: Record<string, never>;
-				};
-				"text/plain": {
-					id: string;
-					rawId: string;
-					response: {
-						clientDataJSON: string;
-						attestationObject: string;
-						transports?: string[];
-						authenticatorData?: string;
-						publicKey?: string;
-						publicKeyAlgorithm?: number;
-					};
-					type: string;
-					clientExtensionResults?: Record<string, never>;
-				};
-			};
-		};
-		responses: {
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": {
-						isVerified: boolean;
-					};
-					"multipart/form-data": {
-						isVerified: boolean;
-					};
-					"text/plain": {
-						isVerified: boolean;
-					};
-				};
-			};
-		};
-	};
-	"getApiAuth-sessionsWho-am-i": {
-		parameters: {
-			query?: never;
 			header?: never;
 			path?: never;
 			cookie?: never;
@@ -1214,31 +916,958 @@ export interface operations {
 						updatedAt: Record<string, never> | string | number;
 						firstName: string;
 						lastName: string;
-						profilePicture: string | null;
-					} | null;
+						profilePicture: null | string;
+						role: "USER" | "ADMIN";
+					}[];
 					"multipart/form-data": {
 						id: string;
 						createdAt: Record<string, never> | string | number;
 						updatedAt: Record<string, never> | string | number;
 						firstName: string;
 						lastName: string;
-						profilePicture: string | null;
-					} | null;
+						profilePicture: null | string;
+						role: "USER" | "ADMIN";
+					}[];
 					"text/plain": {
 						id: string;
 						createdAt: Record<string, never> | string | number;
 						updatedAt: Record<string, never> | string | number;
 						firstName: string;
 						lastName: string;
-						profilePicture: string | null;
+						profilePicture: null | string;
+						role: "USER" | "ADMIN";
+					}[];
+				};
+			};
+		};
+	};
+	"postApiSessionsWho-am-i": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						data: {
+							id: string;
+							createdAt: Record<string, never> | string | number;
+							updatedAt: Record<string, never> | string | number;
+							userAgent: null | string;
+							ipAddress: null | string;
+							invalidatedAt: null | (Record<string, never> | string | number);
+							version: string | number;
+							userId: string;
+							User: {
+								id: string;
+								createdAt: Record<string, never> | string | number;
+								updatedAt: Record<string, never> | string | number;
+								firstName: string;
+								lastName: string;
+								profilePicture: null | string;
+								role: "USER" | "ADMIN";
+							};
+						} | null;
+						message: string;
+					};
+					"multipart/form-data": {
+						data: {
+							id: string;
+							createdAt: Record<string, never> | string | number;
+							updatedAt: Record<string, never> | string | number;
+							userAgent: null | string;
+							ipAddress: null | string;
+							invalidatedAt: null | (Record<string, never> | string | number);
+							version: string | number;
+							userId: string;
+							User: {
+								id: string;
+								createdAt: Record<string, never> | string | number;
+								updatedAt: Record<string, never> | string | number;
+								firstName: string;
+								lastName: string;
+								profilePicture: null | string;
+								role: "USER" | "ADMIN";
+							};
+						} | null;
+						message: string;
+					};
+					"text/plain": {
+						data: {
+							id: string;
+							createdAt: Record<string, never> | string | number;
+							updatedAt: Record<string, never> | string | number;
+							userAgent: null | string;
+							ipAddress: null | string;
+							invalidatedAt: null | (Record<string, never> | string | number);
+							version: string | number;
+							userId: string;
+							User: {
+								id: string;
+								createdAt: Record<string, never> | string | number;
+								updatedAt: Record<string, never> | string | number;
+								firstName: string;
+								lastName: string;
+								profilePicture: null | string;
+								role: "USER" | "ADMIN";
+							};
+						} | null;
+						message: string;
+					};
+				};
+			};
+		};
+	};
+	getApiSessions: {
+		parameters: {
+			query?: {
+				onlyActiveSessions?: boolean;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						userAgent: null | string;
+						headers: unknown;
+						ipAddress: null | string;
+						invalidatedAt: null | (Record<string, never> | string | number);
+						version: string | number;
+						userId: string;
+					}[];
+					"multipart/form-data": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						userAgent: null | string;
+						headers: unknown;
+						ipAddress: null | string;
+						invalidatedAt: null | (Record<string, never> | string | number);
+						version: string | number;
+						userId: string;
+					}[];
+					"text/plain": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						userAgent: null | string;
+						headers: unknown;
+						ipAddress: null | string;
+						invalidatedAt: null | (Record<string, never> | string | number);
+						version: string | number;
+						userId: string;
+					}[];
+				};
+			};
+		};
+	};
+	"getApiSessionsCreate-with-magic-link": {
+		parameters: {
+			query: {
+				token: string;
+				redirectUrl: string;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content?: never;
+			};
+		};
+	};
+	"postApiSessionsSign-out-current-session": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						message: string;
+					};
+					"multipart/form-data": {
+						message: string;
+					};
+					"text/plain": {
+						message: string;
+					};
+				};
+			};
+		};
+	};
+	"postApiSessionsSign-out-all-sessions": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						message: string;
+					};
+					"multipart/form-data": {
+						message: string;
+					};
+					"text/plain": {
+						message: string;
+					};
+				};
+			};
+		};
+	};
+	getApiOrganizations: {
+		parameters: {
+			query: {
+				take?: number;
+				skip?: number;
+				userId: string;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						name: string;
+						description: string;
+					}[];
+					"multipart/form-data": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						name: string;
+						description: string;
+					}[];
+					"text/plain": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						name: string;
+						description: string;
+					}[];
+				};
+			};
+		};
+	};
+	postApiOrganizations: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": {
+					name: string;
+					description: string;
+				};
+				"multipart/form-data": {
+					name: string;
+					description: string;
+				};
+				"text/plain": {
+					name: string;
+					description: string;
+				};
+			};
+		};
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						id: string;
+						name: string;
+						description?: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+					};
+					"multipart/form-data": {
+						id: string;
+						name: string;
+						description?: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+					};
+					"text/plain": {
+						id: string;
+						name: string;
+						description?: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+					};
+				};
+			};
+		};
+	};
+	getApiOrganizationsById: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						name: string;
+						description: string;
 					} | null;
+					"multipart/form-data": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						name: string;
+						description: string;
+					} | null;
+					"text/plain": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						name: string;
+						description: string;
+					} | null;
+				};
+			};
+		};
+	};
+	deleteApiOrganizationsById: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						id: string;
+						name: string;
+						description?: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+					};
+					"multipart/form-data": {
+						id: string;
+						name: string;
+						description?: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+					};
+					"text/plain": {
+						id: string;
+						name: string;
+						description?: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+					};
+				};
+			};
+		};
+	};
+	patchApiOrganizationsById: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				id: string;
+			};
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": {
+					name?: string;
+					description?: string;
+				};
+				"multipart/form-data": {
+					name?: string;
+					description?: string;
+				};
+				"text/plain": {
+					name?: string;
+					description?: string;
+				};
+			};
+		};
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						id: string;
+						name: string;
+						description?: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+					};
+					"multipart/form-data": {
+						id: string;
+						name: string;
+						description?: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+					};
+					"text/plain": {
+						id: string;
+						name: string;
+						description?: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+					};
+				};
+			};
+		};
+	};
+	"deleteApiOrganization-membersById": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						role: "ADMIN" | "MEMBER" | "OWNER";
+						userId: null | string;
+						organizationId: null | string;
+					} | null;
+					"multipart/form-data": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						role: "ADMIN" | "MEMBER" | "OWNER";
+						userId: null | string;
+						organizationId: null | string;
+					} | null;
+					"text/plain": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						role: "ADMIN" | "MEMBER" | "OWNER";
+						userId: null | string;
+						organizationId: null | string;
+					} | null;
+				};
+			};
+		};
+	};
+	"patchApiOrganization-membersById": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				id: string;
+			};
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": {
+					role: "ADMIN" | "MEMBER" | "OWNER";
+				};
+				"multipart/form-data": {
+					role: "ADMIN" | "MEMBER" | "OWNER";
+				};
+				"text/plain": {
+					role: "ADMIN" | "MEMBER" | "OWNER";
+				};
+			};
+		};
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						role: "ADMIN" | "MEMBER" | "OWNER";
+						userId: null | string;
+						organizationId: null | string;
+					} | null;
+					"multipart/form-data": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						role: "ADMIN" | "MEMBER" | "OWNER";
+						userId: null | string;
+						organizationId: null | string;
+					} | null;
+					"text/plain": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						role: "ADMIN" | "MEMBER" | "OWNER";
+						userId: null | string;
+						organizationId: null | string;
+					} | null;
+				};
+			};
+		};
+	};
+	"getApiOrganization-members": {
+		parameters: {
+			query: {
+				organizationId: string;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						role: "ADMIN" | "MEMBER" | "OWNER";
+						userId: null | string;
+						organizationId: null | string;
+					}[];
+					"multipart/form-data": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						role: "ADMIN" | "MEMBER" | "OWNER";
+						userId: null | string;
+						organizationId: null | string;
+					}[];
+					"text/plain": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						role: "ADMIN" | "MEMBER" | "OWNER";
+						userId: null | string;
+						organizationId: null | string;
+					}[];
+				};
+			};
+		};
+	};
+	getApiProjects: {
+		parameters: {
+			query: {
+				organizationId: string;
+			};
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						name: string;
+						description: string;
+						organizationId: null | string;
+					}[];
+					"multipart/form-data": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						name: string;
+						description: string;
+						organizationId: null | string;
+					}[];
+					"text/plain": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						name: string;
+						description: string;
+						organizationId: null | string;
+					}[];
+				};
+			};
+		};
+	};
+	postApiProjects: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": {
+					name: string;
+					description: string;
+					organizationId: null | string;
+				};
+				"multipart/form-data": {
+					name: string;
+					description: string;
+					organizationId: null | string;
+				};
+				"text/plain": {
+					name: string;
+					description: string;
+					organizationId: null | string;
+				};
+			};
+		};
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						name: string;
+						description: string;
+						organizationId: null | string;
+					};
+					"multipart/form-data": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						name: string;
+						description: string;
+						organizationId: null | string;
+					};
+					"text/plain": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						name: string;
+						description: string;
+						organizationId: null | string;
+					};
+				};
+			};
+		};
+	};
+	getApiProjectsById: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						name: string;
+						description: string;
+						organizationId: null | string;
+					} | null;
+					"multipart/form-data": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						name: string;
+						description: string;
+						organizationId: null | string;
+					} | null;
+					"text/plain": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						name: string;
+						description: string;
+						organizationId: null | string;
+					} | null;
+				};
+			};
+		};
+	};
+	deleteApiProjectsById: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						name: string;
+						description: string;
+						organizationId: null | string;
+					};
+					"multipart/form-data": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						name: string;
+						description: string;
+						organizationId: null | string;
+					};
+					"text/plain": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						name: string;
+						description: string;
+						organizationId: null | string;
+					};
+				};
+			};
+		};
+	};
+	patchApiProjectsById: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				id: string;
+			};
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": {
+					name?: string;
+					description?: string;
+				};
+				"multipart/form-data": {
+					name?: string;
+					description?: string;
+				};
+				"text/plain": {
+					name?: string;
+					description?: string;
+				};
+			};
+		};
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						name: string;
+						description: string;
+						organizationId: null | string;
+					};
+					"multipart/form-data": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						name: string;
+						description: string;
+						organizationId: null | string;
+					};
+					"text/plain": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						name: string;
+						description: string;
+						organizationId: null | string;
+					};
+				};
+			};
+		};
+	};
+	"postApiApi-keysCreate-new": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": {
+					projectId: string;
+					/**
+					 * @description Allow read access
+					 * @default true
+					 */
+					readAccess: boolean;
+					/**
+					 * @description Allow write access
+					 * @default true
+					 */
+					writeAccess: boolean;
+				};
+				"multipart/form-data": {
+					projectId: string;
+					/**
+					 * @description Allow read access
+					 * @default true
+					 */
+					readAccess: boolean;
+					/**
+					 * @description Allow write access
+					 * @default true
+					 */
+					writeAccess: boolean;
+				};
+				"text/plain": {
+					projectId: string;
+					/**
+					 * @description Allow read access
+					 * @default true
+					 */
+					readAccess: boolean;
+					/**
+					 * @description Allow write access
+					 * @default true
+					 */
+					writeAccess: boolean;
+				};
+			};
+		};
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						apiKey: string;
+						projectId: string;
+						message: string;
+						readAccess: boolean;
+						writeAccess: boolean;
+					};
+					"multipart/form-data": {
+						apiKey: string;
+						projectId: string;
+						message: string;
+						readAccess: boolean;
+						writeAccess: boolean;
+					};
+					"text/plain": {
+						apiKey: string;
+						projectId: string;
+						message: string;
+						readAccess: boolean;
+						writeAccess: boolean;
+					};
 				};
 			};
 		};
 	};
 	"getApiApi-keys": {
 		parameters: {
-			query?: never;
+			query: {
+				projectId: string;
+			};
 			header?: never;
 			path?: never;
 			cookie?: never;
@@ -1252,241 +1881,34 @@ export interface operations {
 				content: {
 					"application/json": {
 						id: string;
-						createdAt:
-							| Record<string, never>
-							| string
-							| (
-									| number
-									| string
-									| (
-											| number
-											| string
-											| (
-													| number
-													| string
-													| (
-															| number
-															| string
-															| (
-																	| number
-																	| string
-																	| (number | string | (number | string))
-															  )
-													  )
-											  )
-									  )
-							  );
-						updatedAt:
-							| Record<string, never>
-							| string
-							| (
-									| number
-									| string
-									| (
-											| number
-											| string
-											| (
-													| number
-													| string
-													| (
-															| number
-															| string
-															| (
-																	| number
-																	| string
-																	| (number | string | (number | string))
-															  )
-													  )
-											  )
-									  )
-							  );
-						key: string;
-						usageCount:
-							| string
-							| (
-									| number
-									| string
-									| (
-											| number
-											| string
-											| (
-													| number
-													| string
-													| (
-															| number
-															| string
-															| (number | string | (number | string))
-													  )
-											  )
-									  )
-							  );
-						userId: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						lastFourChars: null | string;
+						usageCount: string | number;
+						readAccess: boolean;
+						writeAccess: boolean;
+						projectId: null | string;
 					}[];
 					"multipart/form-data": {
 						id: string;
-						createdAt:
-							| Record<string, never>
-							| string
-							| (
-									| number
-									| string
-									| (
-											| number
-											| string
-											| (
-													| number
-													| string
-													| (
-															| number
-															| string
-															| (
-																	| number
-																	| string
-																	| (number | string | (number | string))
-															  )
-													  )
-											  )
-									  )
-							  );
-						updatedAt:
-							| Record<string, never>
-							| string
-							| (
-									| number
-									| string
-									| (
-											| number
-											| string
-											| (
-													| number
-													| string
-													| (
-															| number
-															| string
-															| (
-																	| number
-																	| string
-																	| (number | string | (number | string))
-															  )
-													  )
-											  )
-									  )
-							  );
-						key: string;
-						usageCount:
-							| string
-							| (
-									| number
-									| string
-									| (
-											| number
-											| string
-											| (
-													| number
-													| string
-													| (
-															| number
-															| string
-															| (number | string | (number | string))
-													  )
-											  )
-									  )
-							  );
-						userId: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						lastFourChars: null | string;
+						usageCount: string | number;
+						readAccess: boolean;
+						writeAccess: boolean;
+						projectId: null | string;
 					}[];
 					"text/plain": {
 						id: string;
-						createdAt:
-							| Record<string, never>
-							| string
-							| (
-									| number
-									| string
-									| (
-											| number
-											| string
-											| (
-													| number
-													| string
-													| (
-															| number
-															| string
-															| (
-																	| number
-																	| string
-																	| (number | string | (number | string))
-															  )
-													  )
-											  )
-									  )
-							  );
-						updatedAt:
-							| Record<string, never>
-							| string
-							| (
-									| number
-									| string
-									| (
-											| number
-											| string
-											| (
-													| number
-													| string
-													| (
-															| number
-															| string
-															| (
-																	| number
-																	| string
-																	| (number | string | (number | string))
-															  )
-													  )
-											  )
-									  )
-							  );
-						key: string;
-						usageCount:
-							| string
-							| (
-									| number
-									| string
-									| (
-											| number
-											| string
-											| (
-													| number
-													| string
-													| (
-															| number
-															| string
-															| (number | string | (number | string))
-													  )
-											  )
-									  )
-							  );
-						userId: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						lastFourChars: null | string;
+						usageCount: string | number;
+						readAccess: boolean;
+						writeAccess: boolean;
+						projectId: null | string;
 					}[];
-				};
-			};
-		};
-	};
-	"postApiApi-keys": {
-		parameters: {
-			query?: never;
-			header?: never;
-			path?: never;
-			cookie?: never;
-		};
-		requestBody?: never;
-		responses: {
-			200: {
-				headers: {
-					[name: string]: unknown;
-				};
-				content: {
-					"application/json": components["schemas"]["ApiKey"];
-					"multipart/form-data": components["schemas"]["ApiKey"];
-					"text/plain": components["schemas"]["ApiKey"];
 				};
 			};
 		};
@@ -1507,9 +1929,107 @@ export interface operations {
 					[name: string]: unknown;
 				};
 				content: {
-					"application/json": components["schemas"]["ApiKey"];
-					"multipart/form-data": components["schemas"]["ApiKey"];
-					"text/plain": components["schemas"]["ApiKey"];
+					"application/json": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						lastFourChars: null | string;
+						usageCount: string | number;
+						readAccess: boolean;
+						writeAccess: boolean;
+						projectId: null | string;
+					};
+					"multipart/form-data": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						lastFourChars: null | string;
+						usageCount: string | number;
+						readAccess: boolean;
+						writeAccess: boolean;
+						projectId: null | string;
+					};
+					"text/plain": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						lastFourChars: null | string;
+						usageCount: string | number;
+						readAccess: boolean;
+						writeAccess: boolean;
+						projectId: null | string;
+					};
+				};
+			};
+		};
+	};
+	"postApiTranslationsAi-translate": {
+		parameters: {
+			query?: never;
+			header: {
+				"api-key": string;
+			};
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": {
+					sourceText: string;
+					sourceLanguage: string;
+					targetLanguage: string;
+					path: string;
+					context?: string;
+				};
+				"multipart/form-data": {
+					sourceText: string;
+					sourceLanguage: string;
+					targetLanguage: string;
+					path: string;
+					context?: string;
+				};
+				"text/plain": {
+					sourceText: string;
+					sourceLanguage: string;
+					targetLanguage: string;
+					path: string;
+					context?: string;
+				};
+			};
+		};
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						sourceText: string;
+						sourceLanguage: string;
+						targetLanguage: string;
+						translatedText: string;
+						path: string;
+						context: string | null;
+						isCached: boolean;
+					};
+					"multipart/form-data": {
+						sourceText: string;
+						sourceLanguage: string;
+						targetLanguage: string;
+						translatedText: string;
+						path: string;
+						context: string | null;
+						isCached: boolean;
+					};
+					"text/plain": {
+						sourceText: string;
+						sourceLanguage: string;
+						targetLanguage: string;
+						translatedText: string;
+						path: string;
+						context: string | null;
+						isCached: boolean;
+					};
 				};
 			};
 		};
@@ -1517,14 +2037,198 @@ export interface operations {
 	getApiTranslations: {
 		parameters: {
 			query: {
-				sourceText: string;
-				sourceLanguage: string;
-				targetLanguage: string;
-				context?: string;
+				projectId: string;
+				/** @description Text to filter by, used in conjunction with languageFilter */
+				textFilter?: string;
+				/** @description ISO 639-1 language codes, to be used with textFilter */
+				languageFilter: (
+					| "aa"
+					| "ab"
+					| "ae"
+					| "af"
+					| "ak"
+					| "am"
+					| "an"
+					| "ar"
+					| "as"
+					| "av"
+					| "ay"
+					| "az"
+					| "ba"
+					| "be"
+					| "bg"
+					| "bh"
+					| "bi"
+					| "bm"
+					| "bn"
+					| "bo"
+					| "br"
+					| "bs"
+					| "ca"
+					| "ce"
+					| "ch"
+					| "co"
+					| "cr"
+					| "cs"
+					| "cu"
+					| "cv"
+					| "cy"
+					| "da"
+					| "de"
+					| "dv"
+					| "dz"
+					| "ee"
+					| "el"
+					| "en"
+					| "eo"
+					| "es"
+					| "et"
+					| "eu"
+					| "fa"
+					| "ff"
+					| "fi"
+					| "fj"
+					| "fo"
+					| "fr"
+					| "fy"
+					| "ga"
+					| "gd"
+					| "gl"
+					| "gn"
+					| "gu"
+					| "gv"
+					| "ha"
+					| "he"
+					| "hi"
+					| "ho"
+					| "hr"
+					| "ht"
+					| "hu"
+					| "hy"
+					| "hz"
+					| "ia"
+					| "id"
+					| "ie"
+					| "ig"
+					| "ii"
+					| "ik"
+					| "io"
+					| "is"
+					| "it"
+					| "iu"
+					| "ja"
+					| "jv"
+					| "ka"
+					| "kg"
+					| "ki"
+					| "kj"
+					| "kk"
+					| "kl"
+					| "km"
+					| "kn"
+					| "ko"
+					| "kr"
+					| "ks"
+					| "ku"
+					| "kv"
+					| "kw"
+					| "ky"
+					| "la"
+					| "lb"
+					| "lg"
+					| "li"
+					| "ln"
+					| "lo"
+					| "lt"
+					| "lu"
+					| "lv"
+					| "mg"
+					| "mh"
+					| "mi"
+					| "mk"
+					| "ml"
+					| "mn"
+					| "mr"
+					| "ms"
+					| "mt"
+					| "my"
+					| "na"
+					| "nb"
+					| "nd"
+					| "ne"
+					| "ng"
+					| "nl"
+					| "nn"
+					| "no"
+					| "nr"
+					| "nv"
+					| "ny"
+					| "oc"
+					| "oj"
+					| "om"
+					| "or"
+					| "os"
+					| "pa"
+					| "pi"
+					| "pl"
+					| "ps"
+					| "pt"
+					| "qu"
+					| "rm"
+					| "rn"
+					| "ro"
+					| "ru"
+					| "rw"
+					| "sa"
+					| "sc"
+					| "sd"
+					| "se"
+					| "sg"
+					| "si"
+					| "sk"
+					| "sl"
+					| "sm"
+					| "sn"
+					| "so"
+					| "sq"
+					| "sr"
+					| "ss"
+					| "st"
+					| "su"
+					| "sv"
+					| "sw"
+					| "ta"
+					| "te"
+					| "tg"
+					| "th"
+					| "ti"
+					| "tk"
+					| "tl"
+					| "tn"
+					| "to"
+					| "tr"
+					| "ts"
+					| "tt"
+					| "tw"
+					| "ty"
+					| "ug"
+					| "uk"
+					| "ur"
+					| "uz"
+					| "ve"
+					| "vi"
+					| "vo"
+					| "wa"
+					| "wo"
+					| "xh"
+					| "yi"
+					| "yo"
+					| "za"
+					| "zh"
+					| "zu"
+				)[];
 			};
-			header: {
-				"api-key": string;
-			};
+			header?: never;
 			path?: never;
 			cookie?: never;
 		};
@@ -1536,39 +2240,3115 @@ export interface operations {
 				};
 				content: {
 					"application/json": {
-						sourceText: string;
-						sourceLanguage: string;
-						targetLanguage: string;
-						context?: string;
-						translatedText: string;
-						isCached: boolean;
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						context: null | string;
+						path: null | string;
+						aaText: null | string;
+						abText: null | string;
+						aeText: null | string;
+						afText: null | string;
+						akText: null | string;
+						amText: null | string;
+						anText: null | string;
+						arText: null | string;
+						asText: null | string;
+						avText: null | string;
+						ayText: null | string;
+						azText: null | string;
+						baText: null | string;
+						beText: null | string;
+						bgText: null | string;
+						bhText: null | string;
+						biText: null | string;
+						bmText: null | string;
+						bnText: null | string;
+						boText: null | string;
+						brText: null | string;
+						bsText: null | string;
+						caText: null | string;
+						ceText: null | string;
+						chText: null | string;
+						coText: null | string;
+						crText: null | string;
+						csText: null | string;
+						cuText: null | string;
+						cvText: null | string;
+						cyText: null | string;
+						daText: null | string;
+						deText: null | string;
+						dvText: null | string;
+						dzText: null | string;
+						eeText: null | string;
+						elText: null | string;
+						enText: null | string;
+						eoText: null | string;
+						esText: null | string;
+						etText: null | string;
+						euText: null | string;
+						faText: null | string;
+						ffText: null | string;
+						fiText: null | string;
+						fjText: null | string;
+						foText: null | string;
+						frText: null | string;
+						fyText: null | string;
+						gaText: null | string;
+						gdText: null | string;
+						glText: null | string;
+						gnText: null | string;
+						guText: null | string;
+						gvText: null | string;
+						haText: null | string;
+						heText: null | string;
+						hiText: null | string;
+						hoText: null | string;
+						hrText: null | string;
+						htText: null | string;
+						huText: null | string;
+						hyText: null | string;
+						hzText: null | string;
+						iaText: null | string;
+						idText: null | string;
+						ieText: null | string;
+						igText: null | string;
+						iiText: null | string;
+						ikText: null | string;
+						ioText: null | string;
+						isText: null | string;
+						itText: null | string;
+						iuText: null | string;
+						jaText: null | string;
+						jvText: null | string;
+						kaText: null | string;
+						kgText: null | string;
+						kiText: null | string;
+						kjText: null | string;
+						kkText: null | string;
+						klText: null | string;
+						kmText: null | string;
+						knText: null | string;
+						koText: null | string;
+						krText: null | string;
+						ksText: null | string;
+						kuText: null | string;
+						kvText: null | string;
+						kwText: null | string;
+						kyText: null | string;
+						laText: null | string;
+						lbText: null | string;
+						lgText: null | string;
+						liText: null | string;
+						lnText: null | string;
+						loText: null | string;
+						ltText: null | string;
+						luText: null | string;
+						lvText: null | string;
+						mgText: null | string;
+						mhText: null | string;
+						miText: null | string;
+						mkText: null | string;
+						mlText: null | string;
+						mnText: null | string;
+						mrText: null | string;
+						msText: null | string;
+						mtText: null | string;
+						myText: null | string;
+						naText: null | string;
+						nbText: null | string;
+						ndText: null | string;
+						neText: null | string;
+						ngText: null | string;
+						nlText: null | string;
+						nnText: null | string;
+						noText: null | string;
+						nrText: null | string;
+						nvText: null | string;
+						nyText: null | string;
+						ocText: null | string;
+						ojText: null | string;
+						omText: null | string;
+						orText: null | string;
+						osText: null | string;
+						paText: null | string;
+						piText: null | string;
+						plText: null | string;
+						psText: null | string;
+						ptText: null | string;
+						quText: null | string;
+						rmText: null | string;
+						rnText: null | string;
+						roText: null | string;
+						ruText: null | string;
+						rwText: null | string;
+						saText: null | string;
+						scText: null | string;
+						sdText: null | string;
+						seText: null | string;
+						sgText: null | string;
+						siText: null | string;
+						skText: null | string;
+						slText: null | string;
+						smText: null | string;
+						snText: null | string;
+						soText: null | string;
+						sqText: null | string;
+						srText: null | string;
+						ssText: null | string;
+						stText: null | string;
+						suText: null | string;
+						svText: null | string;
+						swText: null | string;
+						taText: null | string;
+						teText: null | string;
+						tgText: null | string;
+						thText: null | string;
+						tiText: null | string;
+						tkText: null | string;
+						tlText: null | string;
+						tnText: null | string;
+						toText: null | string;
+						trText: null | string;
+						tsText: null | string;
+						ttText: null | string;
+						twText: null | string;
+						tyText: null | string;
+						ugText: null | string;
+						ukText: null | string;
+						urText: null | string;
+						uzText: null | string;
+						veText: null | string;
+						viText: null | string;
+						voText: null | string;
+						waText: null | string;
+						woText: null | string;
+						xhText: null | string;
+						yiText: null | string;
+						yoText: null | string;
+						zaText: null | string;
+						zhText: null | string;
+						zuText: null | string;
+						projectId: null | string;
+					}[];
+					"multipart/form-data": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						context: null | string;
+						path: null | string;
+						aaText: null | string;
+						abText: null | string;
+						aeText: null | string;
+						afText: null | string;
+						akText: null | string;
+						amText: null | string;
+						anText: null | string;
+						arText: null | string;
+						asText: null | string;
+						avText: null | string;
+						ayText: null | string;
+						azText: null | string;
+						baText: null | string;
+						beText: null | string;
+						bgText: null | string;
+						bhText: null | string;
+						biText: null | string;
+						bmText: null | string;
+						bnText: null | string;
+						boText: null | string;
+						brText: null | string;
+						bsText: null | string;
+						caText: null | string;
+						ceText: null | string;
+						chText: null | string;
+						coText: null | string;
+						crText: null | string;
+						csText: null | string;
+						cuText: null | string;
+						cvText: null | string;
+						cyText: null | string;
+						daText: null | string;
+						deText: null | string;
+						dvText: null | string;
+						dzText: null | string;
+						eeText: null | string;
+						elText: null | string;
+						enText: null | string;
+						eoText: null | string;
+						esText: null | string;
+						etText: null | string;
+						euText: null | string;
+						faText: null | string;
+						ffText: null | string;
+						fiText: null | string;
+						fjText: null | string;
+						foText: null | string;
+						frText: null | string;
+						fyText: null | string;
+						gaText: null | string;
+						gdText: null | string;
+						glText: null | string;
+						gnText: null | string;
+						guText: null | string;
+						gvText: null | string;
+						haText: null | string;
+						heText: null | string;
+						hiText: null | string;
+						hoText: null | string;
+						hrText: null | string;
+						htText: null | string;
+						huText: null | string;
+						hyText: null | string;
+						hzText: null | string;
+						iaText: null | string;
+						idText: null | string;
+						ieText: null | string;
+						igText: null | string;
+						iiText: null | string;
+						ikText: null | string;
+						ioText: null | string;
+						isText: null | string;
+						itText: null | string;
+						iuText: null | string;
+						jaText: null | string;
+						jvText: null | string;
+						kaText: null | string;
+						kgText: null | string;
+						kiText: null | string;
+						kjText: null | string;
+						kkText: null | string;
+						klText: null | string;
+						kmText: null | string;
+						knText: null | string;
+						koText: null | string;
+						krText: null | string;
+						ksText: null | string;
+						kuText: null | string;
+						kvText: null | string;
+						kwText: null | string;
+						kyText: null | string;
+						laText: null | string;
+						lbText: null | string;
+						lgText: null | string;
+						liText: null | string;
+						lnText: null | string;
+						loText: null | string;
+						ltText: null | string;
+						luText: null | string;
+						lvText: null | string;
+						mgText: null | string;
+						mhText: null | string;
+						miText: null | string;
+						mkText: null | string;
+						mlText: null | string;
+						mnText: null | string;
+						mrText: null | string;
+						msText: null | string;
+						mtText: null | string;
+						myText: null | string;
+						naText: null | string;
+						nbText: null | string;
+						ndText: null | string;
+						neText: null | string;
+						ngText: null | string;
+						nlText: null | string;
+						nnText: null | string;
+						noText: null | string;
+						nrText: null | string;
+						nvText: null | string;
+						nyText: null | string;
+						ocText: null | string;
+						ojText: null | string;
+						omText: null | string;
+						orText: null | string;
+						osText: null | string;
+						paText: null | string;
+						piText: null | string;
+						plText: null | string;
+						psText: null | string;
+						ptText: null | string;
+						quText: null | string;
+						rmText: null | string;
+						rnText: null | string;
+						roText: null | string;
+						ruText: null | string;
+						rwText: null | string;
+						saText: null | string;
+						scText: null | string;
+						sdText: null | string;
+						seText: null | string;
+						sgText: null | string;
+						siText: null | string;
+						skText: null | string;
+						slText: null | string;
+						smText: null | string;
+						snText: null | string;
+						soText: null | string;
+						sqText: null | string;
+						srText: null | string;
+						ssText: null | string;
+						stText: null | string;
+						suText: null | string;
+						svText: null | string;
+						swText: null | string;
+						taText: null | string;
+						teText: null | string;
+						tgText: null | string;
+						thText: null | string;
+						tiText: null | string;
+						tkText: null | string;
+						tlText: null | string;
+						tnText: null | string;
+						toText: null | string;
+						trText: null | string;
+						tsText: null | string;
+						ttText: null | string;
+						twText: null | string;
+						tyText: null | string;
+						ugText: null | string;
+						ukText: null | string;
+						urText: null | string;
+						uzText: null | string;
+						veText: null | string;
+						viText: null | string;
+						voText: null | string;
+						waText: null | string;
+						woText: null | string;
+						xhText: null | string;
+						yiText: null | string;
+						yoText: null | string;
+						zaText: null | string;
+						zhText: null | string;
+						zuText: null | string;
+						projectId: null | string;
+					}[];
+					"text/plain": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						context: null | string;
+						path: null | string;
+						aaText: null | string;
+						abText: null | string;
+						aeText: null | string;
+						afText: null | string;
+						akText: null | string;
+						amText: null | string;
+						anText: null | string;
+						arText: null | string;
+						asText: null | string;
+						avText: null | string;
+						ayText: null | string;
+						azText: null | string;
+						baText: null | string;
+						beText: null | string;
+						bgText: null | string;
+						bhText: null | string;
+						biText: null | string;
+						bmText: null | string;
+						bnText: null | string;
+						boText: null | string;
+						brText: null | string;
+						bsText: null | string;
+						caText: null | string;
+						ceText: null | string;
+						chText: null | string;
+						coText: null | string;
+						crText: null | string;
+						csText: null | string;
+						cuText: null | string;
+						cvText: null | string;
+						cyText: null | string;
+						daText: null | string;
+						deText: null | string;
+						dvText: null | string;
+						dzText: null | string;
+						eeText: null | string;
+						elText: null | string;
+						enText: null | string;
+						eoText: null | string;
+						esText: null | string;
+						etText: null | string;
+						euText: null | string;
+						faText: null | string;
+						ffText: null | string;
+						fiText: null | string;
+						fjText: null | string;
+						foText: null | string;
+						frText: null | string;
+						fyText: null | string;
+						gaText: null | string;
+						gdText: null | string;
+						glText: null | string;
+						gnText: null | string;
+						guText: null | string;
+						gvText: null | string;
+						haText: null | string;
+						heText: null | string;
+						hiText: null | string;
+						hoText: null | string;
+						hrText: null | string;
+						htText: null | string;
+						huText: null | string;
+						hyText: null | string;
+						hzText: null | string;
+						iaText: null | string;
+						idText: null | string;
+						ieText: null | string;
+						igText: null | string;
+						iiText: null | string;
+						ikText: null | string;
+						ioText: null | string;
+						isText: null | string;
+						itText: null | string;
+						iuText: null | string;
+						jaText: null | string;
+						jvText: null | string;
+						kaText: null | string;
+						kgText: null | string;
+						kiText: null | string;
+						kjText: null | string;
+						kkText: null | string;
+						klText: null | string;
+						kmText: null | string;
+						knText: null | string;
+						koText: null | string;
+						krText: null | string;
+						ksText: null | string;
+						kuText: null | string;
+						kvText: null | string;
+						kwText: null | string;
+						kyText: null | string;
+						laText: null | string;
+						lbText: null | string;
+						lgText: null | string;
+						liText: null | string;
+						lnText: null | string;
+						loText: null | string;
+						ltText: null | string;
+						luText: null | string;
+						lvText: null | string;
+						mgText: null | string;
+						mhText: null | string;
+						miText: null | string;
+						mkText: null | string;
+						mlText: null | string;
+						mnText: null | string;
+						mrText: null | string;
+						msText: null | string;
+						mtText: null | string;
+						myText: null | string;
+						naText: null | string;
+						nbText: null | string;
+						ndText: null | string;
+						neText: null | string;
+						ngText: null | string;
+						nlText: null | string;
+						nnText: null | string;
+						noText: null | string;
+						nrText: null | string;
+						nvText: null | string;
+						nyText: null | string;
+						ocText: null | string;
+						ojText: null | string;
+						omText: null | string;
+						orText: null | string;
+						osText: null | string;
+						paText: null | string;
+						piText: null | string;
+						plText: null | string;
+						psText: null | string;
+						ptText: null | string;
+						quText: null | string;
+						rmText: null | string;
+						rnText: null | string;
+						roText: null | string;
+						ruText: null | string;
+						rwText: null | string;
+						saText: null | string;
+						scText: null | string;
+						sdText: null | string;
+						seText: null | string;
+						sgText: null | string;
+						siText: null | string;
+						skText: null | string;
+						slText: null | string;
+						smText: null | string;
+						snText: null | string;
+						soText: null | string;
+						sqText: null | string;
+						srText: null | string;
+						ssText: null | string;
+						stText: null | string;
+						suText: null | string;
+						svText: null | string;
+						swText: null | string;
+						taText: null | string;
+						teText: null | string;
+						tgText: null | string;
+						thText: null | string;
+						tiText: null | string;
+						tkText: null | string;
+						tlText: null | string;
+						tnText: null | string;
+						toText: null | string;
+						trText: null | string;
+						tsText: null | string;
+						ttText: null | string;
+						twText: null | string;
+						tyText: null | string;
+						ugText: null | string;
+						ukText: null | string;
+						urText: null | string;
+						uzText: null | string;
+						veText: null | string;
+						viText: null | string;
+						voText: null | string;
+						waText: null | string;
+						woText: null | string;
+						xhText: null | string;
+						yiText: null | string;
+						yoText: null | string;
+						zaText: null | string;
+						zhText: null | string;
+						zuText: null | string;
+						projectId: null | string;
+					}[];
+				};
+			};
+		};
+	};
+	getApiTranslationsById: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				id: string;
+			};
+			cookie?: never;
+		};
+		requestBody?: never;
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						context: null | string;
+						path: null | string;
+						aaText: null | string;
+						abText: null | string;
+						aeText: null | string;
+						afText: null | string;
+						akText: null | string;
+						amText: null | string;
+						anText: null | string;
+						arText: null | string;
+						asText: null | string;
+						avText: null | string;
+						ayText: null | string;
+						azText: null | string;
+						baText: null | string;
+						beText: null | string;
+						bgText: null | string;
+						bhText: null | string;
+						biText: null | string;
+						bmText: null | string;
+						bnText: null | string;
+						boText: null | string;
+						brText: null | string;
+						bsText: null | string;
+						caText: null | string;
+						ceText: null | string;
+						chText: null | string;
+						coText: null | string;
+						crText: null | string;
+						csText: null | string;
+						cuText: null | string;
+						cvText: null | string;
+						cyText: null | string;
+						daText: null | string;
+						deText: null | string;
+						dvText: null | string;
+						dzText: null | string;
+						eeText: null | string;
+						elText: null | string;
+						enText: null | string;
+						eoText: null | string;
+						esText: null | string;
+						etText: null | string;
+						euText: null | string;
+						faText: null | string;
+						ffText: null | string;
+						fiText: null | string;
+						fjText: null | string;
+						foText: null | string;
+						frText: null | string;
+						fyText: null | string;
+						gaText: null | string;
+						gdText: null | string;
+						glText: null | string;
+						gnText: null | string;
+						guText: null | string;
+						gvText: null | string;
+						haText: null | string;
+						heText: null | string;
+						hiText: null | string;
+						hoText: null | string;
+						hrText: null | string;
+						htText: null | string;
+						huText: null | string;
+						hyText: null | string;
+						hzText: null | string;
+						iaText: null | string;
+						idText: null | string;
+						ieText: null | string;
+						igText: null | string;
+						iiText: null | string;
+						ikText: null | string;
+						ioText: null | string;
+						isText: null | string;
+						itText: null | string;
+						iuText: null | string;
+						jaText: null | string;
+						jvText: null | string;
+						kaText: null | string;
+						kgText: null | string;
+						kiText: null | string;
+						kjText: null | string;
+						kkText: null | string;
+						klText: null | string;
+						kmText: null | string;
+						knText: null | string;
+						koText: null | string;
+						krText: null | string;
+						ksText: null | string;
+						kuText: null | string;
+						kvText: null | string;
+						kwText: null | string;
+						kyText: null | string;
+						laText: null | string;
+						lbText: null | string;
+						lgText: null | string;
+						liText: null | string;
+						lnText: null | string;
+						loText: null | string;
+						ltText: null | string;
+						luText: null | string;
+						lvText: null | string;
+						mgText: null | string;
+						mhText: null | string;
+						miText: null | string;
+						mkText: null | string;
+						mlText: null | string;
+						mnText: null | string;
+						mrText: null | string;
+						msText: null | string;
+						mtText: null | string;
+						myText: null | string;
+						naText: null | string;
+						nbText: null | string;
+						ndText: null | string;
+						neText: null | string;
+						ngText: null | string;
+						nlText: null | string;
+						nnText: null | string;
+						noText: null | string;
+						nrText: null | string;
+						nvText: null | string;
+						nyText: null | string;
+						ocText: null | string;
+						ojText: null | string;
+						omText: null | string;
+						orText: null | string;
+						osText: null | string;
+						paText: null | string;
+						piText: null | string;
+						plText: null | string;
+						psText: null | string;
+						ptText: null | string;
+						quText: null | string;
+						rmText: null | string;
+						rnText: null | string;
+						roText: null | string;
+						ruText: null | string;
+						rwText: null | string;
+						saText: null | string;
+						scText: null | string;
+						sdText: null | string;
+						seText: null | string;
+						sgText: null | string;
+						siText: null | string;
+						skText: null | string;
+						slText: null | string;
+						smText: null | string;
+						snText: null | string;
+						soText: null | string;
+						sqText: null | string;
+						srText: null | string;
+						ssText: null | string;
+						stText: null | string;
+						suText: null | string;
+						svText: null | string;
+						swText: null | string;
+						taText: null | string;
+						teText: null | string;
+						tgText: null | string;
+						thText: null | string;
+						tiText: null | string;
+						tkText: null | string;
+						tlText: null | string;
+						tnText: null | string;
+						toText: null | string;
+						trText: null | string;
+						tsText: null | string;
+						ttText: null | string;
+						twText: null | string;
+						tyText: null | string;
+						ugText: null | string;
+						ukText: null | string;
+						urText: null | string;
+						uzText: null | string;
+						veText: null | string;
+						viText: null | string;
+						voText: null | string;
+						waText: null | string;
+						woText: null | string;
+						xhText: null | string;
+						yiText: null | string;
+						yoText: null | string;
+						zaText: null | string;
+						zhText: null | string;
+						zuText: null | string;
+						projectId: null | string;
 					};
 					"multipart/form-data": {
-						sourceText: string;
-						sourceLanguage: string;
-						targetLanguage: string;
-						context?: string;
-						translatedText: string;
-						isCached: boolean;
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						context: null | string;
+						path: null | string;
+						aaText: null | string;
+						abText: null | string;
+						aeText: null | string;
+						afText: null | string;
+						akText: null | string;
+						amText: null | string;
+						anText: null | string;
+						arText: null | string;
+						asText: null | string;
+						avText: null | string;
+						ayText: null | string;
+						azText: null | string;
+						baText: null | string;
+						beText: null | string;
+						bgText: null | string;
+						bhText: null | string;
+						biText: null | string;
+						bmText: null | string;
+						bnText: null | string;
+						boText: null | string;
+						brText: null | string;
+						bsText: null | string;
+						caText: null | string;
+						ceText: null | string;
+						chText: null | string;
+						coText: null | string;
+						crText: null | string;
+						csText: null | string;
+						cuText: null | string;
+						cvText: null | string;
+						cyText: null | string;
+						daText: null | string;
+						deText: null | string;
+						dvText: null | string;
+						dzText: null | string;
+						eeText: null | string;
+						elText: null | string;
+						enText: null | string;
+						eoText: null | string;
+						esText: null | string;
+						etText: null | string;
+						euText: null | string;
+						faText: null | string;
+						ffText: null | string;
+						fiText: null | string;
+						fjText: null | string;
+						foText: null | string;
+						frText: null | string;
+						fyText: null | string;
+						gaText: null | string;
+						gdText: null | string;
+						glText: null | string;
+						gnText: null | string;
+						guText: null | string;
+						gvText: null | string;
+						haText: null | string;
+						heText: null | string;
+						hiText: null | string;
+						hoText: null | string;
+						hrText: null | string;
+						htText: null | string;
+						huText: null | string;
+						hyText: null | string;
+						hzText: null | string;
+						iaText: null | string;
+						idText: null | string;
+						ieText: null | string;
+						igText: null | string;
+						iiText: null | string;
+						ikText: null | string;
+						ioText: null | string;
+						isText: null | string;
+						itText: null | string;
+						iuText: null | string;
+						jaText: null | string;
+						jvText: null | string;
+						kaText: null | string;
+						kgText: null | string;
+						kiText: null | string;
+						kjText: null | string;
+						kkText: null | string;
+						klText: null | string;
+						kmText: null | string;
+						knText: null | string;
+						koText: null | string;
+						krText: null | string;
+						ksText: null | string;
+						kuText: null | string;
+						kvText: null | string;
+						kwText: null | string;
+						kyText: null | string;
+						laText: null | string;
+						lbText: null | string;
+						lgText: null | string;
+						liText: null | string;
+						lnText: null | string;
+						loText: null | string;
+						ltText: null | string;
+						luText: null | string;
+						lvText: null | string;
+						mgText: null | string;
+						mhText: null | string;
+						miText: null | string;
+						mkText: null | string;
+						mlText: null | string;
+						mnText: null | string;
+						mrText: null | string;
+						msText: null | string;
+						mtText: null | string;
+						myText: null | string;
+						naText: null | string;
+						nbText: null | string;
+						ndText: null | string;
+						neText: null | string;
+						ngText: null | string;
+						nlText: null | string;
+						nnText: null | string;
+						noText: null | string;
+						nrText: null | string;
+						nvText: null | string;
+						nyText: null | string;
+						ocText: null | string;
+						ojText: null | string;
+						omText: null | string;
+						orText: null | string;
+						osText: null | string;
+						paText: null | string;
+						piText: null | string;
+						plText: null | string;
+						psText: null | string;
+						ptText: null | string;
+						quText: null | string;
+						rmText: null | string;
+						rnText: null | string;
+						roText: null | string;
+						ruText: null | string;
+						rwText: null | string;
+						saText: null | string;
+						scText: null | string;
+						sdText: null | string;
+						seText: null | string;
+						sgText: null | string;
+						siText: null | string;
+						skText: null | string;
+						slText: null | string;
+						smText: null | string;
+						snText: null | string;
+						soText: null | string;
+						sqText: null | string;
+						srText: null | string;
+						ssText: null | string;
+						stText: null | string;
+						suText: null | string;
+						svText: null | string;
+						swText: null | string;
+						taText: null | string;
+						teText: null | string;
+						tgText: null | string;
+						thText: null | string;
+						tiText: null | string;
+						tkText: null | string;
+						tlText: null | string;
+						tnText: null | string;
+						toText: null | string;
+						trText: null | string;
+						tsText: null | string;
+						ttText: null | string;
+						twText: null | string;
+						tyText: null | string;
+						ugText: null | string;
+						ukText: null | string;
+						urText: null | string;
+						uzText: null | string;
+						veText: null | string;
+						viText: null | string;
+						voText: null | string;
+						waText: null | string;
+						woText: null | string;
+						xhText: null | string;
+						yiText: null | string;
+						yoText: null | string;
+						zaText: null | string;
+						zhText: null | string;
+						zuText: null | string;
+						projectId: null | string;
 					};
 					"text/plain": {
-						sourceText: string;
-						sourceLanguage: string;
-						targetLanguage: string;
-						context?: string;
-						translatedText: string;
-						isCached: boolean;
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						context: null | string;
+						path: null | string;
+						aaText: null | string;
+						abText: null | string;
+						aeText: null | string;
+						afText: null | string;
+						akText: null | string;
+						amText: null | string;
+						anText: null | string;
+						arText: null | string;
+						asText: null | string;
+						avText: null | string;
+						ayText: null | string;
+						azText: null | string;
+						baText: null | string;
+						beText: null | string;
+						bgText: null | string;
+						bhText: null | string;
+						biText: null | string;
+						bmText: null | string;
+						bnText: null | string;
+						boText: null | string;
+						brText: null | string;
+						bsText: null | string;
+						caText: null | string;
+						ceText: null | string;
+						chText: null | string;
+						coText: null | string;
+						crText: null | string;
+						csText: null | string;
+						cuText: null | string;
+						cvText: null | string;
+						cyText: null | string;
+						daText: null | string;
+						deText: null | string;
+						dvText: null | string;
+						dzText: null | string;
+						eeText: null | string;
+						elText: null | string;
+						enText: null | string;
+						eoText: null | string;
+						esText: null | string;
+						etText: null | string;
+						euText: null | string;
+						faText: null | string;
+						ffText: null | string;
+						fiText: null | string;
+						fjText: null | string;
+						foText: null | string;
+						frText: null | string;
+						fyText: null | string;
+						gaText: null | string;
+						gdText: null | string;
+						glText: null | string;
+						gnText: null | string;
+						guText: null | string;
+						gvText: null | string;
+						haText: null | string;
+						heText: null | string;
+						hiText: null | string;
+						hoText: null | string;
+						hrText: null | string;
+						htText: null | string;
+						huText: null | string;
+						hyText: null | string;
+						hzText: null | string;
+						iaText: null | string;
+						idText: null | string;
+						ieText: null | string;
+						igText: null | string;
+						iiText: null | string;
+						ikText: null | string;
+						ioText: null | string;
+						isText: null | string;
+						itText: null | string;
+						iuText: null | string;
+						jaText: null | string;
+						jvText: null | string;
+						kaText: null | string;
+						kgText: null | string;
+						kiText: null | string;
+						kjText: null | string;
+						kkText: null | string;
+						klText: null | string;
+						kmText: null | string;
+						knText: null | string;
+						koText: null | string;
+						krText: null | string;
+						ksText: null | string;
+						kuText: null | string;
+						kvText: null | string;
+						kwText: null | string;
+						kyText: null | string;
+						laText: null | string;
+						lbText: null | string;
+						lgText: null | string;
+						liText: null | string;
+						lnText: null | string;
+						loText: null | string;
+						ltText: null | string;
+						luText: null | string;
+						lvText: null | string;
+						mgText: null | string;
+						mhText: null | string;
+						miText: null | string;
+						mkText: null | string;
+						mlText: null | string;
+						mnText: null | string;
+						mrText: null | string;
+						msText: null | string;
+						mtText: null | string;
+						myText: null | string;
+						naText: null | string;
+						nbText: null | string;
+						ndText: null | string;
+						neText: null | string;
+						ngText: null | string;
+						nlText: null | string;
+						nnText: null | string;
+						noText: null | string;
+						nrText: null | string;
+						nvText: null | string;
+						nyText: null | string;
+						ocText: null | string;
+						ojText: null | string;
+						omText: null | string;
+						orText: null | string;
+						osText: null | string;
+						paText: null | string;
+						piText: null | string;
+						plText: null | string;
+						psText: null | string;
+						ptText: null | string;
+						quText: null | string;
+						rmText: null | string;
+						rnText: null | string;
+						roText: null | string;
+						ruText: null | string;
+						rwText: null | string;
+						saText: null | string;
+						scText: null | string;
+						sdText: null | string;
+						seText: null | string;
+						sgText: null | string;
+						siText: null | string;
+						skText: null | string;
+						slText: null | string;
+						smText: null | string;
+						snText: null | string;
+						soText: null | string;
+						sqText: null | string;
+						srText: null | string;
+						ssText: null | string;
+						stText: null | string;
+						suText: null | string;
+						svText: null | string;
+						swText: null | string;
+						taText: null | string;
+						teText: null | string;
+						tgText: null | string;
+						thText: null | string;
+						tiText: null | string;
+						tkText: null | string;
+						tlText: null | string;
+						tnText: null | string;
+						toText: null | string;
+						trText: null | string;
+						tsText: null | string;
+						ttText: null | string;
+						twText: null | string;
+						tyText: null | string;
+						ugText: null | string;
+						ukText: null | string;
+						urText: null | string;
+						uzText: null | string;
+						veText: null | string;
+						viText: null | string;
+						voText: null | string;
+						waText: null | string;
+						woText: null | string;
+						xhText: null | string;
+						yiText: null | string;
+						yoText: null | string;
+						zaText: null | string;
+						zhText: null | string;
+						zuText: null | string;
+						projectId: null | string;
 					};
 				};
 			};
 		};
 	};
-	postApiTranslations: {
+	patchApiTranslationsById: {
+		parameters: {
+			query?: never;
+			header?: never;
+			path: {
+				id: string;
+			};
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": {
+					aaText?: null | string;
+					abText?: null | string;
+					aeText?: null | string;
+					afText?: null | string;
+					akText?: null | string;
+					amText?: null | string;
+					anText?: null | string;
+					arText?: null | string;
+					asText?: null | string;
+					avText?: null | string;
+					ayText?: null | string;
+					azText?: null | string;
+					baText?: null | string;
+					beText?: null | string;
+					bgText?: null | string;
+					bhText?: null | string;
+					biText?: null | string;
+					bmText?: null | string;
+					bnText?: null | string;
+					boText?: null | string;
+					brText?: null | string;
+					bsText?: null | string;
+					caText?: null | string;
+					ceText?: null | string;
+					chText?: null | string;
+					coText?: null | string;
+					crText?: null | string;
+					csText?: null | string;
+					cuText?: null | string;
+					cvText?: null | string;
+					cyText?: null | string;
+					daText?: null | string;
+					deText?: null | string;
+					dvText?: null | string;
+					dzText?: null | string;
+					eeText?: null | string;
+					elText?: null | string;
+					enText?: null | string;
+					eoText?: null | string;
+					esText?: null | string;
+					etText?: null | string;
+					euText?: null | string;
+					faText?: null | string;
+					ffText?: null | string;
+					fiText?: null | string;
+					fjText?: null | string;
+					foText?: null | string;
+					frText?: null | string;
+					fyText?: null | string;
+					gaText?: null | string;
+					gdText?: null | string;
+					glText?: null | string;
+					gnText?: null | string;
+					guText?: null | string;
+					gvText?: null | string;
+					haText?: null | string;
+					heText?: null | string;
+					hiText?: null | string;
+					hoText?: null | string;
+					hrText?: null | string;
+					htText?: null | string;
+					huText?: null | string;
+					hyText?: null | string;
+					hzText?: null | string;
+					iaText?: null | string;
+					idText?: null | string;
+					ieText?: null | string;
+					igText?: null | string;
+					iiText?: null | string;
+					ikText?: null | string;
+					ioText?: null | string;
+					isText?: null | string;
+					itText?: null | string;
+					iuText?: null | string;
+					jaText?: null | string;
+					jvText?: null | string;
+					kaText?: null | string;
+					kgText?: null | string;
+					kiText?: null | string;
+					kjText?: null | string;
+					kkText?: null | string;
+					klText?: null | string;
+					kmText?: null | string;
+					knText?: null | string;
+					koText?: null | string;
+					krText?: null | string;
+					ksText?: null | string;
+					kuText?: null | string;
+					kvText?: null | string;
+					kwText?: null | string;
+					kyText?: null | string;
+					laText?: null | string;
+					lbText?: null | string;
+					lgText?: null | string;
+					liText?: null | string;
+					lnText?: null | string;
+					loText?: null | string;
+					ltText?: null | string;
+					luText?: null | string;
+					lvText?: null | string;
+					mgText?: null | string;
+					mhText?: null | string;
+					miText?: null | string;
+					mkText?: null | string;
+					mlText?: null | string;
+					mnText?: null | string;
+					mrText?: null | string;
+					msText?: null | string;
+					mtText?: null | string;
+					myText?: null | string;
+					naText?: null | string;
+					nbText?: null | string;
+					ndText?: null | string;
+					neText?: null | string;
+					ngText?: null | string;
+					nlText?: null | string;
+					nnText?: null | string;
+					noText?: null | string;
+					nrText?: null | string;
+					nvText?: null | string;
+					nyText?: null | string;
+					ocText?: null | string;
+					ojText?: null | string;
+					omText?: null | string;
+					orText?: null | string;
+					osText?: null | string;
+					paText?: null | string;
+					piText?: null | string;
+					plText?: null | string;
+					psText?: null | string;
+					ptText?: null | string;
+					quText?: null | string;
+					rmText?: null | string;
+					rnText?: null | string;
+					roText?: null | string;
+					ruText?: null | string;
+					rwText?: null | string;
+					saText?: null | string;
+					scText?: null | string;
+					sdText?: null | string;
+					seText?: null | string;
+					sgText?: null | string;
+					siText?: null | string;
+					skText?: null | string;
+					slText?: null | string;
+					smText?: null | string;
+					snText?: null | string;
+					soText?: null | string;
+					sqText?: null | string;
+					srText?: null | string;
+					ssText?: null | string;
+					stText?: null | string;
+					suText?: null | string;
+					svText?: null | string;
+					swText?: null | string;
+					taText?: null | string;
+					teText?: null | string;
+					tgText?: null | string;
+					thText?: null | string;
+					tiText?: null | string;
+					tkText?: null | string;
+					tlText?: null | string;
+					tnText?: null | string;
+					toText?: null | string;
+					trText?: null | string;
+					tsText?: null | string;
+					ttText?: null | string;
+					twText?: null | string;
+					tyText?: null | string;
+					ugText?: null | string;
+					ukText?: null | string;
+					urText?: null | string;
+					uzText?: null | string;
+					veText?: null | string;
+					viText?: null | string;
+					voText?: null | string;
+					waText?: null | string;
+					woText?: null | string;
+					xhText?: null | string;
+					yiText?: null | string;
+					yoText?: null | string;
+					zaText?: null | string;
+					zhText?: null | string;
+					zuText?: null | string;
+				};
+				"multipart/form-data": {
+					aaText?: null | string;
+					abText?: null | string;
+					aeText?: null | string;
+					afText?: null | string;
+					akText?: null | string;
+					amText?: null | string;
+					anText?: null | string;
+					arText?: null | string;
+					asText?: null | string;
+					avText?: null | string;
+					ayText?: null | string;
+					azText?: null | string;
+					baText?: null | string;
+					beText?: null | string;
+					bgText?: null | string;
+					bhText?: null | string;
+					biText?: null | string;
+					bmText?: null | string;
+					bnText?: null | string;
+					boText?: null | string;
+					brText?: null | string;
+					bsText?: null | string;
+					caText?: null | string;
+					ceText?: null | string;
+					chText?: null | string;
+					coText?: null | string;
+					crText?: null | string;
+					csText?: null | string;
+					cuText?: null | string;
+					cvText?: null | string;
+					cyText?: null | string;
+					daText?: null | string;
+					deText?: null | string;
+					dvText?: null | string;
+					dzText?: null | string;
+					eeText?: null | string;
+					elText?: null | string;
+					enText?: null | string;
+					eoText?: null | string;
+					esText?: null | string;
+					etText?: null | string;
+					euText?: null | string;
+					faText?: null | string;
+					ffText?: null | string;
+					fiText?: null | string;
+					fjText?: null | string;
+					foText?: null | string;
+					frText?: null | string;
+					fyText?: null | string;
+					gaText?: null | string;
+					gdText?: null | string;
+					glText?: null | string;
+					gnText?: null | string;
+					guText?: null | string;
+					gvText?: null | string;
+					haText?: null | string;
+					heText?: null | string;
+					hiText?: null | string;
+					hoText?: null | string;
+					hrText?: null | string;
+					htText?: null | string;
+					huText?: null | string;
+					hyText?: null | string;
+					hzText?: null | string;
+					iaText?: null | string;
+					idText?: null | string;
+					ieText?: null | string;
+					igText?: null | string;
+					iiText?: null | string;
+					ikText?: null | string;
+					ioText?: null | string;
+					isText?: null | string;
+					itText?: null | string;
+					iuText?: null | string;
+					jaText?: null | string;
+					jvText?: null | string;
+					kaText?: null | string;
+					kgText?: null | string;
+					kiText?: null | string;
+					kjText?: null | string;
+					kkText?: null | string;
+					klText?: null | string;
+					kmText?: null | string;
+					knText?: null | string;
+					koText?: null | string;
+					krText?: null | string;
+					ksText?: null | string;
+					kuText?: null | string;
+					kvText?: null | string;
+					kwText?: null | string;
+					kyText?: null | string;
+					laText?: null | string;
+					lbText?: null | string;
+					lgText?: null | string;
+					liText?: null | string;
+					lnText?: null | string;
+					loText?: null | string;
+					ltText?: null | string;
+					luText?: null | string;
+					lvText?: null | string;
+					mgText?: null | string;
+					mhText?: null | string;
+					miText?: null | string;
+					mkText?: null | string;
+					mlText?: null | string;
+					mnText?: null | string;
+					mrText?: null | string;
+					msText?: null | string;
+					mtText?: null | string;
+					myText?: null | string;
+					naText?: null | string;
+					nbText?: null | string;
+					ndText?: null | string;
+					neText?: null | string;
+					ngText?: null | string;
+					nlText?: null | string;
+					nnText?: null | string;
+					noText?: null | string;
+					nrText?: null | string;
+					nvText?: null | string;
+					nyText?: null | string;
+					ocText?: null | string;
+					ojText?: null | string;
+					omText?: null | string;
+					orText?: null | string;
+					osText?: null | string;
+					paText?: null | string;
+					piText?: null | string;
+					plText?: null | string;
+					psText?: null | string;
+					ptText?: null | string;
+					quText?: null | string;
+					rmText?: null | string;
+					rnText?: null | string;
+					roText?: null | string;
+					ruText?: null | string;
+					rwText?: null | string;
+					saText?: null | string;
+					scText?: null | string;
+					sdText?: null | string;
+					seText?: null | string;
+					sgText?: null | string;
+					siText?: null | string;
+					skText?: null | string;
+					slText?: null | string;
+					smText?: null | string;
+					snText?: null | string;
+					soText?: null | string;
+					sqText?: null | string;
+					srText?: null | string;
+					ssText?: null | string;
+					stText?: null | string;
+					suText?: null | string;
+					svText?: null | string;
+					swText?: null | string;
+					taText?: null | string;
+					teText?: null | string;
+					tgText?: null | string;
+					thText?: null | string;
+					tiText?: null | string;
+					tkText?: null | string;
+					tlText?: null | string;
+					tnText?: null | string;
+					toText?: null | string;
+					trText?: null | string;
+					tsText?: null | string;
+					ttText?: null | string;
+					twText?: null | string;
+					tyText?: null | string;
+					ugText?: null | string;
+					ukText?: null | string;
+					urText?: null | string;
+					uzText?: null | string;
+					veText?: null | string;
+					viText?: null | string;
+					voText?: null | string;
+					waText?: null | string;
+					woText?: null | string;
+					xhText?: null | string;
+					yiText?: null | string;
+					yoText?: null | string;
+					zaText?: null | string;
+					zhText?: null | string;
+					zuText?: null | string;
+				};
+				"text/plain": {
+					aaText?: null | string;
+					abText?: null | string;
+					aeText?: null | string;
+					afText?: null | string;
+					akText?: null | string;
+					amText?: null | string;
+					anText?: null | string;
+					arText?: null | string;
+					asText?: null | string;
+					avText?: null | string;
+					ayText?: null | string;
+					azText?: null | string;
+					baText?: null | string;
+					beText?: null | string;
+					bgText?: null | string;
+					bhText?: null | string;
+					biText?: null | string;
+					bmText?: null | string;
+					bnText?: null | string;
+					boText?: null | string;
+					brText?: null | string;
+					bsText?: null | string;
+					caText?: null | string;
+					ceText?: null | string;
+					chText?: null | string;
+					coText?: null | string;
+					crText?: null | string;
+					csText?: null | string;
+					cuText?: null | string;
+					cvText?: null | string;
+					cyText?: null | string;
+					daText?: null | string;
+					deText?: null | string;
+					dvText?: null | string;
+					dzText?: null | string;
+					eeText?: null | string;
+					elText?: null | string;
+					enText?: null | string;
+					eoText?: null | string;
+					esText?: null | string;
+					etText?: null | string;
+					euText?: null | string;
+					faText?: null | string;
+					ffText?: null | string;
+					fiText?: null | string;
+					fjText?: null | string;
+					foText?: null | string;
+					frText?: null | string;
+					fyText?: null | string;
+					gaText?: null | string;
+					gdText?: null | string;
+					glText?: null | string;
+					gnText?: null | string;
+					guText?: null | string;
+					gvText?: null | string;
+					haText?: null | string;
+					heText?: null | string;
+					hiText?: null | string;
+					hoText?: null | string;
+					hrText?: null | string;
+					htText?: null | string;
+					huText?: null | string;
+					hyText?: null | string;
+					hzText?: null | string;
+					iaText?: null | string;
+					idText?: null | string;
+					ieText?: null | string;
+					igText?: null | string;
+					iiText?: null | string;
+					ikText?: null | string;
+					ioText?: null | string;
+					isText?: null | string;
+					itText?: null | string;
+					iuText?: null | string;
+					jaText?: null | string;
+					jvText?: null | string;
+					kaText?: null | string;
+					kgText?: null | string;
+					kiText?: null | string;
+					kjText?: null | string;
+					kkText?: null | string;
+					klText?: null | string;
+					kmText?: null | string;
+					knText?: null | string;
+					koText?: null | string;
+					krText?: null | string;
+					ksText?: null | string;
+					kuText?: null | string;
+					kvText?: null | string;
+					kwText?: null | string;
+					kyText?: null | string;
+					laText?: null | string;
+					lbText?: null | string;
+					lgText?: null | string;
+					liText?: null | string;
+					lnText?: null | string;
+					loText?: null | string;
+					ltText?: null | string;
+					luText?: null | string;
+					lvText?: null | string;
+					mgText?: null | string;
+					mhText?: null | string;
+					miText?: null | string;
+					mkText?: null | string;
+					mlText?: null | string;
+					mnText?: null | string;
+					mrText?: null | string;
+					msText?: null | string;
+					mtText?: null | string;
+					myText?: null | string;
+					naText?: null | string;
+					nbText?: null | string;
+					ndText?: null | string;
+					neText?: null | string;
+					ngText?: null | string;
+					nlText?: null | string;
+					nnText?: null | string;
+					noText?: null | string;
+					nrText?: null | string;
+					nvText?: null | string;
+					nyText?: null | string;
+					ocText?: null | string;
+					ojText?: null | string;
+					omText?: null | string;
+					orText?: null | string;
+					osText?: null | string;
+					paText?: null | string;
+					piText?: null | string;
+					plText?: null | string;
+					psText?: null | string;
+					ptText?: null | string;
+					quText?: null | string;
+					rmText?: null | string;
+					rnText?: null | string;
+					roText?: null | string;
+					ruText?: null | string;
+					rwText?: null | string;
+					saText?: null | string;
+					scText?: null | string;
+					sdText?: null | string;
+					seText?: null | string;
+					sgText?: null | string;
+					siText?: null | string;
+					skText?: null | string;
+					slText?: null | string;
+					smText?: null | string;
+					snText?: null | string;
+					soText?: null | string;
+					sqText?: null | string;
+					srText?: null | string;
+					ssText?: null | string;
+					stText?: null | string;
+					suText?: null | string;
+					svText?: null | string;
+					swText?: null | string;
+					taText?: null | string;
+					teText?: null | string;
+					tgText?: null | string;
+					thText?: null | string;
+					tiText?: null | string;
+					tkText?: null | string;
+					tlText?: null | string;
+					tnText?: null | string;
+					toText?: null | string;
+					trText?: null | string;
+					tsText?: null | string;
+					ttText?: null | string;
+					twText?: null | string;
+					tyText?: null | string;
+					ugText?: null | string;
+					ukText?: null | string;
+					urText?: null | string;
+					uzText?: null | string;
+					veText?: null | string;
+					viText?: null | string;
+					voText?: null | string;
+					waText?: null | string;
+					woText?: null | string;
+					xhText?: null | string;
+					yiText?: null | string;
+					yoText?: null | string;
+					zaText?: null | string;
+					zhText?: null | string;
+					zuText?: null | string;
+				};
+			};
+		};
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						context: null | string;
+						path: null | string;
+						aaText: null | string;
+						abText: null | string;
+						aeText: null | string;
+						afText: null | string;
+						akText: null | string;
+						amText: null | string;
+						anText: null | string;
+						arText: null | string;
+						asText: null | string;
+						avText: null | string;
+						ayText: null | string;
+						azText: null | string;
+						baText: null | string;
+						beText: null | string;
+						bgText: null | string;
+						bhText: null | string;
+						biText: null | string;
+						bmText: null | string;
+						bnText: null | string;
+						boText: null | string;
+						brText: null | string;
+						bsText: null | string;
+						caText: null | string;
+						ceText: null | string;
+						chText: null | string;
+						coText: null | string;
+						crText: null | string;
+						csText: null | string;
+						cuText: null | string;
+						cvText: null | string;
+						cyText: null | string;
+						daText: null | string;
+						deText: null | string;
+						dvText: null | string;
+						dzText: null | string;
+						eeText: null | string;
+						elText: null | string;
+						enText: null | string;
+						eoText: null | string;
+						esText: null | string;
+						etText: null | string;
+						euText: null | string;
+						faText: null | string;
+						ffText: null | string;
+						fiText: null | string;
+						fjText: null | string;
+						foText: null | string;
+						frText: null | string;
+						fyText: null | string;
+						gaText: null | string;
+						gdText: null | string;
+						glText: null | string;
+						gnText: null | string;
+						guText: null | string;
+						gvText: null | string;
+						haText: null | string;
+						heText: null | string;
+						hiText: null | string;
+						hoText: null | string;
+						hrText: null | string;
+						htText: null | string;
+						huText: null | string;
+						hyText: null | string;
+						hzText: null | string;
+						iaText: null | string;
+						idText: null | string;
+						ieText: null | string;
+						igText: null | string;
+						iiText: null | string;
+						ikText: null | string;
+						ioText: null | string;
+						isText: null | string;
+						itText: null | string;
+						iuText: null | string;
+						jaText: null | string;
+						jvText: null | string;
+						kaText: null | string;
+						kgText: null | string;
+						kiText: null | string;
+						kjText: null | string;
+						kkText: null | string;
+						klText: null | string;
+						kmText: null | string;
+						knText: null | string;
+						koText: null | string;
+						krText: null | string;
+						ksText: null | string;
+						kuText: null | string;
+						kvText: null | string;
+						kwText: null | string;
+						kyText: null | string;
+						laText: null | string;
+						lbText: null | string;
+						lgText: null | string;
+						liText: null | string;
+						lnText: null | string;
+						loText: null | string;
+						ltText: null | string;
+						luText: null | string;
+						lvText: null | string;
+						mgText: null | string;
+						mhText: null | string;
+						miText: null | string;
+						mkText: null | string;
+						mlText: null | string;
+						mnText: null | string;
+						mrText: null | string;
+						msText: null | string;
+						mtText: null | string;
+						myText: null | string;
+						naText: null | string;
+						nbText: null | string;
+						ndText: null | string;
+						neText: null | string;
+						ngText: null | string;
+						nlText: null | string;
+						nnText: null | string;
+						noText: null | string;
+						nrText: null | string;
+						nvText: null | string;
+						nyText: null | string;
+						ocText: null | string;
+						ojText: null | string;
+						omText: null | string;
+						orText: null | string;
+						osText: null | string;
+						paText: null | string;
+						piText: null | string;
+						plText: null | string;
+						psText: null | string;
+						ptText: null | string;
+						quText: null | string;
+						rmText: null | string;
+						rnText: null | string;
+						roText: null | string;
+						ruText: null | string;
+						rwText: null | string;
+						saText: null | string;
+						scText: null | string;
+						sdText: null | string;
+						seText: null | string;
+						sgText: null | string;
+						siText: null | string;
+						skText: null | string;
+						slText: null | string;
+						smText: null | string;
+						snText: null | string;
+						soText: null | string;
+						sqText: null | string;
+						srText: null | string;
+						ssText: null | string;
+						stText: null | string;
+						suText: null | string;
+						svText: null | string;
+						swText: null | string;
+						taText: null | string;
+						teText: null | string;
+						tgText: null | string;
+						thText: null | string;
+						tiText: null | string;
+						tkText: null | string;
+						tlText: null | string;
+						tnText: null | string;
+						toText: null | string;
+						trText: null | string;
+						tsText: null | string;
+						ttText: null | string;
+						twText: null | string;
+						tyText: null | string;
+						ugText: null | string;
+						ukText: null | string;
+						urText: null | string;
+						uzText: null | string;
+						veText: null | string;
+						viText: null | string;
+						voText: null | string;
+						waText: null | string;
+						woText: null | string;
+						xhText: null | string;
+						yiText: null | string;
+						yoText: null | string;
+						zaText: null | string;
+						zhText: null | string;
+						zuText: null | string;
+						projectId: null | string;
+					};
+					"multipart/form-data": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						context: null | string;
+						path: null | string;
+						aaText: null | string;
+						abText: null | string;
+						aeText: null | string;
+						afText: null | string;
+						akText: null | string;
+						amText: null | string;
+						anText: null | string;
+						arText: null | string;
+						asText: null | string;
+						avText: null | string;
+						ayText: null | string;
+						azText: null | string;
+						baText: null | string;
+						beText: null | string;
+						bgText: null | string;
+						bhText: null | string;
+						biText: null | string;
+						bmText: null | string;
+						bnText: null | string;
+						boText: null | string;
+						brText: null | string;
+						bsText: null | string;
+						caText: null | string;
+						ceText: null | string;
+						chText: null | string;
+						coText: null | string;
+						crText: null | string;
+						csText: null | string;
+						cuText: null | string;
+						cvText: null | string;
+						cyText: null | string;
+						daText: null | string;
+						deText: null | string;
+						dvText: null | string;
+						dzText: null | string;
+						eeText: null | string;
+						elText: null | string;
+						enText: null | string;
+						eoText: null | string;
+						esText: null | string;
+						etText: null | string;
+						euText: null | string;
+						faText: null | string;
+						ffText: null | string;
+						fiText: null | string;
+						fjText: null | string;
+						foText: null | string;
+						frText: null | string;
+						fyText: null | string;
+						gaText: null | string;
+						gdText: null | string;
+						glText: null | string;
+						gnText: null | string;
+						guText: null | string;
+						gvText: null | string;
+						haText: null | string;
+						heText: null | string;
+						hiText: null | string;
+						hoText: null | string;
+						hrText: null | string;
+						htText: null | string;
+						huText: null | string;
+						hyText: null | string;
+						hzText: null | string;
+						iaText: null | string;
+						idText: null | string;
+						ieText: null | string;
+						igText: null | string;
+						iiText: null | string;
+						ikText: null | string;
+						ioText: null | string;
+						isText: null | string;
+						itText: null | string;
+						iuText: null | string;
+						jaText: null | string;
+						jvText: null | string;
+						kaText: null | string;
+						kgText: null | string;
+						kiText: null | string;
+						kjText: null | string;
+						kkText: null | string;
+						klText: null | string;
+						kmText: null | string;
+						knText: null | string;
+						koText: null | string;
+						krText: null | string;
+						ksText: null | string;
+						kuText: null | string;
+						kvText: null | string;
+						kwText: null | string;
+						kyText: null | string;
+						laText: null | string;
+						lbText: null | string;
+						lgText: null | string;
+						liText: null | string;
+						lnText: null | string;
+						loText: null | string;
+						ltText: null | string;
+						luText: null | string;
+						lvText: null | string;
+						mgText: null | string;
+						mhText: null | string;
+						miText: null | string;
+						mkText: null | string;
+						mlText: null | string;
+						mnText: null | string;
+						mrText: null | string;
+						msText: null | string;
+						mtText: null | string;
+						myText: null | string;
+						naText: null | string;
+						nbText: null | string;
+						ndText: null | string;
+						neText: null | string;
+						ngText: null | string;
+						nlText: null | string;
+						nnText: null | string;
+						noText: null | string;
+						nrText: null | string;
+						nvText: null | string;
+						nyText: null | string;
+						ocText: null | string;
+						ojText: null | string;
+						omText: null | string;
+						orText: null | string;
+						osText: null | string;
+						paText: null | string;
+						piText: null | string;
+						plText: null | string;
+						psText: null | string;
+						ptText: null | string;
+						quText: null | string;
+						rmText: null | string;
+						rnText: null | string;
+						roText: null | string;
+						ruText: null | string;
+						rwText: null | string;
+						saText: null | string;
+						scText: null | string;
+						sdText: null | string;
+						seText: null | string;
+						sgText: null | string;
+						siText: null | string;
+						skText: null | string;
+						slText: null | string;
+						smText: null | string;
+						snText: null | string;
+						soText: null | string;
+						sqText: null | string;
+						srText: null | string;
+						ssText: null | string;
+						stText: null | string;
+						suText: null | string;
+						svText: null | string;
+						swText: null | string;
+						taText: null | string;
+						teText: null | string;
+						tgText: null | string;
+						thText: null | string;
+						tiText: null | string;
+						tkText: null | string;
+						tlText: null | string;
+						tnText: null | string;
+						toText: null | string;
+						trText: null | string;
+						tsText: null | string;
+						ttText: null | string;
+						twText: null | string;
+						tyText: null | string;
+						ugText: null | string;
+						ukText: null | string;
+						urText: null | string;
+						uzText: null | string;
+						veText: null | string;
+						viText: null | string;
+						voText: null | string;
+						waText: null | string;
+						woText: null | string;
+						xhText: null | string;
+						yiText: null | string;
+						yoText: null | string;
+						zaText: null | string;
+						zhText: null | string;
+						zuText: null | string;
+						projectId: null | string;
+					};
+					"text/plain": {
+						id: string;
+						createdAt: Record<string, never> | string | number;
+						updatedAt: Record<string, never> | string | number;
+						context: null | string;
+						path: null | string;
+						aaText: null | string;
+						abText: null | string;
+						aeText: null | string;
+						afText: null | string;
+						akText: null | string;
+						amText: null | string;
+						anText: null | string;
+						arText: null | string;
+						asText: null | string;
+						avText: null | string;
+						ayText: null | string;
+						azText: null | string;
+						baText: null | string;
+						beText: null | string;
+						bgText: null | string;
+						bhText: null | string;
+						biText: null | string;
+						bmText: null | string;
+						bnText: null | string;
+						boText: null | string;
+						brText: null | string;
+						bsText: null | string;
+						caText: null | string;
+						ceText: null | string;
+						chText: null | string;
+						coText: null | string;
+						crText: null | string;
+						csText: null | string;
+						cuText: null | string;
+						cvText: null | string;
+						cyText: null | string;
+						daText: null | string;
+						deText: null | string;
+						dvText: null | string;
+						dzText: null | string;
+						eeText: null | string;
+						elText: null | string;
+						enText: null | string;
+						eoText: null | string;
+						esText: null | string;
+						etText: null | string;
+						euText: null | string;
+						faText: null | string;
+						ffText: null | string;
+						fiText: null | string;
+						fjText: null | string;
+						foText: null | string;
+						frText: null | string;
+						fyText: null | string;
+						gaText: null | string;
+						gdText: null | string;
+						glText: null | string;
+						gnText: null | string;
+						guText: null | string;
+						gvText: null | string;
+						haText: null | string;
+						heText: null | string;
+						hiText: null | string;
+						hoText: null | string;
+						hrText: null | string;
+						htText: null | string;
+						huText: null | string;
+						hyText: null | string;
+						hzText: null | string;
+						iaText: null | string;
+						idText: null | string;
+						ieText: null | string;
+						igText: null | string;
+						iiText: null | string;
+						ikText: null | string;
+						ioText: null | string;
+						isText: null | string;
+						itText: null | string;
+						iuText: null | string;
+						jaText: null | string;
+						jvText: null | string;
+						kaText: null | string;
+						kgText: null | string;
+						kiText: null | string;
+						kjText: null | string;
+						kkText: null | string;
+						klText: null | string;
+						kmText: null | string;
+						knText: null | string;
+						koText: null | string;
+						krText: null | string;
+						ksText: null | string;
+						kuText: null | string;
+						kvText: null | string;
+						kwText: null | string;
+						kyText: null | string;
+						laText: null | string;
+						lbText: null | string;
+						lgText: null | string;
+						liText: null | string;
+						lnText: null | string;
+						loText: null | string;
+						ltText: null | string;
+						luText: null | string;
+						lvText: null | string;
+						mgText: null | string;
+						mhText: null | string;
+						miText: null | string;
+						mkText: null | string;
+						mlText: null | string;
+						mnText: null | string;
+						mrText: null | string;
+						msText: null | string;
+						mtText: null | string;
+						myText: null | string;
+						naText: null | string;
+						nbText: null | string;
+						ndText: null | string;
+						neText: null | string;
+						ngText: null | string;
+						nlText: null | string;
+						nnText: null | string;
+						noText: null | string;
+						nrText: null | string;
+						nvText: null | string;
+						nyText: null | string;
+						ocText: null | string;
+						ojText: null | string;
+						omText: null | string;
+						orText: null | string;
+						osText: null | string;
+						paText: null | string;
+						piText: null | string;
+						plText: null | string;
+						psText: null | string;
+						ptText: null | string;
+						quText: null | string;
+						rmText: null | string;
+						rnText: null | string;
+						roText: null | string;
+						ruText: null | string;
+						rwText: null | string;
+						saText: null | string;
+						scText: null | string;
+						sdText: null | string;
+						seText: null | string;
+						sgText: null | string;
+						siText: null | string;
+						skText: null | string;
+						slText: null | string;
+						smText: null | string;
+						snText: null | string;
+						soText: null | string;
+						sqText: null | string;
+						srText: null | string;
+						ssText: null | string;
+						stText: null | string;
+						suText: null | string;
+						svText: null | string;
+						swText: null | string;
+						taText: null | string;
+						teText: null | string;
+						tgText: null | string;
+						thText: null | string;
+						tiText: null | string;
+						tkText: null | string;
+						tlText: null | string;
+						tnText: null | string;
+						toText: null | string;
+						trText: null | string;
+						tsText: null | string;
+						ttText: null | string;
+						twText: null | string;
+						tyText: null | string;
+						ugText: null | string;
+						ukText: null | string;
+						urText: null | string;
+						uzText: null | string;
+						veText: null | string;
+						viText: null | string;
+						voText: null | string;
+						waText: null | string;
+						woText: null | string;
+						xhText: null | string;
+						yiText: null | string;
+						yoText: null | string;
+						zaText: null | string;
+						zhText: null | string;
+						zuText: null | string;
+						projectId: null | string;
+					};
+				};
+			};
+		};
+	};
+	"postApiTranslationsAi-translate-all": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": {
+					/** @default ko */
+					originalLanguage: string;
+					projectId: string;
+					/** @default [
+					 *       "en",
+					 *       "ja",
+					 *       "zh",
+					 *       "uz",
+					 *       "vi",
+					 *       "ru",
+					 *       "kk",
+					 *       "mn",
+					 *       "th",
+					 *       "id"
+					 *     ] */
+					targetLanguage: string[];
+				};
+				"multipart/form-data": {
+					/** @default ko */
+					originalLanguage: string;
+					projectId: string;
+					/** @default [
+					 *       "en",
+					 *       "ja",
+					 *       "zh",
+					 *       "uz",
+					 *       "vi",
+					 *       "ru",
+					 *       "kk",
+					 *       "mn",
+					 *       "th",
+					 *       "id"
+					 *     ] */
+					targetLanguage: string[];
+				};
+				"text/plain": {
+					/** @default ko */
+					originalLanguage: string;
+					projectId: string;
+					/** @default [
+					 *       "en",
+					 *       "ja",
+					 *       "zh",
+					 *       "uz",
+					 *       "vi",
+					 *       "ru",
+					 *       "kk",
+					 *       "mn",
+					 *       "th",
+					 *       "id"
+					 *     ] */
+					targetLanguage: string[];
+				};
+			};
+		};
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						message: string;
+						updatedTranslations: {
+							id: string;
+							createdAt: Record<string, never> | string | number;
+							updatedAt: Record<string, never> | string | number;
+							context: null | string;
+							path: null | string;
+							aaText: null | string;
+							abText: null | string;
+							aeText: null | string;
+							afText: null | string;
+							akText: null | string;
+							amText: null | string;
+							anText: null | string;
+							arText: null | string;
+							asText: null | string;
+							avText: null | string;
+							ayText: null | string;
+							azText: null | string;
+							baText: null | string;
+							beText: null | string;
+							bgText: null | string;
+							bhText: null | string;
+							biText: null | string;
+							bmText: null | string;
+							bnText: null | string;
+							boText: null | string;
+							brText: null | string;
+							bsText: null | string;
+							caText: null | string;
+							ceText: null | string;
+							chText: null | string;
+							coText: null | string;
+							crText: null | string;
+							csText: null | string;
+							cuText: null | string;
+							cvText: null | string;
+							cyText: null | string;
+							daText: null | string;
+							deText: null | string;
+							dvText: null | string;
+							dzText: null | string;
+							eeText: null | string;
+							elText: null | string;
+							enText: null | string;
+							eoText: null | string;
+							esText: null | string;
+							etText: null | string;
+							euText: null | string;
+							faText: null | string;
+							ffText: null | string;
+							fiText: null | string;
+							fjText: null | string;
+							foText: null | string;
+							frText: null | string;
+							fyText: null | string;
+							gaText: null | string;
+							gdText: null | string;
+							glText: null | string;
+							gnText: null | string;
+							guText: null | string;
+							gvText: null | string;
+							haText: null | string;
+							heText: null | string;
+							hiText: null | string;
+							hoText: null | string;
+							hrText: null | string;
+							htText: null | string;
+							huText: null | string;
+							hyText: null | string;
+							hzText: null | string;
+							iaText: null | string;
+							idText: null | string;
+							ieText: null | string;
+							igText: null | string;
+							iiText: null | string;
+							ikText: null | string;
+							ioText: null | string;
+							isText: null | string;
+							itText: null | string;
+							iuText: null | string;
+							jaText: null | string;
+							jvText: null | string;
+							kaText: null | string;
+							kgText: null | string;
+							kiText: null | string;
+							kjText: null | string;
+							kkText: null | string;
+							klText: null | string;
+							kmText: null | string;
+							knText: null | string;
+							koText: null | string;
+							krText: null | string;
+							ksText: null | string;
+							kuText: null | string;
+							kvText: null | string;
+							kwText: null | string;
+							kyText: null | string;
+							laText: null | string;
+							lbText: null | string;
+							lgText: null | string;
+							liText: null | string;
+							lnText: null | string;
+							loText: null | string;
+							ltText: null | string;
+							luText: null | string;
+							lvText: null | string;
+							mgText: null | string;
+							mhText: null | string;
+							miText: null | string;
+							mkText: null | string;
+							mlText: null | string;
+							mnText: null | string;
+							mrText: null | string;
+							msText: null | string;
+							mtText: null | string;
+							myText: null | string;
+							naText: null | string;
+							nbText: null | string;
+							ndText: null | string;
+							neText: null | string;
+							ngText: null | string;
+							nlText: null | string;
+							nnText: null | string;
+							noText: null | string;
+							nrText: null | string;
+							nvText: null | string;
+							nyText: null | string;
+							ocText: null | string;
+							ojText: null | string;
+							omText: null | string;
+							orText: null | string;
+							osText: null | string;
+							paText: null | string;
+							piText: null | string;
+							plText: null | string;
+							psText: null | string;
+							ptText: null | string;
+							quText: null | string;
+							rmText: null | string;
+							rnText: null | string;
+							roText: null | string;
+							ruText: null | string;
+							rwText: null | string;
+							saText: null | string;
+							scText: null | string;
+							sdText: null | string;
+							seText: null | string;
+							sgText: null | string;
+							siText: null | string;
+							skText: null | string;
+							slText: null | string;
+							smText: null | string;
+							snText: null | string;
+							soText: null | string;
+							sqText: null | string;
+							srText: null | string;
+							ssText: null | string;
+							stText: null | string;
+							suText: null | string;
+							svText: null | string;
+							swText: null | string;
+							taText: null | string;
+							teText: null | string;
+							tgText: null | string;
+							thText: null | string;
+							tiText: null | string;
+							tkText: null | string;
+							tlText: null | string;
+							tnText: null | string;
+							toText: null | string;
+							trText: null | string;
+							tsText: null | string;
+							ttText: null | string;
+							twText: null | string;
+							tyText: null | string;
+							ugText: null | string;
+							ukText: null | string;
+							urText: null | string;
+							uzText: null | string;
+							veText: null | string;
+							viText: null | string;
+							voText: null | string;
+							waText: null | string;
+							woText: null | string;
+							xhText: null | string;
+							yiText: null | string;
+							yoText: null | string;
+							zaText: null | string;
+							zhText: null | string;
+							zuText: null | string;
+							projectId: null | string;
+						}[];
+					};
+					"multipart/form-data": {
+						message: string;
+						updatedTranslations: {
+							id: string;
+							createdAt: Record<string, never> | string | number;
+							updatedAt: Record<string, never> | string | number;
+							context: null | string;
+							path: null | string;
+							aaText: null | string;
+							abText: null | string;
+							aeText: null | string;
+							afText: null | string;
+							akText: null | string;
+							amText: null | string;
+							anText: null | string;
+							arText: null | string;
+							asText: null | string;
+							avText: null | string;
+							ayText: null | string;
+							azText: null | string;
+							baText: null | string;
+							beText: null | string;
+							bgText: null | string;
+							bhText: null | string;
+							biText: null | string;
+							bmText: null | string;
+							bnText: null | string;
+							boText: null | string;
+							brText: null | string;
+							bsText: null | string;
+							caText: null | string;
+							ceText: null | string;
+							chText: null | string;
+							coText: null | string;
+							crText: null | string;
+							csText: null | string;
+							cuText: null | string;
+							cvText: null | string;
+							cyText: null | string;
+							daText: null | string;
+							deText: null | string;
+							dvText: null | string;
+							dzText: null | string;
+							eeText: null | string;
+							elText: null | string;
+							enText: null | string;
+							eoText: null | string;
+							esText: null | string;
+							etText: null | string;
+							euText: null | string;
+							faText: null | string;
+							ffText: null | string;
+							fiText: null | string;
+							fjText: null | string;
+							foText: null | string;
+							frText: null | string;
+							fyText: null | string;
+							gaText: null | string;
+							gdText: null | string;
+							glText: null | string;
+							gnText: null | string;
+							guText: null | string;
+							gvText: null | string;
+							haText: null | string;
+							heText: null | string;
+							hiText: null | string;
+							hoText: null | string;
+							hrText: null | string;
+							htText: null | string;
+							huText: null | string;
+							hyText: null | string;
+							hzText: null | string;
+							iaText: null | string;
+							idText: null | string;
+							ieText: null | string;
+							igText: null | string;
+							iiText: null | string;
+							ikText: null | string;
+							ioText: null | string;
+							isText: null | string;
+							itText: null | string;
+							iuText: null | string;
+							jaText: null | string;
+							jvText: null | string;
+							kaText: null | string;
+							kgText: null | string;
+							kiText: null | string;
+							kjText: null | string;
+							kkText: null | string;
+							klText: null | string;
+							kmText: null | string;
+							knText: null | string;
+							koText: null | string;
+							krText: null | string;
+							ksText: null | string;
+							kuText: null | string;
+							kvText: null | string;
+							kwText: null | string;
+							kyText: null | string;
+							laText: null | string;
+							lbText: null | string;
+							lgText: null | string;
+							liText: null | string;
+							lnText: null | string;
+							loText: null | string;
+							ltText: null | string;
+							luText: null | string;
+							lvText: null | string;
+							mgText: null | string;
+							mhText: null | string;
+							miText: null | string;
+							mkText: null | string;
+							mlText: null | string;
+							mnText: null | string;
+							mrText: null | string;
+							msText: null | string;
+							mtText: null | string;
+							myText: null | string;
+							naText: null | string;
+							nbText: null | string;
+							ndText: null | string;
+							neText: null | string;
+							ngText: null | string;
+							nlText: null | string;
+							nnText: null | string;
+							noText: null | string;
+							nrText: null | string;
+							nvText: null | string;
+							nyText: null | string;
+							ocText: null | string;
+							ojText: null | string;
+							omText: null | string;
+							orText: null | string;
+							osText: null | string;
+							paText: null | string;
+							piText: null | string;
+							plText: null | string;
+							psText: null | string;
+							ptText: null | string;
+							quText: null | string;
+							rmText: null | string;
+							rnText: null | string;
+							roText: null | string;
+							ruText: null | string;
+							rwText: null | string;
+							saText: null | string;
+							scText: null | string;
+							sdText: null | string;
+							seText: null | string;
+							sgText: null | string;
+							siText: null | string;
+							skText: null | string;
+							slText: null | string;
+							smText: null | string;
+							snText: null | string;
+							soText: null | string;
+							sqText: null | string;
+							srText: null | string;
+							ssText: null | string;
+							stText: null | string;
+							suText: null | string;
+							svText: null | string;
+							swText: null | string;
+							taText: null | string;
+							teText: null | string;
+							tgText: null | string;
+							thText: null | string;
+							tiText: null | string;
+							tkText: null | string;
+							tlText: null | string;
+							tnText: null | string;
+							toText: null | string;
+							trText: null | string;
+							tsText: null | string;
+							ttText: null | string;
+							twText: null | string;
+							tyText: null | string;
+							ugText: null | string;
+							ukText: null | string;
+							urText: null | string;
+							uzText: null | string;
+							veText: null | string;
+							viText: null | string;
+							voText: null | string;
+							waText: null | string;
+							woText: null | string;
+							xhText: null | string;
+							yiText: null | string;
+							yoText: null | string;
+							zaText: null | string;
+							zhText: null | string;
+							zuText: null | string;
+							projectId: null | string;
+						}[];
+					};
+					"text/plain": {
+						message: string;
+						updatedTranslations: {
+							id: string;
+							createdAt: Record<string, never> | string | number;
+							updatedAt: Record<string, never> | string | number;
+							context: null | string;
+							path: null | string;
+							aaText: null | string;
+							abText: null | string;
+							aeText: null | string;
+							afText: null | string;
+							akText: null | string;
+							amText: null | string;
+							anText: null | string;
+							arText: null | string;
+							asText: null | string;
+							avText: null | string;
+							ayText: null | string;
+							azText: null | string;
+							baText: null | string;
+							beText: null | string;
+							bgText: null | string;
+							bhText: null | string;
+							biText: null | string;
+							bmText: null | string;
+							bnText: null | string;
+							boText: null | string;
+							brText: null | string;
+							bsText: null | string;
+							caText: null | string;
+							ceText: null | string;
+							chText: null | string;
+							coText: null | string;
+							crText: null | string;
+							csText: null | string;
+							cuText: null | string;
+							cvText: null | string;
+							cyText: null | string;
+							daText: null | string;
+							deText: null | string;
+							dvText: null | string;
+							dzText: null | string;
+							eeText: null | string;
+							elText: null | string;
+							enText: null | string;
+							eoText: null | string;
+							esText: null | string;
+							etText: null | string;
+							euText: null | string;
+							faText: null | string;
+							ffText: null | string;
+							fiText: null | string;
+							fjText: null | string;
+							foText: null | string;
+							frText: null | string;
+							fyText: null | string;
+							gaText: null | string;
+							gdText: null | string;
+							glText: null | string;
+							gnText: null | string;
+							guText: null | string;
+							gvText: null | string;
+							haText: null | string;
+							heText: null | string;
+							hiText: null | string;
+							hoText: null | string;
+							hrText: null | string;
+							htText: null | string;
+							huText: null | string;
+							hyText: null | string;
+							hzText: null | string;
+							iaText: null | string;
+							idText: null | string;
+							ieText: null | string;
+							igText: null | string;
+							iiText: null | string;
+							ikText: null | string;
+							ioText: null | string;
+							isText: null | string;
+							itText: null | string;
+							iuText: null | string;
+							jaText: null | string;
+							jvText: null | string;
+							kaText: null | string;
+							kgText: null | string;
+							kiText: null | string;
+							kjText: null | string;
+							kkText: null | string;
+							klText: null | string;
+							kmText: null | string;
+							knText: null | string;
+							koText: null | string;
+							krText: null | string;
+							ksText: null | string;
+							kuText: null | string;
+							kvText: null | string;
+							kwText: null | string;
+							kyText: null | string;
+							laText: null | string;
+							lbText: null | string;
+							lgText: null | string;
+							liText: null | string;
+							lnText: null | string;
+							loText: null | string;
+							ltText: null | string;
+							luText: null | string;
+							lvText: null | string;
+							mgText: null | string;
+							mhText: null | string;
+							miText: null | string;
+							mkText: null | string;
+							mlText: null | string;
+							mnText: null | string;
+							mrText: null | string;
+							msText: null | string;
+							mtText: null | string;
+							myText: null | string;
+							naText: null | string;
+							nbText: null | string;
+							ndText: null | string;
+							neText: null | string;
+							ngText: null | string;
+							nlText: null | string;
+							nnText: null | string;
+							noText: null | string;
+							nrText: null | string;
+							nvText: null | string;
+							nyText: null | string;
+							ocText: null | string;
+							ojText: null | string;
+							omText: null | string;
+							orText: null | string;
+							osText: null | string;
+							paText: null | string;
+							piText: null | string;
+							plText: null | string;
+							psText: null | string;
+							ptText: null | string;
+							quText: null | string;
+							rmText: null | string;
+							rnText: null | string;
+							roText: null | string;
+							ruText: null | string;
+							rwText: null | string;
+							saText: null | string;
+							scText: null | string;
+							sdText: null | string;
+							seText: null | string;
+							sgText: null | string;
+							siText: null | string;
+							skText: null | string;
+							slText: null | string;
+							smText: null | string;
+							snText: null | string;
+							soText: null | string;
+							sqText: null | string;
+							srText: null | string;
+							ssText: null | string;
+							stText: null | string;
+							suText: null | string;
+							svText: null | string;
+							swText: null | string;
+							taText: null | string;
+							teText: null | string;
+							tgText: null | string;
+							thText: null | string;
+							tiText: null | string;
+							tkText: null | string;
+							tlText: null | string;
+							tnText: null | string;
+							toText: null | string;
+							trText: null | string;
+							tsText: null | string;
+							ttText: null | string;
+							twText: null | string;
+							tyText: null | string;
+							ugText: null | string;
+							ukText: null | string;
+							urText: null | string;
+							uzText: null | string;
+							veText: null | string;
+							viText: null | string;
+							voText: null | string;
+							waText: null | string;
+							woText: null | string;
+							xhText: null | string;
+							yiText: null | string;
+							yoText: null | string;
+							zaText: null | string;
+							zhText: null | string;
+							zuText: null | string;
+							projectId: null | string;
+						}[];
+					};
+				};
+			};
+		};
+	};
+	"postApiTranslationsAi-translate-v2": {
 		parameters: {
 			query?: never;
 			header: {
 				"api-key": string;
 			};
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": {
+					sourceTexts: string[];
+					sourceLanguage: string;
+					targetLanguage: string;
+					context?: string;
+				};
+				"multipart/form-data": {
+					sourceTexts: string[];
+					sourceLanguage: string;
+					targetLanguage: string;
+					context?: string;
+				};
+				"text/plain": {
+					sourceTexts: string[];
+					sourceLanguage: string;
+					targetLanguage: string;
+					context?: string;
+				};
+			};
+		};
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						translations: {
+							translation: string;
+							isCached: boolean;
+						}[];
+						sourceTexts: string[];
+						sourceLanguage: string;
+						targetLanguage: string;
+						context: string | null;
+					};
+					"multipart/form-data": {
+						translations: {
+							translation: string;
+							isCached: boolean;
+						}[];
+						sourceTexts: string[];
+						sourceLanguage: string;
+						targetLanguage: string;
+						context: string | null;
+					};
+					"text/plain": {
+						translations: {
+							translation: string;
+							isCached: boolean;
+						}[];
+						sourceTexts: string[];
+						sourceLanguage: string;
+						targetLanguage: string;
+						context: string | null;
+					};
+				};
+			};
+		};
+	};
+	"deleteApiTranslationsDelete-all": {
+		parameters: {
+			query?: never;
+			header?: never;
+			path?: never;
+			cookie?: never;
+		};
+		requestBody: {
+			content: {
+				"application/json": {
+					projectId: string;
+				};
+				"multipart/form-data": {
+					projectId: string;
+				};
+				"text/plain": {
+					projectId: string;
+				};
+			};
+		};
+		responses: {
+			200: {
+				headers: {
+					[name: string]: unknown;
+				};
+				content: {
+					"application/json": {
+						deletedCount: number;
+						message: string;
+					};
+					"multipart/form-data": {
+						deletedCount: number;
+						message: string;
+					};
+					"text/plain": {
+						deletedCount: number;
+						message: string;
+					};
+				};
+			};
+		};
+	};
+	getHealth: {
+		parameters: {
+			query?: never;
+			header?: never;
 			path?: never;
 			cookie?: never;
 		};
@@ -1578,7 +5358,23 @@ export interface operations {
 				headers: {
 					[name: string]: unknown;
 				};
-				content?: never;
+				content: {
+					"application/json": {
+						message: string;
+						status: string;
+						statusCode: number;
+					};
+					"multipart/form-data": {
+						message: string;
+						status: string;
+						statusCode: number;
+					};
+					"text/plain": {
+						message: string;
+						status: string;
+						statusCode: number;
+					};
+				};
 			};
 		};
 	};

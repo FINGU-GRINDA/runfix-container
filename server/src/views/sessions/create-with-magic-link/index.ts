@@ -10,7 +10,7 @@ import { wordsGeneratorPlugin } from "../../../procedures/stateless/words-genera
 export const createWithMagicLinkRouter = new Elysia({
 	detail: {
 		description:
-			"Create a new session with magic link from `/auth/create-magic-link-auth`",
+			"Create a new session with magic link from `/email-auth/signin-with-magic-link`",
 		summary: "Create session with magic link",
 	},
 })

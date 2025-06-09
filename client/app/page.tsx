@@ -24,7 +24,7 @@ export default function Page() {
 						<Link href="/auth/sign-in">Sign In</Link>
 					</Button>
 					<Button asChild>
-						<Link href="/auth/sign-up">Get Started</Link>
+						<Link href="/auth/sign-in">Get Started</Link>
 					</Button>
 				</div>
 			</nav>
@@ -56,7 +56,7 @@ export default function Page() {
 
 					<div className="mt-10 flex flex-col sm:flex-row gap-4">
 						<Button size="lg" asChild>
-							<Link href="/auth/sign-up">Get Started Free</Link>
+							<Link href="/auth/sign-in">Get Started Free</Link>
 						</Button>
 						<Button variant="outline" size="lg" asChild>
 							<Link href="#features">Learn more</Link>
@@ -169,7 +169,7 @@ export default function Page() {
 							asChild
 							className="px-8 py-6 text-lg bg-primary hover:bg-primary/90 transition-colors shadow-lg hover:shadow-xl hover:shadow-primary/20"
 						>
-							<Link href="/auth/sign-up">Get Started Free</Link>
+							<Link href="/auth/sign-in">Get Started Free</Link>
 						</Button>
 						<Button
 							variant="outline"

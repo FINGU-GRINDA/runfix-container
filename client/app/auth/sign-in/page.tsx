@@ -1,245 +1,183 @@
 "use client";
-import { ellysiaClient } from "@/services/ellysia/index";
+
+import { Icons } from "@/components/icons";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { envClient } from "@/env-client";
+import { ellysiaClient } from "@/services/ellysia";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 
-/**
- * Interface for form state
- */
+// Types for form state and validation
 interface FormState {
 	email: string;
-	password: string;
 }
 
-/**
- * Interface for form validation errors
- */
 interface FormErrors {
 	email?: string;
-	password?: string;
 	general?: string;
 }
 
-/**
- * Sign-in page component
- */
-export default function Page() {
-	// State management
+export default function SignInPage() {
 	const router = useRouter();
-	const emailSignin = ellysiaClient.useMutation(
+	const emailSignIn = ellysiaClient.useMutation(
 		"post",
-		"/api/auth-sessions/create-with-email-sign-in",
+		"/api/email-auth/signin-with-magic-link",
 		{
 			onSuccess: () => {
-				toast.success("Signed in successfully");
-				router.push("/organizations");
+				toast.success("Check your email for a sign-in link.");
 			},
-			onError: () => {
-				toast.error("Failed to sign in");
+			onError: (error: Error) => {
+				toast.error(error.message || "Failed to send sign-in link");
 			},
 		},
 	);
-	const [formState, setFormState] = useState<FormState>({
-		email: "",
-		password: "",
-	});
+
+	const [formState, setFormState] = useState<FormState>({ email: "" });
 	const [formErrors, setFormErrors] = useState<FormErrors>({});
 
-	/**
-	 * Handle input field changes
-	 */
 	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = e.target;
 		setFormState((prev) => ({ ...prev, [name]: value }));
-
-		// Clear error when user starts typing in a field with error
 		if (formErrors[name as keyof FormErrors]) {
 			setFormErrors((prev) => ({ ...prev, [name]: undefined }));
 		}
 	};
 
-	/**
-	 * Validate form inputs
-	 */
 	const validateForm = (): FormErrors => {
 		const errors: FormErrors = {};
 
-		// Email validation
 		if (!formState.email) {
 			errors.email = "Email is required";
 		} else if (!/^\S+@\S+\.\S+$/.test(formState.email)) {
 			errors.email = "Please enter a valid email address";
 		}
 
-		// Password validation
-		if (!formState.password) {
-			errors.password = "Password is required";
-		}
-
 		return errors;
 	};
 
-	/**
-	 * Handle form submission
-	 */
 	const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		e.stopPropagation();
 
-		// Reset states
 		setFormErrors({});
-
-		// Validate form
 		const errors = validateForm();
 		if (Object.keys(errors).length > 0) {
 			setFormErrors(errors);
 			return;
 		}
 
-		await emailSignin.mutateAsync({
+		await emailSignIn.mutateAsync({
 			body: {
-				emailAddress: formState.email,
-				password: formState.password,
+				email: formState.email,
+				redirectUrl: `${envClient.NEXT_PUBLIC_APP_URL}/organizations`,
 			},
 		});
+
+		router.push("/auth/check-email");
 	};
 
 	return (
-		<div className="min-h-screen flex flex-col items-center justify-center p-6 bg-gray-50">
-			<div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
-				<div className="text-center mb-8">
-					<h1 className="text-2xl font-bold text-gray-800 mb-2">
-						Welcome Back
-					</h1>
-					<p className="text-gray-600">Sign in to your account</p>
+		<div className="container relative min-h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
+			<div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
+				<div className="absolute inset-0 bg-zinc-900" />
+				<div className="relative z-20 flex items-center text-lg font-medium">
+					<Icons.gitHub className="mr-2 h-6 w-6" />
+					Hanalang Connect
 				</div>
+				<div className="relative z-20 mt-auto">
+					<blockquote className="space-y-2">
+						<p className="text-lg">
+							&ldquo;This library has saved me countless hours of work and
+							helped me deliver accurate internationalizations to my clients
+							faster than ever before.&rdquo;
+						</p>
+						<footer className="text-sm">Sofia Davis</footer>
+					</blockquote>
+				</div>
+			</div>
 
-				<form onSubmit={handleSignIn} className="space-y-6">
-					<div className="space-y-2">
-						<label
-							htmlFor="email"
-							className="block text-sm font-medium text-gray-700"
-						>
-							Email Address
-						</label>
-						<input
-							type="email"
-							id="email"
-							name="email"
-							value={formState.email}
-							onChange={handleInputChange}
-							placeholder="you@example.com"
-							aria-invalid={!!formErrors.email}
-							aria-describedby={formErrors.email ? "email-error" : undefined}
-							autoComplete="email"
-							required
-							className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:outline-none ${
-								formErrors.email
-									? "border-red-500 focus:ring-red-200"
-									: "border-gray-300 focus:ring-blue-200"
-							}`}
-						/>
-						{formErrors.email && (
-							<p id="email-error" className="text-red-500 text-sm mt-1">
-								{formErrors.email}
-							</p>
-						)}
-					</div>
+			<div className="lg:p-8">
+				<div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+					<Card>
+						<CardHeader className="space-y-1">
+							<CardTitle className="text-2xl">
+								Sign in to your account
+							</CardTitle>
+							<CardDescription>
+								Enter your email to receive a magic link
+							</CardDescription>
+						</CardHeader>
+						<form onSubmit={handleSignIn}>
+							<CardContent className="grid gap-4">
+								{formErrors.general && (
+									<Alert variant="destructive">
+										<AlertDescription>{formErrors.general}</AlertDescription>
+									</Alert>
+								)}
 
-					<div className="space-y-2">
-						<div className="flex items-center justify-between">
-							<label
-								htmlFor="password"
-								className="block text-sm font-medium text-gray-700"
-							>
-								Password
-							</label>
-							<Link
-								href="/auth/forgot-password"
-								className="text-sm text-blue-600 hover:text-blue-800"
-							>
-								Forgot password?
-							</Link>
-						</div>
-						<input
-							type="password"
-							id="password"
-							name="password"
-							value={formState.password}
-							onChange={handleInputChange}
-							placeholder="••••••••"
-							aria-invalid={!!formErrors.password}
-							aria-describedby={
-								formErrors.password ? "password-error" : undefined
-							}
-							autoComplete="current-password"
-							required
-							className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:outline-none ${
-								formErrors.password
-									? "border-red-500 focus:ring-red-200"
-									: "border-gray-300 focus:ring-blue-200"
-							}`}
-						/>
-						{formErrors.password && (
-							<p id="password-error" className="text-red-500 text-sm mt-1">
-								{formErrors.password}
-							</p>
-						)}
-					</div>
+								<div className="grid gap-2">
+									<Label htmlFor="email">Email</Label>
+									<Input
+										id="email"
+										name="email"
+										type="email"
+										placeholder="name@example.com"
+										value={formState.email}
+										onChange={handleInputChange}
+										className={formErrors.email ? "border-destructive" : ""}
+										autoComplete="email"
+										autoFocus
+										required
+									/>
+									{formErrors.email && (
+										<p className="text-xs text-destructive">
+											{formErrors.email}
+										</p>
+									)}
+								</div>
 
-					{formErrors.general && (
-						<div className="bg-red-50 border border-red-200 text-red-700 rounded-md p-4">
-							<p>{formErrors.general}</p>
-						</div>
-					)}
-
-					<button
-						type="submit"
-						disabled={emailSignin.isLoading}
-						className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-					>
-						{emailSignin.isLoading ? (
-							<span className="flex items-center justify-center">
-								<svg
-									className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
-									xmlns="http://www.w3.org/2000/svg"
-									fill="none"
-									viewBox="0 0 24 24"
-									aria-hidden="true" // Since this is a decorative loading spinner
+								<Button
+									type="submit"
+									className="w-full"
+									disabled={emailSignIn.isPending}
 								>
-									<circle
-										className="opacity-25"
-										cx="12"
-										cy="12"
-										r="10"
-										stroke="currentColor"
-										strokeWidth="4"
-									/>
-									<path
-										className="opacity-75"
-										fill="currentColor"
-										d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-									/>
-								</svg>
-								Signing in...
-							</span>
-						) : (
-							"Sign In"
-						)}
-					</button>
-				</form>
+									{emailSignIn.isPending && (
+										<Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+									)}
+									Sign in with Email
+								</Button>
+							</CardContent>
+						</form>
+					</Card>
 
-				<div className="mt-6 text-center text-sm">
-					<p className="text-gray-600">
-						Don&apos;t have an account?{" "}
+					<p className="px-8 text-center text-sm text-muted-foreground">
+						By clicking continue, you agree to our{" "}
 						<Link
-							href="/auth/sign-up"
-							className="text-blue-600 hover:text-blue-800 font-medium"
+							href="/terms"
+							className="underline underline-offset-4 hover:text-primary"
 						>
-							Create an account
+							Terms of Service
+						</Link>{" "}
+						and{" "}
+						<Link
+							href="/privacy"
+							className="underline underline-offset-4 hover:text-primary"
+						>
+							Privacy Policy
 						</Link>
+						.
 					</p>
 				</div>
 			</div>

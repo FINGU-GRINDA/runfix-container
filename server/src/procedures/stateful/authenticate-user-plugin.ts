@@ -2,7 +2,7 @@ import Elysia, { type Static, t } from "elysia";
 import { HttpError } from "elysia-http-error";
 import { Session } from "../../../prisma/schema/prismabox/Session";
 import { jwtPlugin } from "../stateless/jwt-plugin";
-import { parseValue, parseValuePlugin } from "../stateless/parse-value-plugin";
+import { parseValuePlugin } from "../stateless/parse-value-plugin";
 import { databasePlugin } from "./database-plugin";
 
 export const SessionUserSchema = t.Omit(Session, ["headers"]);
@@ -36,6 +36,7 @@ export const authenticateUserPlugin = new Elysia({
 	.use(parseValuePlugin)
 	.resolve(async (ctx) => {
 		const token = ctx.cookie.session.value;
+		console.dir({token})
 
 		if (!token) {
 			return {
