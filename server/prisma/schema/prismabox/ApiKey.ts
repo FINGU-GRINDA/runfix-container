@@ -10,6 +10,8 @@ export const ApiKeyPlain = t.Object({
   updatedAt: t.Date(),
   lastFourChars: __nullable__(t.String()),
   usageCount: t.Integer(),
+  readAccess: t.Boolean(),
+  writeAccess: t.Boolean(),
   projectId: __nullable__(t.String()),
 });
 
@@ -29,11 +31,15 @@ export const ApiKeyRelations = t.Object({
 export const ApiKeyPlainInputCreate = t.Object({
   lastFourChars: t.Optional(__nullable__(t.String())),
   usageCount: t.Optional(t.Integer()),
+  readAccess: t.Optional(t.Boolean()),
+  writeAccess: t.Optional(t.Boolean()),
 });
 
 export const ApiKeyPlainInputUpdate = t.Object({
   lastFourChars: t.Optional(__nullable__(t.String())),
   usageCount: t.Optional(t.Integer()),
+  readAccess: t.Optional(t.Boolean()),
+  writeAccess: t.Optional(t.Boolean()),
 });
 
 export const ApiKeyRelationsInputCreate = t.Object({
@@ -72,6 +78,8 @@ export const ApiKeyWhere = t.Partial(
           updatedAt: t.Date(),
           lastFourChars: t.String(),
           usageCount: t.Integer(),
+          readAccess: t.Boolean(),
+          writeAccess: t.Boolean(),
           projectId: t.String(),
         },
         { additionalProperties: true },
@@ -104,6 +112,8 @@ export const ApiKeyWhereUnique = t.Recursive(
             updatedAt: t.Date(),
             lastFourChars: t.String(),
             usageCount: t.Integer(),
+            readAccess: t.Boolean(),
+            writeAccess: t.Boolean(),
             projectId: t.String(),
           }),
         ),
@@ -120,6 +130,8 @@ export const ApiKeySelect = t.Partial(
     updatedAt: t.Boolean(),
     lastFourChars: t.Boolean(),
     usageCount: t.Boolean(),
+    readAccess: t.Boolean(),
+    writeAccess: t.Boolean(),
     Project: t.Boolean(),
     projectId: t.Boolean(),
     _count: t.Boolean(),
@@ -145,6 +157,12 @@ export const ApiKeyOrderBy = t.Partial(
       additionalProperties: true,
     }),
     usageCount: t.Union([t.Literal("asc"), t.Literal("desc")], {
+      additionalProperties: true,
+    }),
+    readAccess: t.Union([t.Literal("asc"), t.Literal("desc")], {
+      additionalProperties: true,
+    }),
+    writeAccess: t.Union([t.Literal("asc"), t.Literal("desc")], {
       additionalProperties: true,
     }),
     projectId: t.Union([t.Literal("asc"), t.Literal("desc")], {

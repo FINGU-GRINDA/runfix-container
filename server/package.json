@@ -58,5 +58,8 @@
 		"prismabox": "^1.1.24",
 		"schema2typebox": "^1.7.6"
 	},
-	"module": "src/index.js"
+	"module": "src/index.js",
+	"prisma": {
+		"schema": "prisma/schema"
+	}
 }

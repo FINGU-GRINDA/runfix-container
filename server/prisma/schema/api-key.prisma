@@ -5,6 +5,8 @@ model ApiKey {
 
   lastFourChars String?
   usageCount    Int     @default(0)
+  readAccess    Boolean @default(true)
+  writeAccess   Boolean @default(true)
 
   // relations
   Project   Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)

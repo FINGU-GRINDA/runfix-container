@@ -35,7 +35,16 @@ export const deleteRouter = new Elysia({
 				},
 			});
 
-			return parseValue(ApiKeyPlain, dbApiKey);
+			return {
+				writeAccess: true,
+				readAccess: true,
+				createdAt: dbApiKey.createdAt,
+				updatedAt: dbApiKey.updatedAt,
+				lastFourChars: dbApiKey.lastFourChars,
+				usageCount: Number(dbApiKey.usageCount),
+				id: dbApiKey.id,
+				projectId: dbApiKey.projectId,
+			};
 		},
 		{
 			params: t.Object({

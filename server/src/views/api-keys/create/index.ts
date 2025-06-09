@@ -24,6 +24,8 @@ export const createNewRouter = new Elysia({
 			const dbApiKey = await ctx.db.apiKey.create({
 				data: {
 					projectId: ctx.body.projectId,
+					readAccess: ctx.body.readAccess,
+					writeAccess: ctx.body.writeAccess,
 				},
 				include: {
 					Project: true,
@@ -71,6 +73,8 @@ export const createNewRouter = new Elysia({
 				apiKey: newToken,
 				projectId: dbApiKey.Project.id,
 				message: `API key created successfully, to use API key, add "api-key" header with value ${newToken}`,
+				readAccess: ctx.body.readAccess,
+				writeAccess: ctx.body.writeAccess,
 			};
 		},
 		{
@@ -78,9 +82,13 @@ export const createNewRouter = new Elysia({
 				apiKey: t.String(),
 				projectId: t.String(),
 				message: t.String(),
+				readAccess: t.Boolean(),
+				writeAccess: t.Boolean(),
 			}),
 			body: t.Object({
 				projectId: t.String(),
+				readAccess: t.Boolean({ default: true, description: "Allow read access" }),
+				writeAccess: t.Boolean({ default: true, description: "Allow write access" }),
 			}),
 		},
 	);

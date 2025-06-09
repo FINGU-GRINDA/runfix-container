@@ -30,6 +30,8 @@ export const ProjectRelations = t.Object({
       updatedAt: t.Date(),
       lastFourChars: __nullable__(t.String()),
       usageCount: t.Integer(),
+      readAccess: t.Boolean(),
+      writeAccess: t.Boolean(),
       projectId: __nullable__(t.String()),
     }),
     { additionalProperties: true },

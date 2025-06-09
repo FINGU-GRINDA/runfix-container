@@ -43,6 +43,10 @@ export const aiTranslateV2Router = new Elysia({
 				return cachedResponse;
 			}
 
+			if (!ctx.apiKey.writeAccess) {
+				throw HttpError.Forbidden("Write access not allowed");
+			}
+
 			const dbKeySourceLanguage = languageToDbCode({
 				languageCode: ctx.body.sourceLanguage,
 			});

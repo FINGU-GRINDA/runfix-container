@@ -59,6 +59,11 @@ export const aiTranslateRouter = new Elysia({
 				};
 			}
 
+			// check if api key allow write
+			if (!ctx.apiKey.writeAccess) {
+				throw HttpError.Forbidden("Write access not allowed");
+			}
+
 			// translate
 			const translatedTexts = await batchTranslateTextWithBing({
 				sourceTexts: [ctx.body.sourceText],
