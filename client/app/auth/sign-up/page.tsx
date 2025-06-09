@@ -1,311 +1,275 @@
 "use client";
-import { authClient } from "@/services/auth-client";
-import { useState } from "react";
+import { Icons } from "@/components/icons";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardFooter,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { ellysiaClient } from "@/services/ellysia";
 import Link from "next/link";
+import { useState } from "react";
+import { toast } from "sonner";
 
 // Types for form state and validation
 interface FormState {
-  email: string;
-  password: string;
-  passwordConfirmation: string;
+	email: string;
+	password: string;
+	passwordConfirmation: string;
 }
 
 interface FormErrors {
-  email?: string;
-  password?: string;
-  passwordConfirmation?: string;
-  general?: string;
+	email?: string;
+	password?: string;
+	passwordConfirmation?: string;
+	general?: string;
 }
 
-/**
- * Sign-up page component
- */
 export default function Page() {
-  // Form state
-  const [formState, setFormState] = useState<FormState>({
-    email: "",
-    password: "",
-    passwordConfirmation: "",
-  });
-  const [formErrors, setFormErrors] = useState<FormErrors>({});
-  const [isLoading, setIsLoading] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
+	const emailSignup = ellysiaClient.useMutation(
+		"post",
+		"/api/auth-accounts/create-with-email",
+		{
+			onSuccess: () => {
+				toast.success(
+					"Success! Please check your email to verify your account.",
+				);
+			},
+			onError: () => {
+				toast.error("Failed to sign up");
+			},
+		},
+	);
 
-  /**
-   * Handles input changes and updates form state
-   */
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormState((prev) => ({ ...prev, [name]: value }));
+	const [formState, setFormState] = useState<FormState>({
+		email: "",
+		password: "",
+		passwordConfirmation: "",
+	});
+	const [formErrors, setFormErrors] = useState<FormErrors>({});
 
-    // Clear errors when user starts typing
-    if (formErrors[name as keyof FormErrors]) {
-      setFormErrors((prev) => ({ ...prev, [name]: undefined }));
-    }
-  };
+	const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		const { name, value } = e.target;
+		setFormState((prev) => ({ ...prev, [name]: value }));
+		if (formErrors[name as keyof FormErrors]) {
+			setFormErrors((prev) => ({ ...prev, [name]: undefined }));
+		}
+	};
 
-  /**
-   * Validates form input and returns any errors
-   */
-  const validateForm = (): FormErrors => {
-    const errors: FormErrors = {};
+	const validateForm = (): FormErrors => {
+		const errors: FormErrors = {};
 
-    // Email validation
-    if (!formState.email) {
-      errors.email = "Email is required";
-    } else if (!/^\S+@\S+\.\S+$/.test(formState.email)) {
-      errors.email = "Please enter a valid email address";
-    }
+		if (!formState.email) {
+			errors.email = "Email is required";
+		} else if (!/^\S+@\S+\.\S+$/.test(formState.email)) {
+			errors.email = "Please enter a valid email address";
+		}
 
-    // Password validation
-    if (!formState.password) {
-      errors.password = "Password is required";
-    } else if (formState.password.length < 8) {
-      errors.password = "Password must be at least 8 characters";
-    }
+		if (!formState.password) {
+			errors.password = "Password is required";
+		} else if (formState.password.length < 8) {
+			errors.password = "Password must be at least 8 characters";
+		}
 
-    // Password confirmation validation
-    if (!formState.passwordConfirmation) {
-      errors.passwordConfirmation = "Please confirm your password";
-    } else if (formState.password !== formState.passwordConfirmation) {
-      errors.passwordConfirmation = "Passwords do not match";
-    }
+		if (!formState.passwordConfirmation) {
+			errors.passwordConfirmation = "Please confirm your password";
+		} else if (formState.password !== formState.passwordConfirmation) {
+			errors.passwordConfirmation = "Passwords do not match";
+		}
 
-    return errors;
-  };
+		return errors;
+	};
 
-  /**
-   * Submits the form data to the authentication service
-   */
-  const submitSignupForm = async (formData: FormState): Promise<void> => {
-    try {
-      const { error } = await authClient.signUp.email({
-        email: formData.email,
-        password: formData.password,
-        name: formData.email,
-        callbackURL: "/auth/sign-in",
-      });
+	const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		e.stopPropagation();
 
-      if (error) {
-        throw new Error(error.message || "Failed to sign up");
-      }
+		setFormErrors({});
+		const errors = validateForm();
+		if (Object.keys(errors).length > 0) {
+			setFormErrors(errors);
+			return;
+		}
 
-      setIsSuccess(true);
-    } catch (error) {
-      console.error(error);
-      setFormErrors((prev) => ({
-        ...prev,
-        general: error instanceof Error ? error.message : "Failed to sign up",
-      }));
-      throw error;
-    }
-  };
+		try {
+			await emailSignup.mutateAsync({
+				body: {
+					firstName: formState.email.split("@")[0],
+					lastName: formState.email.split("@")[0],
+					emailAddress: formState.email,
+					password: formState.password,
+					confirmPassword: formState.password,
+				},
+			});
+		} catch (error) {
+			setFormErrors({
+				general:
+					error instanceof Error
+						? error.message
+						: "An unexpected error occurred",
+			});
+		}
+	};
 
-  /**
-   * Handles form submission
-   */
-  const handleSignup = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
+	return (
+		<div className="container relative min-h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
+			<div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
+				<div className="absolute inset-0 bg-zinc-900" />
+				<div className="relative z-20 flex items-center text-lg font-medium">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						viewBox="0 0 24 24"
+						fill="none"
+						stroke="currentColor"
+						strokeWidth="2"
+						strokeLinecap="round"
+						strokeLinejoin="round"
+						className="mr-2 h-6 w-6"
+						aria-hidden="true"
+						role="img"
+					>
+						<title>Hanalang Connect Logo</title>
+						<path d="M15 6v12a3 3 0 1 0 3-3H6a3 3 0 1 0 3 3V6a3 3 0 1 0-3 3h12a3 3 0 1 0-3-3" />
+					</svg>
+					Hanalang Connect
+				</div>
+				<div className="relative z-20 mt-auto">
+					<blockquote className="space-y-2">
+						<p className="text-lg">
+							&ldquo;This library has saved me countless hours of work and
+							helped me deliver accurate internationalizations to my clients
+							faster than ever before.&rdquo;
+						</p>
+						<footer className="text-sm">Sofia Davis</footer>
+					</blockquote>
+				</div>
+			</div>
+			<div className="lg:p-8">
+				<div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+					<Card>
+						<CardHeader className="space-y-1">
+							<CardTitle className="text-2xl">Create an account</CardTitle>
+							<CardDescription>
+								Enter your email below to create your account
+							</CardDescription>
+						</CardHeader>
+						<form onSubmit={handleSignup}>
+							<CardContent className="grid gap-4">
+								{formErrors.general && (
+									<Alert variant="destructive">
+										<AlertDescription>{formErrors.general}</AlertDescription>
+									</Alert>
+								)}
 
-    // Reset states
-    setIsLoading(true);
-    setFormErrors({});
-    setIsSuccess(false);
+								<div className="grid gap-2">
+									<Label htmlFor="email">Email</Label>
+									<Input
+										id="email"
+										name="email"
+										type="email"
+										placeholder="name@example.com"
+										value={formState.email}
+										onChange={handleInputChange}
+										className={formErrors.email ? "border-destructive" : ""}
+									/>
+									{formErrors.email && (
+										<p className="text-xs text-destructive">
+											{formErrors.email}
+										</p>
+									)}
+								</div>
 
-    // Validate form
-    const errors = validateForm();
-    if (Object.keys(errors).length > 0) {
-      setFormErrors(errors);
-      setIsLoading(false);
-      return;
-    }
+								<div className="grid gap-2">
+									<Label htmlFor="password">Password</Label>
+									<Input
+										id="password"
+										name="password"
+										type="password"
+										placeholder="••••••••"
+										value={formState.password}
+										onChange={handleInputChange}
+										className={formErrors.password ? "border-destructive" : ""}
+									/>
+									{formErrors.password && (
+										<p className="text-xs text-destructive">
+											{formErrors.password}
+										</p>
+									)}
+								</div>
 
-    // Submit form
-    try {
-      await submitSignupForm(formState);
-    } catch {
-      // Error handling is done in submitSignupForm
-    } finally {
-      setIsLoading(false);
-    }
-  };
+								<div className="grid gap-2">
+									<Label htmlFor="passwordConfirmation">Confirm Password</Label>
+									<Input
+										id="passwordConfirmation"
+										name="passwordConfirmation"
+										type="password"
+										placeholder="••••••••"
+										value={formState.passwordConfirmation}
+										onChange={handleInputChange}
+										className={
+											formErrors.passwordConfirmation
+												? "border-destructive"
+												: ""
+										}
+									/>
+									{formErrors.passwordConfirmation && (
+										<p className="text-xs text-destructive">
+											{formErrors.passwordConfirmation}
+										</p>
+									)}
+								</div>
 
-  return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-gray-50">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-bold text-gray-800 mb-2">
-            Create an Account
-          </h1>
-          <p className="text-gray-600">
-            Sign up to get started with our service
-          </p>
-        </div>
-
-        {isSuccess ? (
-          <div className="bg-green-50 border border-green-200 text-green-700 rounded-md p-4 mb-6">
-            <p>Success! Please check your email to verify your account.</p>
-          </div>
-        ) : (
-          <form onSubmit={handleSignup} className="space-y-6">
-            <div className="space-y-2">
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Email Address
-              </label>
-              <input
-                type="email"
-                id="email"
-                name="email"
-                placeholder="you@example.com"
-                value={formState.email}
-                onChange={handleInputChange}
-                aria-invalid={!!formErrors.email}
-                aria-describedby={formErrors.email ? "email-error" : undefined}
-                autoComplete="email"
-                required
-                className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:outline-none ${
-                  formErrors.email
-                    ? "border-red-500 focus:ring-red-200"
-                    : "border-gray-300 focus:ring-blue-200"
-                }`}
-              />
-              {formErrors.email && (
-                <p id="email-error" className="text-red-500 text-sm mt-1">
-                  {formErrors.email}
-                </p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <label
-                htmlFor="password"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Password
-              </label>
-              <input
-                type="password"
-                id="password"
-                name="password"
-                placeholder="••••••••"
-                value={formState.password}
-                onChange={handleInputChange}
-                aria-invalid={!!formErrors.password}
-                aria-describedby={
-                  formErrors.password ? "password-error" : undefined
-                }
-                autoComplete="new-password"
-                minLength={8}
-                required
-                className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:outline-none ${
-                  formErrors.password
-                    ? "border-red-500 focus:ring-red-200"
-                    : "border-gray-300 focus:ring-blue-200"
-                }`}
-              />
-              {formErrors.password && (
-                <p id="password-error" className="text-red-500 text-sm mt-1">
-                  {formErrors.password}
-                </p>
-              )}
-            </div>
-
-            <div className="space-y-2">
-              <label
-                htmlFor="passwordConfirmation"
-                className="block text-sm font-medium text-gray-700"
-              >
-                Confirm Password
-              </label>
-              <input
-                type="password"
-                id="passwordConfirmation"
-                name="passwordConfirmation"
-                placeholder="••••••••"
-                value={formState.passwordConfirmation}
-                onChange={handleInputChange}
-                aria-invalid={!!formErrors.passwordConfirmation}
-                aria-describedby={
-                  formErrors.passwordConfirmation
-                    ? "password-confirmation-error"
-                    : undefined
-                }
-                autoComplete="new-password"
-                required
-                className={`w-full px-4 py-2 border rounded-md focus:ring-2 focus:outline-none ${
-                  formErrors.passwordConfirmation
-                    ? "border-red-500 focus:ring-red-200"
-                    : "border-gray-300 focus:ring-blue-200"
-                }`}
-              />
-              {formErrors.passwordConfirmation && (
-                <p
-                  id="password-confirmation-error"
-                  className="text-red-500 text-sm mt-1"
-                >
-                  {formErrors.passwordConfirmation}
-                </p>
-              )}
-            </div>
-
-            {formErrors.general && (
-              <div className="bg-red-50 border border-red-200 text-red-700 rounded-md p-4">
-                <p>{formErrors.general}</p>
-              </div>
-            )}
-
-            <button
-              type="submit"
-              disabled={isLoading}
-              className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-md focus:outline-none focus:ring-2 focus:ring-blue-300 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isLoading ? (
-                <span className="flex items-center justify-center">
-                  <svg
-                    className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    ></circle>
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    ></path>
-                  </svg>
-                  Processing...
-                </span>
-              ) : (
-                "Sign Up"
-              )}
-            </button>
-          </form>
-        )}
-
-        <div className="mt-6 text-center text-sm">
-          <p className="text-gray-600">
-            Already have an account?{" "}
-            <Link
-              href="/auth/sign-in"
-              className="text-blue-600 hover:text-blue-800 font-medium"
-            >
-              Sign in
-            </Link>
-          </p>
-        </div>
-      </div>
-    </div>
-  );
+								<Button
+									type="submit"
+									className="w-full"
+									disabled={emailSignup.isLoading}
+								>
+									{emailSignup.isLoading && (
+										<Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+									)}
+									Create account
+								</Button>
+							</CardContent>
+						</form>
+						<CardFooter className="flex flex-col gap-4">
+							<div className="relative">
+								<div className="absolute inset-0 flex items-center">
+									<span className="w-full border-t" />
+								</div>
+								<div className="relative flex justify-center text-xs uppercase">
+									<span className="bg-background px-2 text-muted-foreground">
+										Or continue with
+									</span>
+								</div>
+							</div>
+							<Button
+								variant="outline"
+								type="button"
+								className="w-full"
+								disabled
+							>
+								<Icons.gitHub className="mr-2 h-4 w-4" />
+								GitHub
+							</Button>
+							<p className="text-center text-sm text-muted-foreground">
+								Already have an account?{" "}
+								<Link
+									href="/auth/sign-in"
+									className="underline underline-offset-4 hover:text-primary"
+								>
+									Sign in
+								</Link>
+							</p>
+						</CardFooter>
+					</Card>
+				</div>
+			</div>
+		</div>
+	);
 }

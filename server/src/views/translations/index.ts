@@ -2,7 +2,7 @@ import Elysia from "elysia";
 
 import { aiTranslateRouter } from "./ai-translate";
 import { aiTranslateAllRouter } from "./ai-translate-all";
-import { aiTranslateV2Router } from "./ai-translate-v2";
+import { aiTranslateV2Router } from "./_ai-translate-v2";
 import { deleteAllRouter } from "./delete-all";
 import { readRouter } from "./read";
 import { readAllTranslationRouter } from "./read-all";

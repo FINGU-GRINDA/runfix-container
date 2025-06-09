@@ -1,15 +1,13 @@
-'use client'
+"use client";
 
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import { useState, type ReactNode } from "react"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import type { ReactNode } from "react";
 
+const queryClient = new QueryClient();
 export function QueryProvider({ children }: { children: ReactNode }) {
-  // Create a new QueryClient instance for each request to prevent data leakage between requests
-  const [queryClient] = useState(() => new QueryClient())
+	// Create a new QueryClient instance for each request to prevent data leakage between requests
 
-  return (
-    <QueryClientProvider client={queryClient}>
-      {children}
-    </QueryClientProvider>
-  )
+	return (
+		<QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+	);
 }
