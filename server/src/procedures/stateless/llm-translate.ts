@@ -33,6 +33,8 @@ export const llmTranslate = async (params: {
 				content: `You are a translation assistant. Translate the following text from ${params.sourceLanguage} to ${params.targetLanguage} (ISO 639-1 codes). 
 Respond ONLY with the translated text, without any additional explanation.
 Maintain original formatting, including HTML tags, uppercase lowercase and do not add any new lines or spaces.
+Maintain currency, example yen should be translated to yen, won to won, etc.
+Keep original meaning.
 		
 ${context}
 
