@@ -1,5 +1,88 @@
 # Changelog
 
+## [1.1.0](https://github.com/FINGU-GRINDA/runfix-container/compare/v1.0.0...v1.1.0) (2026-05-17)
+
+
+### Features
+
+* 0.7.2 ([e5e8d9d](https://github.com/FINGU-GRINDA/runfix-container/commit/e5e8d9d228896f492cf80f64ec61465e73715e1d))
+* a more flexible fittext ([b544718](https://github.com/FINGU-GRINDA/runfix-container/commit/b54471836bc421dd438f34b922049aac8e1dd581))
+* add currency preservation and meaning retention rules to translation prompt ([eb6eb31](https://github.com/FINGU-GRINDA/runfix-container/commit/eb6eb315f1cb9fb6c7b3d2c50208488fca3c6f91))
+* add font size preservation and improve skip element handling during translation ([140ec0b](https://github.com/FINGU-GRINDA/runfix-container/commit/140ec0b5f8bcc05c4101520f6a2daf341bff82dd))
+* add index, add caching ([cea05cb](https://github.com/FINGU-GRINDA/runfix-container/commit/cea05cbaf81bb2d1130377a69b29cc109425a87b))
+* add loading state and error handling to language selector during translation ([ddbdc45](https://github.com/FINGU-GRINDA/runfix-container/commit/ddbdc4593347df86724201adbd3bc2b736780ea9))
+* add more languages ([e4137d5](https://github.com/FINGU-GRINDA/runfix-container/commit/e4137d580ed46f62a55aaa67f2bfdb0514664ba0))
+* add organization, projects ([#6](https://github.com/FINGU-GRINDA/runfix-container/issues/6)) ([70b5cac](https://github.com/FINGU-GRINDA/runfix-container/commit/70b5cac038f1d6c16c29cfd9779536511095419e))
+* add read all with filter on translation ([2fa3d80](https://github.com/FINGU-GRINDA/runfix-container/commit/2fa3d80e152b87a3f1cb809efd4be588cdfb22e6))
+* add read/write access control to API keys ([1065ed4](https://github.com/FINGU-GRINDA/runfix-container/commit/1065ed4143ea8d2c973114218f4dc9d3aae0cd05))
+* add retranslate all endpoint ([bf6aa9a](https://github.com/FINGU-GRINDA/runfix-container/commit/bf6aa9ad99f629dd75af8d32bd43973504ad61c2))
+* add script to extract translations from database to JSON file ([4133b07](https://github.com/FINGU-GRINDA/runfix-container/commit/4133b078784a4773c975cb10da413669dda28a2b))
+* add sh folder in .gitignore ([c0e1b2e](https://github.com/FINGU-GRINDA/runfix-container/commit/c0e1b2e49dbb38607224b9c07850c857cb212641))
+* add testcase ([735f114](https://github.com/FINGU-GRINDA/runfix-container/commit/735f1143032865d911f260135a4a4fd2de19c974))
+* bug fixes on padding ([a1ee00e](https://github.com/FINGU-GRINDA/runfix-container/commit/a1ee00e1bb7f01aeed5003cdea9e2c5e36f70b2c))
+* bump version ([6ef5be0](https://github.com/FINGU-GRINDA/runfix-container/commit/6ef5be0c753f7c3da9dfea66c68dfd27d8c6fb37))
+* bump version, move translate to post instead of get request ([77e20d4](https://github.com/FINGU-GRINDA/runfix-container/commit/77e20d450778110a3bc056ed9d40c3f5a565dd3e))
+* class to classes, do bfs and skip children while collecting nodes ([88306f2](https://github.com/FINGU-GRINDA/runfix-container/commit/88306f2655eeae289391da1fb8cebd189fd52731))
+* client boilerplate ([5b09dfa](https://github.com/FINGU-GRINDA/runfix-container/commit/5b09dfa4370970eee823b1d7dc7123dbfbe6eb74))
+* dashboard progress ([#9](https://github.com/FINGU-GRINDA/runfix-container/issues/9)) ([c05bc46](https://github.com/FINGU-GRINDA/runfix-container/commit/c05bc467a107e0747716155c683bb73283866c9c))
+* dashboard template, auth on server and client ([#2](https://github.com/FINGU-GRINDA/runfix-container/issues/2)) ([0312639](https://github.com/FINGU-GRINDA/runfix-container/commit/0312639555c2f32270c9bff44333dbe75dfee85b))
+* delete all translation route ([d1f1663](https://github.com/FINGU-GRINDA/runfix-container/commit/d1f1663dd79d61c279b042fb699d194ef79ebb97))
+* edge ca ([ad35ce1](https://github.com/FINGU-GRINDA/runfix-container/commit/ad35ce1ac4712f9394ca0abc31b55682ad6bd5a0))
+* fix inconssisten translation backand fort ([9764848](https://github.com/FINGU-GRINDA/runfix-container/commit/976484837a3d6b5eef66aa360a8a2c99e4cece70))
+* grinda translate ([84a1790](https://github.com/FINGU-GRINDA/runfix-container/commit/84a17906fb7fcca12dc81d6accea5c4e9be4d7f6))
+* i18n server ([1dfbc56](https://github.com/FINGU-GRINDA/runfix-container/commit/1dfbc56c77537846ebac67f5276e6cf65d2b1a2a))
+* language code validation ([4e8ce6d](https://github.com/FINGU-GRINDA/runfix-container/commit/4e8ce6d7e1d675e085bf23370f4a09b3852831c1))
+* limit languages by default ([202cee8](https://github.com/FINGU-GRINDA/runfix-container/commit/202cee82afdd055531c66f767681a3aa2ae2a401))
+* llm translate 1 batch ([94faf73](https://github.com/FINGU-GRINDA/runfix-container/commit/94faf733b66adedb50a4c424cc33adfb5d8cef19))
+* new interface ([cefa54d](https://github.com/FINGU-GRINDA/runfix-container/commit/cefa54d71e600df8b5400ccba5381034af77a2f2))
+* new schema and improved documentation ([3e0070b](https://github.com/FINGU-GRINDA/runfix-container/commit/3e0070b51e69147f8340e79aa52c26300acc5b6b))
+* noo caching ([8d80757](https://github.com/FINGU-GRINDA/runfix-container/commit/8d807578a2ede2e69a120c105cbb9eaa12f5c1a4))
+* refactor text fitting logic and add single line span feature, single line span ([b4d27e5](https://github.com/FINGU-GRINDA/runfix-container/commit/b4d27e54e3b2540b136099929d8a215e9c7639fe))
+* refactor, add caching ([762ea4b](https://github.com/FINGU-GRINDA/runfix-container/commit/762ea4b9ef9738a84e0014f9fabc043104379866))
+* remote server, update package to use remote server ([#4](https://github.com/FINGU-GRINDA/runfix-container/issues/4)) ([d0c3601](https://github.com/FINGU-GRINDA/runfix-container/commit/d0c3601babe5faed796d169d515446e94350f211))
+* resize to container ([aeb2fd8](https://github.com/FINGU-GRINDA/runfix-container/commit/aeb2fd812ea015b306d02bf9370cf9032c1b4003))
+* select language based on locale ([06db0ad](https://github.com/FINGU-GRINDA/runfix-container/commit/06db0ad9f725bf661d00fb2e2dcc45cd2af9c448))
+* skip existing overflow containers ([42b1f1c](https://github.com/FINGU-GRINDA/runfix-container/commit/42b1f1c328feb411dbeb3b8987cf16b9eb1335f3))
+* update doc ([#16](https://github.com/FINGU-GRINDA/runfix-container/issues/16)) ([16cba65](https://github.com/FINGU-GRINDA/runfix-container/commit/16cba65e33990061300d4a718a174358c1e3a984))
+* use google instead of openai ([a66c791](https://github.com/FINGU-GRINDA/runfix-container/commit/a66c791e136b483bf88fc35ca8365585f3ec2c43))
+
+
+### Bug Fixes
+
+* add Hana API integration for text translation service ([64b5399](https://github.com/FINGU-GRINDA/runfix-container/commit/64b53990ebd69fc1909d676b3534e776f4545124))
+* borderbox ([e90c458](https://github.com/FINGU-GRINDA/runfix-container/commit/e90c4588e87e29595459baa4c859d9f73504173e))
+* bug on resizing self ([18cc684](https://github.com/FINGU-GRINDA/runfix-container/commit/18cc6848ac127897740e908b733d0f4382c386a6))
+* build ([36d0d5f](https://github.com/FINGU-GRINDA/runfix-container/commit/36d0d5f073b5e09babcfd5f98c0e16ce237a9248))
+* build dry run ([47d333b](https://github.com/FINGU-GRINDA/runfix-container/commit/47d333b0911eb7be86ea01cdc72dce3660c42eac))
+* build error ([1049b92](https://github.com/FINGU-GRINDA/runfix-container/commit/1049b9251b52de4d0aaad299a063dc0cc4bcef58))
+* build error ([4021004](https://github.com/FINGU-GRINDA/runfix-container/commit/40210041ebbc56d3e3fc7296af7840a38c672b61))
+* caching ([6ab8477](https://github.com/FINGU-GRINDA/runfix-container/commit/6ab8477a78bebf4ce456193d612a94b5ca2eaf12))
+* caching update translation will utilize the oldest one ([5e4e322](https://github.com/FINGU-GRINDA/runfix-container/commit/5e4e322f669d80443688c18860a80971ed70fb5b))
+* codeblock ([b1a09b8](https://github.com/FINGU-GRINDA/runfix-container/commit/b1a09b88d78615e821f18488ecae64aeb6f5fc9c))
+* comment out Translator component in RootLayout ([0f4587c](https://github.com/FINGU-GRINDA/runfix-container/commit/0f4587c76169168ee1f6ba5138685fe083ea9834))
+* cornercase half translated node ([e1d212c](https://github.com/FINGU-GRINDA/runfix-container/commit/e1d212c5da4e8eb07ec0e3892a18bfbb0c290991))
+* doc build error ([8e458e4](https://github.com/FINGU-GRINDA/runfix-container/commit/8e458e4acfee9206a4d60a959f9477f663eeca6c))
+* doc site baseurl ([#12](https://github.com/FINGU-GRINDA/runfix-container/issues/12)) ([60d13c5](https://github.com/FINGU-GRINDA/runfix-container/commit/60d13c5e35d9d16fd1a11f31a8e5e07b855da33c))
+* extract translateAllElements into separate utility and improve source language handling, update demo package ([ee96a99](https://github.com/FINGU-GRINDA/runfix-container/commit/ee96a99391356d7ca75c0b7ab95e87f979feb3ab))
+* fix source language ([5ba4476](https://github.com/FINGU-GRINDA/runfix-container/commit/5ba4476cbc52241f965c548c27acf74e10708235))
+* import error ([bdfe6e7](https://github.com/FINGU-GRINDA/runfix-container/commit/bdfe6e724ce6a7094a8bfdb6ce693a5abf59939e))
+* padding dry run ([42bd00f](https://github.com/FINGU-GRINDA/runfix-container/commit/42bd00ff12cfe1f8e30f29104c8e639da82a21b4))
+* refine AI translation logic and improve language validation ([5dc28d1](https://github.com/FINGU-GRINDA/runfix-container/commit/5dc28d108445370b96d32bbb226d6d2baa2506b0))
+* remove duplicate translation upsert operation in AI translation handler ([1d43f04](https://github.com/FINGU-GRINDA/runfix-container/commit/1d43f046601cfd0858b2e513015b1c706b13a4ce))
+* text color for test ([ab92c67](https://github.com/FINGU-GRINDA/runfix-container/commit/ab92c672bd407d26e3c0a458c394f0cc8f1ec3da))
+* translation / caching error, big refactor to server, update doc ([#11](https://github.com/FINGU-GRINDA/runfix-container/issues/11)) ([d0f90e8](https://github.com/FINGU-GRINDA/runfix-container/commit/d0f90e827340a2c1819ec7a57d773df21e73aa84))
+* update cache key to include isCached flag in AI translation handler ([2a84937](https://github.com/FINGU-GRINDA/runfix-container/commit/2a84937299bf50b8a32ea7915081a2076ab4d63a))
+* update runfix-container version to 0.9.1 in package files and improve getTagSelector function, add cache ([7d88bd8](https://github.com/FINGU-GRINDA/runfix-container/commit/7d88bd8f6ece9c22f8562dfabf388da1b3119d20))
+* update runfix-container version to 0.9.2 in package files and adjust import paths ([755a243](https://github.com/FINGU-GRINDA/runfix-container/commit/755a243259cf417f8e30e8f16a5b7d979ef8099a))
+* variability in translation ([d6e7663](https://github.com/FINGU-GRINDA/runfix-container/commit/d6e7663dd91a928d73e7177efc0eb593a8964c92))
+* variation in retranslation ([15c0a41](https://github.com/FINGU-GRINDA/runfix-container/commit/15c0a41e860f936d1e59f3b2eaba46177535578a))
+* who-am-i route and make normalized return ([#7](https://github.com/FINGU-GRINDA/runfix-container/issues/7)) ([64a997f](https://github.com/FINGU-GRINDA/runfix-container/commit/64a997f92c2172bcbba25e22ace5f09cb6f06e1f))
+
+
+### Performance Improvements
+
+* limit search space, pre-translate uses llm ([#15](https://github.com/FINGU-GRINDA/runfix-container/issues/15)) ([8a63b62](https://github.com/FINGU-GRINDA/runfix-container/commit/8a63b6293fc074f0ba45a7c84d71ef8b9a8433fd))
+
 ## 1.0.0 (2025-04-10)
 
 
